@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/duende/static/css/main.073c9b0a.css",
+    "main.js": "/duende/static/js/main.2551884e.js",
+    "static/js/787.537e14fa.chunk.js": "/duende/static/js/787.537e14fa.chunk.js",
+    "static/media/logo.svg": "/duende/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/duende/index.html",
+    "main.073c9b0a.css.map": "/duende/static/css/main.073c9b0a.css.map",
+    "main.2551884e.js.map": "/duende/static/js/main.2551884e.js.map",
+    "787.537e14fa.chunk.js.map": "/duende/static/js/787.537e14fa.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.2551884e.js"
+  ]
+}
