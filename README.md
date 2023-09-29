@@ -72,7 +72,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Actualizar git desde Visual Studio Code
 
 git add .
+
 git commit -m "cambio realizado"
+
 git push
 
 ### Actualizar Página en Línea (Necesario haber actualizado el repositorio)
