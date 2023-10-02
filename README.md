@@ -77,6 +77,18 @@ git commit -m "cambio realizado"
 
 git push
 
+### Instalaciones necesarias
+
+node.js
+
+npm install
+
+npm install firebase
+
+npm install react-router-dom
+
+npm start      //Para probar código
+
 ### Actualizar Página en Línea (Necesario haber actualizado el repositorio)
 
 npm run deploy

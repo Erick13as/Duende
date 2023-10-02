@@ -1,0 +1,225 @@
+
+.sign_in-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .sign_up-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 115vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .main_page-container {
+    display: flex;
+    justify-content: center;
+    height: auto;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .search_page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .details_page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .formContainer {
+    width: 300px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formDetails {
+    width: 600px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formFacets {
+    width: 300px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    display: none;
+    position: absolute;
+    top: 240px;
+    left: 1px;
+  }
+
+  .formSignUp {
+    width: 350px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formSongs {
+    width: 600px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formLogOut {
+    width: 200px;
+    height: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: -20px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+  }
+
+  .formSearch {
+    width: 300px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .titleDetails {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-Family: Arial Black, sans-serif;
+  }
+
+  .text {
+    margin-top: 10px;
+    color: #555;
+  }
+
+  .underlinedText {
+    margin-top: 10px;
+    color: #555;
+    text-decoration: underline;
+  }
+
+  .textDetails {
+    margin-top: 10px;
+    color: #555;
+    font-size: 18px;
+    font-Family: Arial Black, sans-serif;
+  }
+
+  .filterText {
+    margin-top: 10px;
+    color: #555;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .filterText:hover {
+    color: rgb(53, 44, 44); /* Choose the desired highlight color */
+  }
+
+  .lyrics-text {
+    margin-top: 10px;
+    color: #555;
+    font-size: 18px;
+    font-weight: bold;
+    font-Family: Arial Black, sans-serif;
+  }
+  
+  .textBox {
+    width: 278px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .textBoxSingUp {
+    width: 330px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .comboBox {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .buttons {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* font-family: "Arial", sans-serif; */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .buttons:hover {
+    background-color: #0056b3;
+  }
+  
+  .buttons:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  .message {
+    text-align: center;
+    display: none;
+    color: #c43838;
+  }
+
+
+  
+
+  
