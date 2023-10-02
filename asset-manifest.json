@@ -1,16 +1,14 @@
 {
   "files": {
-    "main.css": "/duende/static/css/main.756c66cc.css",
-    "main.js": "/duende/static/js/main.b5563680.js",
-    "static/js/787.537e14fa.chunk.js": "/duende/static/js/787.537e14fa.chunk.js",
-    "static/media/backgroundLogin.jpg": "/duende/static/media/backgroundLogin.1616222e0ebc52c3b600.jpg",
+    "main.css": "/duende/static/css/main.2c8dfa94.css",
+    "main.js": "/duende/static/js/main.5bd2b242.js",
+    "static/media/backgroundImage.jpg": "/duende/static/media/backgroundImage.aa8fe7123c74bb50d27d.jpg",
     "index.html": "/duende/index.html",
-    "main.756c66cc.css.map": "/duende/static/css/main.756c66cc.css.map",
-    "main.b5563680.js.map": "/duende/static/js/main.b5563680.js.map",
-    "787.537e14fa.chunk.js.map": "/duende/static/js/787.537e14fa.chunk.js.map"
+    "main.2c8dfa94.css.map": "/duende/static/css/main.2c8dfa94.css.map",
+    "main.5bd2b242.js.map": "/duende/static/js/main.5bd2b242.js.map"
   },
   "entrypoints": [
-    "static/css/main.756c66cc.css",
-    "static/js/main.b5563680.js"
+    "static/css/main.2c8dfa94.css",
+    "static/js/main.5bd2b242.js"
   ]
 }
