@@ -51,7 +51,6 @@ function ImageUpload() {
       {uploading && <p>Subiendo imagen...</p>}
       {imageUrl && (
         <div className="imagen-container">
-          <p>Imagen subida con éxito:</p>
           <img src={imageUrl} alt="Imagen subida" />
         </div>
       )}
