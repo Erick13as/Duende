@@ -55,7 +55,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sign_up-container">
+    <div className="sign_in-container">
       <form onSubmit={signUp} className="formSignUp">
         <h1 className="title">Crear Cuenta</h1>
         <h3 className="text">Ingrese su correo</h3>
@@ -81,21 +81,13 @@ const SignUp = () => {
           value={confPassword}
           onChange={(e) => setconfPassword(e.target.value)}
         ></input>
-        <h3 className="text">Ingrese su nombre de perfil</h3>
+        <h3 className="text">Ingrese su nombre completo</h3>
         <input
           className="textBoxSingUp"
           type="text"
-          placeholder="Nombre de perfil"
+          placeholder="Nombre completo"
           value={name}
           onChange={(e) => setName(e.target.value)}
-        ></input>
-        <h3 className="text">Ingrese su fecha de nacimiento</h3>
-        <input
-          className="textBoxSingUp"
-          type="date"
-          placeholder="Fecha de nacimiento"
-          value={birthdate}
-          onChange={(e) => setBirthdate(e.target.value)}
         ></input>
         <h3 id="errorLogin" className="message">Error</h3>
         <br id="espace"></br>
