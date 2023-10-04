@@ -19,6 +19,16 @@
     background-position: center;
   }
 
+  .agenda-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 115vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
   .main_page-container {
     display: flex;
     justify-content: center;
