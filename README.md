@@ -87,6 +87,8 @@ npm install firebase
 
 npm install react-router-dom
 
+npm run build
+
 npm start      //Para probar código
 
 ### Actualizar Página en Línea (Necesario haber actualizado el repositorio)
