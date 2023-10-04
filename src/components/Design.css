@@ -29,6 +29,18 @@
     background-position: center;
   }
 
+  .subir_imagen-container {
+    display: flexbox;
+    height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .imagen-container {
+    display: flex;
+    height: 80vh;
+  }
+
   .main_page-container {
     display: flex;
     justify-content: center;

@@ -43,19 +43,20 @@ function ImageUpload() {
   };
 
   return (
-    <div>
+    <div className="subir_imagen-container">
       <input type="file" accept="image/*" onChange={handleImageChange} />
       <button onClick={handleUpload} disabled={uploading}>
         Subir imagen
       </button>
       {uploading && <p>Subiendo imagen...</p>}
       {imageUrl && (
-        <div>
+        <div className="imagen-container">
           <p>Imagen subida con éxito:</p>
           <img src={imageUrl} alt="Imagen subida" />
         </div>
       )}
     </div>
+    
   );
 }
 
