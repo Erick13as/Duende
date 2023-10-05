@@ -24,7 +24,7 @@
     flex-direction: column; /* Alinea los elementos verticalmente */
     justify-content: center; /* Centra verticalmente */
     align-items: center; /* Centra horizontalmente */
-    height: 100vh;
+    min-height: 100vh;
     background-image: url('../../public/backgroundImage.jpg');
     background-size: cover;
     background-position: center;

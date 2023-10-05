@@ -10,14 +10,12 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confPassword, setconfPassword] = useState("");
   const [name, setName] = useState("");
-  const [birthdate, setBirthdate] = useState("");
 
   const agregarDatos = async() => {        
     try {
       const docRef = await addDoc(collection(db, "user"), {
         email: email,
         profileName: name,
-        birthdate: birthdate
       });
     
       console.log("Document written with ID: ", docRef.id);
