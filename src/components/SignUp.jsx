@@ -13,9 +13,9 @@ const SignUp = () => {
 
   const agregarDatos = async() => {        
     try {
-      const docRef = await addDoc(collection(db, "user"), {
-        email: email,
-        profileName: name,
+      const docRef = await addDoc(collection(db, "usuario"), {
+        correo: email,
+        nombreCompleto: name,
       });
     
       console.log("Document written with ID: ", docRef.id);
