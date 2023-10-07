@@ -39,7 +39,7 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
         agregarDatos();
-        navigate('/mainPage')
+        navigate('/galeria')
       })
       .catch((error) => {
         console.log(error);

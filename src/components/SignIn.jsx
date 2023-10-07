@@ -12,7 +12,7 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        navigate('/mainPage')
+        navigate('/galeria')
       })
       .catch((error) => {
         console.log(error);
