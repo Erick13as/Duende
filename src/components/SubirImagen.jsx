@@ -13,6 +13,7 @@ function ImageUpload() {
   const [selectedCategoria, setSelectedCategoria] = useState("");
   const [subcategorias, setSubcategorias] = useState([]);
   const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
     // Fetch categories when the component mounts
@@ -77,32 +78,40 @@ function ImageUpload() {
   };
 
   const handleUpload = async () => {
-    if (image) {
-      setUploading(true);
+    var errorMessage = document.getElementById('errorLogin');
+    if (!descripcion || !etiquetas || !selectedCategoria || !selectedSubcategoria || !image) {
+      setErrorText('Complete todos los campos antes de subir la imagen.');
+      errorMessage.style.display = "block";
+      return; // Don't proceed with the upload if any field is missing
+    }
 
-      try {
-        const storageRef = ref(storage, `imagen/${image.name}`);
-        await uploadBytes(storageRef, image);
+    errorMessage.style.display = "none";
+    setUploading(true);
+    setErrorText(""); // Clear any previous error messages
 
-        const downloadURL = await getDownloadURL(storageRef);
-        const tagsArray = etiquetas.split(' ');
+    try {
+      const storageRef = ref(storage, `imagen/${image.name}`);
+      await uploadBytes(storageRef, image);
 
-        const docRef = await addDoc(collection(db, 'imagen'), {
-          imagenUrl: downloadURL,
-          descripcion: descripcion,
-          etiquetas: tagsArray,
-          categoria: selectedCategoria,
-          subcategoria: selectedSubcategoria,
-          fechaSubida: serverTimestamp(),
-        });
+      const downloadURL = await getDownloadURL(storageRef);
+      const tagsArray = etiquetas.split(' ');
 
-        setImageUrl(downloadURL);
-        console.log('Imagen subida con éxito. ID del documento:', docRef.id);
-      } catch (error) {
-        console.error('Error al subir la imagen:', error);
-      } finally {
-        setUploading(false);
-      }
+      const docRef = await addDoc(collection(db, 'imagen'), {
+        imagenUrl: downloadURL,
+        descripcion: descripcion,
+        etiquetas: tagsArray,
+        categoria: selectedCategoria,
+        subcategoria: selectedSubcategoria,
+        fechaSubida: serverTimestamp(),
+      });
+
+      setImageUrl(downloadURL);
+      console.log('Imagen subida con éxito. ID del documento:', docRef.id);
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      setErrorText('Hubo un error al subir la imagen. Por favor, inténtelo nuevamente.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -112,7 +121,7 @@ function ImageUpload() {
         <h1 className="titleImagen">Nueva Imagen</h1>
         <h3 className="text">Ingrese la descripción de la imagen</h3>
         <textarea
-          className="textBoxSingUp textarea-description" /* Apply the CSS class here */
+          className="textBoxSingUp textarea-description"
           placeholder="Descripción"
           value={descripcion}
           onChange={handleDescriptionChange}
@@ -152,9 +161,8 @@ function ImageUpload() {
             </option>
           ))}
         </select>
-        <h3 id="errorLogin" className="message">Error</h3>
-        <br id="espace"></br>
         <input type="file" accept="image/*" onChange={handleImageChange} />
+        <h3 id="errorLogin" className="message">{errorText}</h3>
       </form>
       <button onClick={handleUpload} disabled={uploading} className="botonImagen">
         Subir imagen
