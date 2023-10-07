@@ -69,6 +69,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
+### Instalaciones realizadas
+
+npm install firebase
+
+npm install react-router-dom
+
+npm install react-responsive-carousel
+
 ### Actualizar git desde Visual Studio Code
 
 git add .
@@ -82,12 +90,6 @@ git push
 node.js
 
 npm install
-
-npm install firebase
-
-npm install react-router-dom
-
-npm install react-responsive-carousel
 
 npm run build
 
