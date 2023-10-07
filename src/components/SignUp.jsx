@@ -39,7 +39,7 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
         agregarDatos();
-        navigate('/galeria')
+        navigate('/galeriaSinLogin')
       })
       .catch((error) => {
         console.log(error);
@@ -54,6 +54,9 @@ const SignUp = () => {
 
   return (
     <div className="sign_in-container">
+      <button className="botonBarra" onClick={()=>navigate('/galeriaSinLogin')}>
+          Galería
+      </button>
       <form onSubmit={signUp} className="formSignUp">
         <h1 className="title">Crear Cuenta</h1>
         <h3 className="text">Ingrese su correo</h3>

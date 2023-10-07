@@ -119,6 +119,13 @@
     border-radius: 8px;
   }
 
+  .formBarra {
+    width: 97%;
+    height: 10px;
+    padding: 20px;
+    display: flex;
+  }
+
   .formDetails {
     width: 600px;
     padding: 20px;
@@ -279,6 +286,23 @@
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
+  }
+
+  .botonBarra {
+    width: 150px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* font-family: "Arial", sans-serif; */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    top: 20px;
+    left: 1150px;
   }
   
   .buttons:hover {

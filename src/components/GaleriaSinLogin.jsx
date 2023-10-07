@@ -3,6 +3,7 @@ import { collection, onSnapshot, query, getDocs, where } from 'firebase/firestor
 import { db } from '../firebase/firebaseConfig';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { useNavigate } from 'react-router-dom';
 
 function ImageGallery() {
   const [imageUrls, setImageUrls] = useState([]);
@@ -10,6 +11,7 @@ function ImageGallery() {
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]); // Estado para almacenar las subcategorías
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Consulta Firestore para obtener las URL de las imágenes.
@@ -56,12 +58,22 @@ function ImageGallery() {
 
   // Llamar a fetchSubcategories cuando cambie la categoría seleccionada
   useEffect(() => {
+    // Restablecer el valor de subcategoría cuando cambie la categoría
+    setSelectedSubcategory('');
+
+    // Llamar a fetchSubcategories cuando cambie la categoría seleccionada
     fetchSubcategories();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
   return (
     <div className="galeria-container">
+      <form className="formBarra">
+        <button className="botonBarra" onClick={() => navigate('/duende')}>
+          Iniciar Sesión
+        </button>
+      </form>
+
       <div className="select-container">
         <label htmlFor="categorySelect">Categoría:</label>
         <select
@@ -69,7 +81,7 @@ function ImageGallery() {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <option value="">...</option>
+          <option value="">Todas las categorías</option>
           {categories.map((category, index) => (
             <option key={index} value={category}>
               {category}
@@ -85,7 +97,7 @@ function ImageGallery() {
           value={selectedSubcategory}
           onChange={(e) => setSelectedSubcategory(e.target.value)}
         >
-          <option value="">...</option>
+          <option value="">Todas las subcategorías</option>
           {subcategories.map((subcategory, index) => (
             <option key={index} value={subcategory}>
               {subcategory}

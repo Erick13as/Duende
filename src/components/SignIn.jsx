@@ -12,7 +12,7 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        navigate('/galeria')
+        navigate('/galeriaSinLogin')
       })
       .catch((error) => {
         console.log(error);
@@ -27,6 +27,9 @@ const SignIn = () => {
 
   return (
     <div className="sign_in-container">
+      <button className="botonBarra" onClick={()=>navigate('/galeriaSinLogin')}>
+          Galería
+      </button>
       <form onSubmit={signIn} className="formContainer">
         <h1 className="title">Iniciar Sesión</h1>
         <h3 className="text">Ingrese su correo</h3>
