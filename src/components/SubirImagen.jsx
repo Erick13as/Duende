@@ -132,7 +132,7 @@ function ImageUpload() {
           value={selectedCategoria}
           onChange={(e) => setSelectedCategoria(e.target.value)}
         >
-          <option value="">Seleccione una categoría</option>
+          <option value="">...</option>
           {categorias.map((categoria) => (
             <option key={categoria.id} value={categoria.nombre}>
               {categoria.nombre}
@@ -145,7 +145,7 @@ function ImageUpload() {
           value={selectedSubcategoria}
           onChange={(e) => setSelectedSubcategoria(e.target.value)}
         >
-          <option value="">Seleccione una subcategoría</option>
+          <option value="">...</option>
           {subcategorias.map((subcategoria) => (
             <option key={subcategoria.id} value={subcategoria.nombre}>
               {subcategoria.nombre}
