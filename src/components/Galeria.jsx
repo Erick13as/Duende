@@ -57,6 +57,7 @@ function ImageGallery() {
   // Llamar a fetchSubcategories cuando cambie la categoría seleccionada
   useEffect(() => {
     fetchSubcategories();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
   return (
