@@ -2,6 +2,7 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Agenda from './components/Agenda';
 import SubirImagen from './components/SubirImagen';
+import Galeria from './components/Galeria';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='duende/' element={<SignIn />} /> 
         <Route path='/agenda' element={<Agenda />} />
         <Route path='/subirImagen' element={<SubirImagen />} />
+        <Route path='/galeria' element={<Galeria />} />
       </Routes>
     </div>
     </BrowserRouter>

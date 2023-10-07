@@ -87,6 +87,8 @@ npm install firebase
 
 npm install react-router-dom
 
+npm install react-responsive-carousel
+
 npm run build
 
 npm start      //Para probar código

@@ -52,6 +52,29 @@
     font-size: 14px; /* Adjust font size */
   }
 
+  .galeria-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .carousel-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%; /* Ancho del carrusel igual al 100% */
+  }
+  
+  .imagen-galeria-container {
+    max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
+    margin: 1rem;
+  }
+
   .main_page-container {
     display: flex;
     justify-content: center;
