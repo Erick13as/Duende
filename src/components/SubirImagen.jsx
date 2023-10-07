@@ -109,10 +109,10 @@ function ImageUpload() {
   return (
     <div className="subir_imagen-container">
       <form className="formSignUp">
-        <h1 className="title">Nueva Imagen</h1>
+        <h1 className="titleImagen">Nueva Imagen</h1>
         <h3 className="text">Ingrese la descripción de la imagen</h3>
         <textarea
-          className="textBoxSingUp"
+          className="textBoxSingUp textarea-description" /* Apply the CSS class here */
           placeholder="Descripción"
           value={descripcion}
           onChange={handleDescriptionChange}
@@ -156,15 +156,17 @@ function ImageUpload() {
         <br id="espace"></br>
         <input type="file" accept="image/*" onChange={handleImageChange} />
       </form>
-      <button onClick={handleUpload} disabled={uploading}>
+      <button onClick={handleUpload} disabled={uploading} className="botonImagen">
         Subir imagen
       </button>
+      <form className="formImagen">
       {uploading && <p>Subiendo imagen...</p>}
       {imageUrl && (
         <div className="imagen-container">
           <img src={imageUrl} alt="Imagen subida" />
         </div>
       )}
+      </form>
     </div>
   );
 }
