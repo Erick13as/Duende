@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/duende/static/css/main.56607779.css",
-    "main.js": "/duende/static/js/main.62d431ae.js",
+    "main.js": "/duende/static/js/main.f52d5bb0.js",
     "static/media/backgroundImage.jpg": "/duende/static/media/backgroundImage.aa8fe7123c74bb50d27d.jpg",
     "index.html": "/duende/index.html",
     "main.56607779.css.map": "/duende/static/css/main.56607779.css.map",
-    "main.62d431ae.js.map": "/duende/static/js/main.62d431ae.js.map"
+    "main.f52d5bb0.js.map": "/duende/static/js/main.f52d5bb0.js.map"
   },
   "entrypoints": [
     "static/css/main.56607779.css",
-    "static/js/main.62d431ae.js"
+    "static/js/main.f52d5bb0.js"
   ]
 }
