@@ -40,7 +40,7 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
         agregarDatos();
-        navigate('/galeriaSinLogin')
+        navigate('/duende')
       })
       .catch((error) => {
         console.log(error);
@@ -57,7 +57,7 @@ const SignUp = () => {
     <div className="galeria-container">
       <form className="formBarra">
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={() => navigate('/galeriaSinLogin')}>
+          <button className="botonBarra" onClick={() => navigate('/duende')}>
             Galería
           </button>
         </div>
@@ -99,7 +99,7 @@ const SignUp = () => {
           <h3 id="errorLogin" className="message">Error</h3>
           <br id="espace"></br>
           <button type="submit" className="buttons">Registrarse</button>
-          <button onClick={()=>navigate('/duende')} className="buttons">Iniciar Sesión</button>
+          <button onClick={()=>navigate('/login')} className="buttons">Iniciar Sesión</button>
         </form>
       </div>
     </div>

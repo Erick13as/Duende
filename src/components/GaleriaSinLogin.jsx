@@ -70,7 +70,7 @@ function ImageGallery() {
     <div className="galeria-container">
       <form className="formBarra">
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={() => navigate('/duende')}>
+          <button className="botonBarra" onClick={() => navigate('/login')}>
             Iniciar Sesión
           </button>
         </div>

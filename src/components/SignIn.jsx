@@ -43,7 +43,7 @@ const SignIn = () => {
     <div className="galeria-container">
       <form className="formBarra">
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={() => navigate('/galeriaSinLogin')}>
+          <button className="botonBarra" onClick={() => navigate('/duende')}>
             Galería
           </button>
         </div>

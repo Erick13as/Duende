@@ -17,10 +17,10 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route path='/registro' element={<SignUp />} />
-        <Route path='duende/' element={<SignIn />} /> 
+        <Route path='/login' element={<SignIn />} /> 
         <Route path='/agenda' element={<Agenda />} />
         <Route path='/subirImagen' element={<SubirImagen />} />
-        <Route path='/galeriaSinLogin' element={<GaleriaSinLogin />} />
+        <Route path='duende/' element={<GaleriaSinLogin />} />
         <Route path='/galeriaAdmin' element={<GaleriaAdmin />} />
         <Route path='/galeriaCliente' element={<GaleriaCliente />} />
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />

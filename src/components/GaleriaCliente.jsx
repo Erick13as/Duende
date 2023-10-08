@@ -93,7 +93,7 @@ function ImageGallery() {
           Tienda
         </button>
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={() => navigate('/duende')}>
+          <button className="botonBarra" onClick={() => navigate('/login')}>
             Cerrar Sesión
           </button>
         </div>
