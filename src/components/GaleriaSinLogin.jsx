@@ -73,38 +73,39 @@ function ImageGallery() {
           Iniciar Sesión
         </button>
       </form>
+      <form className="formFiltro">
+        <div className="select-container">
+          <label htmlFor="categorySelect">Categoría: </label>
+          <select
+            id="categorySelect"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">...</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="select-container">
-        <label htmlFor="categorySelect">Categoría:</label>
-        <select
-          id="categorySelect"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="">Todas las categorías</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="select-container">
-        <label htmlFor="subcategorySelect">Subcategoría:</label>
-        <select
-          id="subcategorySelect"
-          value={selectedSubcategory}
-          onChange={(e) => setSelectedSubcategory(e.target.value)}
-        >
-          <option value="">Todas las subcategorías</option>
-          {subcategories.map((subcategory, index) => (
-            <option key={index} value={subcategory}>
-              {subcategory}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="select-container">
+          <label htmlFor="subcategorySelect">Subcategoría: </label>
+          <select
+            id="subcategorySelect"
+            value={selectedSubcategory}
+            onChange={(e) => setSelectedSubcategory(e.target.value)}
+          >
+            <option value="">...</option>
+            {subcategories.map((subcategory, index) => (
+              <option key={index} value={subcategory}>
+                {subcategory}
+              </option>
+            ))}
+          </select>
+        </div>
+      </form>
 
       <div className="carousel-container">
         <Carousel>

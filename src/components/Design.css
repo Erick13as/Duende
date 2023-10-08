@@ -126,6 +126,21 @@
     display: flex;
   }
 
+  .formFiltro {
+    width: auto;
+    height: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formFiltro > * + * {
+    margin-left: 10px; /* Ajusta el valor según el espaciado deseado */
+  }
+
   .formDetails {
     width: 600px;
     padding: 20px;
