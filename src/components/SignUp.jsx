@@ -54,48 +54,54 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sign_in-container">
-      <button className="botonBarra" onClick={()=>navigate('/galeriaSinLogin')}>
-          Galería
-      </button>
-      <form onSubmit={signUp} className="formSignUp">
-        <h1 className="title">Crear Cuenta</h1>
-        <h3 className="text">Ingrese su correo</h3>
-        <input
-          className="textBoxSingUp"
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></input>
-        <h3 className="text">Ingrese su contraseña</h3>
-        <input
-          className="textBoxSingUp"
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-        <input
-          className="textBoxSingUp"
-          type="password"
-          placeholder="Confirmar Contraseña"
-          value={confPassword}
-          onChange={(e) => setconfPassword(e.target.value)}
-        ></input>
-        <h3 className="text">Ingrese su nombre completo</h3>
-        <input
-          className="textBoxSingUp"
-          type="text"
-          placeholder="Nombre completo"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></input>
-        <h3 id="errorLogin" className="message">Error</h3>
-        <br id="espace"></br>
-        <button type="submit" className="buttons">Registrarse</button>
-        <button onClick={()=>navigate('/duende')} className="buttons">Iniciar Sesión</button>
+    <div className="galeria-container">
+      <form className="formBarra">
+        <div className="botonBarra-container">
+          <button className="botonBarra" onClick={() => navigate('/galeriaSinLogin')}>
+            Galería
+          </button>
+        </div>
       </form>
+      <div className="sign_up-container">
+        <form onSubmit={signUp} className="formSignUp">
+          <h1 className="title">Crear Cuenta</h1>
+          <h3 className="text">Ingrese su correo</h3>
+          <input
+            className="textBoxSingUp"
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          <h3 className="text">Ingrese su contraseña</h3>
+          <input
+            className="textBoxSingUp"
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <input
+            className="textBoxSingUp"
+            type="password"
+            placeholder="Confirmar Contraseña"
+            value={confPassword}
+            onChange={(e) => setconfPassword(e.target.value)}
+          ></input>
+          <h3 className="text">Ingrese su nombre completo</h3>
+          <input
+            className="textBoxSingUp"
+            type="text"
+            placeholder="Nombre completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></input>
+          <h3 id="errorLogin" className="message">Error</h3>
+          <br id="espace"></br>
+          <button type="submit" className="buttons">Registrarse</button>
+          <button onClick={()=>navigate('/duende')} className="buttons">Iniciar Sesión</button>
+        </form>
+      </div>
     </div>
   );
 };

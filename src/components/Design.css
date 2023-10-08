@@ -2,11 +2,13 @@
 .sign_in-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('../../public/backgroundImage.jpg');
-    background-size: cover;
-    background-position: center;
+    min-height: auto;
+  }
+
+  .sign_up-container {
+    display: flex;
+    justify-content: center;
+    min-height: 106vh;
   }
 
   .agenda-container {
@@ -119,11 +121,24 @@
     border-radius: 8px;
   }
 
+  .formSignIn {
+    width: auto;
+    height: 450px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
   .formBarra {
     width: 97%;
-    height: 10px;
+    height: auto;
     padding: 20px;
     display: flex;
+    margin-left: auto;
+  }
+
+  .botonBarra-container {
+    margin-left: auto; /* Empuja el botón hacia la derecha */
   }
 
   .formFiltro {
@@ -161,6 +176,7 @@
 
   .formSignUp {
     width: 350px;
+    height: 584px;
     padding: 20px;
     background-color: #f5f5f5;
     border-radius: 8px;
@@ -315,43 +331,10 @@
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
-    position: absolute;
-    top: 20px;
-    left: 1150px;
   }
 
-  .botonBarraIzq1 {
-    width: 150px;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* font-family: "Arial", sans-serif; */
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    position: absolute;
-    top: 20px;
-    left: 50px;
-  }
-
-  .botonBarraIzq2 {
-    width: 150px;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    /* font-family: "Arial", sans-serif; */
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    position: absolute;
-    top: 20px;
-    left: 230px;
+  .button-space {
+    margin-right: 10px; /* Puedes ajustar el valor según tus preferencias de espacio */
   }
   
   .buttons:hover {

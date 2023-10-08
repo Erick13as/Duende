@@ -67,12 +67,14 @@ function ImageGallery() {
   return (
     <div className="galeria-container">
       <form className="formBarra">
-        <button className="botonBarra" onClick={() => navigate('/duende')}>
-          Cerrar Sesión
-        </button>
-        <button className="botonBarraIzq1" onClick={() => navigate('/tienda')}>
+        <button className="botonBarra" onClick={() => navigate('/tienda')}>
           Tienda
         </button>
+        <div className="botonBarra-container">
+          <button className="botonBarra" onClick={() => navigate('/duende')}>
+            Cerrar Sesión
+          </button>
+        </div>
       </form>
       <form className="formFiltro">
         <div className="select-container">

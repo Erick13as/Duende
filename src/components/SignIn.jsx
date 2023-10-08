@@ -40,34 +40,40 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sign_in-container">
-      <button className="botonBarra" onClick={()=>navigate('/galeriaSinLogin')}>
-          Galería
-      </button>
-      <form onSubmit={signIn} className="formContainer">
-        <h1 className="title">Iniciar Sesión</h1>
-        <h3 className="text">Ingrese su correo</h3>
-        <input
-          className="textBox"
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></input>
-        <h3 className="text">Ingrese su contraseña</h3>
-        <input
-          className="textBox"
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-        <br></br>
-        <h3 id="errorLogin" className="message">Error</h3>
-        <br id="espace"></br>
-        <button type="submit" className="buttons">Iniciar Sesión</button>
-        <button onClick={()=>navigate('/registro')} className="buttons">Registrarse</button>
+    <div className="galeria-container">
+      <form className="formBarra">
+        <div className="botonBarra-container">
+          <button className="botonBarra" onClick={() => navigate('/galeriaSinLogin')}>
+            Galería
+          </button>
+        </div>
       </form>
+      <div className="sign_in-container">
+        <form onSubmit={signIn} className="formSignIn">
+          <h1 className="title">Iniciar Sesión</h1>
+          <h3 className="text">Ingrese su correo</h3>
+          <input
+            className="textBox"
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          <h3 className="text">Ingrese su contraseña</h3>
+          <input
+            className="textBox"
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <br></br>
+          <h3 id="errorLogin" className="message">Error</h3>
+          <br id="espace"></br>
+          <button type="submit" className="buttons">Iniciar Sesión</button>
+          <button onClick={()=>navigate('/registro')} className="buttons">Registrarse</button>
+        </form>
+      </div>
     </div>
   );
 };
