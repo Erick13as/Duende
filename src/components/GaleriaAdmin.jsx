@@ -12,6 +12,7 @@ function ImageGallery() {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [filteredImages, setFilteredImages] = useState([]); // Nuevo estado para imágenes filtradas
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,10 +58,31 @@ function ImageGallery() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
+  useEffect(() => {
+    // Filtrar imágenes según las selecciones de categoría y subcategoría
+    const filtered = imageUrls.filter((image) => {
+      if (selectedCategory && selectedCategory !== '') {
+        if (image.categoria !== selectedCategory) {
+          return false;
+        }
+      }
+      if (selectedSubcategory && selectedSubcategory !== '') {
+        if (image.subcategoria !== selectedSubcategory) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    // Actualizar el estado de las imágenes filtradas
+    setFilteredImages(filtered);
+  }, [selectedCategory, selectedSubcategory, imageUrls]);
+
   const handleVerInfo = () => {
-    const currentImage = imageUrls[currentImageIndex];
-    if (currentImage) {
-      navigate('/infoImagenAdmin', { state: { imagenUrl: currentImage.url } });
+    const currentFilteredImage = filteredImages[currentImageIndex]; // Obtener la imagen filtrada actual
+
+    if (currentFilteredImage) {
+      navigate('/infoImagenAdmin', { state: { imagenUrl: currentFilteredImage.url } });
     }
   };
 
