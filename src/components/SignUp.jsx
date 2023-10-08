@@ -16,6 +16,7 @@ const SignUp = () => {
       const docRef = await addDoc(collection(db, "usuario"), {
         correo: email,
         nombreCompleto: name,
+        rol: "Cliente",
       });
     
       console.log("Document written with ID: ", docRef.id);

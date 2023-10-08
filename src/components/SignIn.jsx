@@ -2,6 +2,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../firebase/firebaseConfig";
 import {useNavigate} from 'react-router-dom'
+import { collection, query, getDocs, where } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -10,18 +12,30 @@ const SignIn = () => {
   const signIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        navigate('/galeriaSinLogin')
+      .then(async (userCredential) => {
+        const userQuery = query(collection(db, 'usuario'), where('correo', '==', email));
+        const querySnapshot = await getDocs(userQuery);
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          const rolValue = userData.rol;
+  
+          // Check the value of rolValue and navigate accordingly
+          if (rolValue === 'Admin') {
+            navigate('/galeriaAdmin');
+          } else {
+            navigate('/galeriaCliente');
+          }
+        });
       })
       .catch((error) => {
-        console.log(error);
         var errorMessage = document.getElementById('errorLogin');
         errorMessage.style.display = "block";
         errorMessage.textContent = "Correo o contraseña incorrecta";
         document.getElementById('espace').style.display = "none";
       });
   };
+  
+  
 
   const navigate = useNavigate();
 
