@@ -5,6 +5,8 @@ import SubirImagen from './components/SubirImagen';
 import GaleriaSinLogin from './components/GaleriaSinLogin';
 import GaleriaAdmin from './components/GaleriaAdmin';
 import GaleriaCliente from './components/GaleriaCliente';
+import InfoImagenAdmin from './components/InfoImagenAdmin';
+import InfoImagenCliente from './components/InfoImagenCliente';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -21,6 +23,8 @@ const App = () => {
         <Route path='/galeriaSinLogin' element={<GaleriaSinLogin />} />
         <Route path='/galeriaAdmin' element={<GaleriaAdmin />} />
         <Route path='/galeriaCliente' element={<GaleriaCliente />} />
+        <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
+        <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
       </Routes>
     </div>
     </BrowserRouter>

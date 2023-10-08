@@ -10,14 +10,13 @@ function ImageGallery() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]); // Estado para almacenar las subcategorías
+  const [subcategories, setSubcategories] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Consulta Firestore para obtener las URL de las imágenes.
     const q = collection(db, 'imagen');
 
-    // Escuchar cambios en la colección de imágenes.
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const urls = [];
       snapshot.forEach((doc) => {
@@ -29,7 +28,6 @@ function ImageGallery() {
       setImageUrls(urls);
     });
 
-    // Obtener las categorías de Firestore y llenar el estado categories
     const fetchCategories = async () => {
       const categoryQuery = query(collection(db, 'categoria'));
       const categorySnapshot = await getDocs(categoryQuery);
@@ -37,13 +35,11 @@ function ImageGallery() {
       setCategories(categoryData);
     };
 
-    fetchCategories(); // Llama a la función para obtener las categorías
+    fetchCategories();
 
-    // Limpia el efecto cuando el componente se desmonta.
     return () => unsubscribe();
   }, []);
 
-  // Función para obtener las subcategorías de la categoría seleccionada
   const fetchSubcategories = async () => {
     if (selectedCategory) {
       const subcategoryQuery = query(collection(db, 'subcategoria'), where('categoria', '==', selectedCategory));
@@ -51,25 +47,27 @@ function ImageGallery() {
       const subcategoryData = subcategorySnapshot.docs.map((doc) => doc.data().nombre);
       setSubcategories(subcategoryData);
     } else {
-      // Si no hay una categoría seleccionada, vaciar la lista de subcategorías
       setSubcategories([]);
     }
   };
 
-  // Llamar a fetchSubcategories cuando cambie la categoría seleccionada
   useEffect(() => {
-    // Restablecer el valor de subcategoría cuando cambie la categoría
     setSelectedSubcategory('');
-
-    // Llamar a fetchSubcategories cuando cambie la categoría seleccionada
     fetchSubcategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
+
+  const handleVerInfo = () => {
+    const currentImage = imageUrls[currentImageIndex];
+    if (currentImage) {
+      navigate('/infoImagenCliente', { state: { imagenUrl: currentImage.url } });
+    }
+  };
 
   return (
     <div className="galeria-container">
       <form className="formBarra">
-      <button className="botonBarra" onClick={() => navigate('/duende')}>
+        <button className="botonBarra" onClick={() => navigate('/duende')}>
           Cerrar Sesión
         </button>
         <button className="botonBarraIzq1" onClick={() => navigate('/tienda')}>
@@ -109,12 +107,14 @@ function ImageGallery() {
           </select>
         </div>
       </form>
-
+      <button className="ver-info-button" onClick={handleVerInfo}>
+        Ver información de la imagen
+      </button>
+      
       <div className="carousel-container">
-        <Carousel>
+        <Carousel onChange={index => setCurrentImageIndex(index)}>
           {imageUrls
             .filter((image) => {
-              // Filtrar por categoría y subcategoría seleccionadas
               if (selectedCategory && selectedCategory !== '') {
                 if (image.categoria !== selectedCategory) {
                   return false;
@@ -125,8 +125,6 @@ function ImageGallery() {
                   return false;
                 }
               }
-              // Si no se selecciona ninguna categoría ni subcategoría o si la imagen cumple con las condiciones,
-              // mostrar la imagen
               return true;
             })
             .map((image, index) => (
