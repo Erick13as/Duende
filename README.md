@@ -75,6 +75,8 @@ npm install firebase
 
 npm install react-router-dom
 
+npm install gh-pages
+
 npm install react-responsive-carousel
 
 ### Actualizar git desde Visual Studio Code
