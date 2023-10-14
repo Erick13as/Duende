@@ -1,4 +1,19 @@
 
+/* Clase para hacer los botones más pequeños */
+.boton-pequeno {
+  padding: 2px 5px; /* Ajusta el padding para cambiar el tamaño */
+  font-size: 8px; /* Ajusta el tamaño de fuente */
+}
+
+/* Clase para agregar margen izquierdo */
+.margen-izquierdo {
+  margin-left: 10px; /* Ajusta la cantidad de margen izquierdo */
+}
+/* Clase para agregar margen izquierdo */
+.margen-izquierdo2 {
+  margin-left: 1100px; /* Ajusta la cantidad de margen izquierdo */
+}
+
 .sign_in-container {
     display: flex;
     justify-content: center;
