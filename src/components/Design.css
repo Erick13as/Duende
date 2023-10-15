@@ -1,3 +1,18 @@
+.centered-carousel {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.carousel-container {
+  max-width: 800px; /* Ajusta el ancho máximo del carrusel según tus necesidades */
+}
+.imagen-carrusel {
+  max-width: 200px; /* Ajusta el tamaño máximo según tus necesidades */
+  display: block;
+  margin: 0 auto; /* Centra horizontalmente */
+}
 
 /* Clase para hacer los botones más pequeños */
 .boton-pequeno {
