@@ -40,6 +40,10 @@ function HomePage() {
         <Carousel
           selectedItem={currentProductIndex}
           onChange={(index) => setCurrentProductIndex(index)}
+          showArrows={true} // Opcional: Muestra flechas de navegación
+          showStatus={true} // Opcional: Muestra indicador de estado
+          showThumbs={false} // Opcional: Desactiva las miniaturas
+          dynamicWidth={true} // Permite que el carrusel se adapte al ancho de la pantalla
         >
           {productos.map((product, index) => (
             <div key={index}>
