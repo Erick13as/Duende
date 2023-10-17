@@ -27,6 +27,8 @@ const App = () => {
         <Route path='/galeriaCliente' element={<GaleriaCliente />} />
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
+        <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
+        <Route path='/verMasCliente' element={<VerMasCliente />} />
       </Routes>
     </div>
     </BrowserRouter>
