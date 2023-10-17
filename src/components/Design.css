@@ -1,3 +1,33 @@
+.centered-carousel {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.carousel-container {
+  max-width: 800px; /* Ajusta el ancho máximo del carrusel según tus necesidades */
+}
+.imagen-carrusel {
+  max-width: 200px; /* Ajusta el tamaño máximo según tus necesidades */
+  display: block;
+  margin: 0 auto; /* Centra horizontalmente */
+}
+
+/* Clase para hacer los botones más pequeños */
+.boton-pequeno {
+  padding: 2px 5px; /* Ajusta el padding para cambiar el tamaño */
+  font-size: 8px; /* Ajusta el tamaño de fuente */
+}
+
+/* Clase para agregar margen izquierdo */
+.margen-izquierdo {
+  margin-left: 10px; /* Ajusta la cantidad de margen izquierdo */
+}
+/* Clase para agregar margen izquierdo */
+.margen-izquierdo2 {
+  margin-left: 1100px; /* Ajusta la cantidad de margen izquierdo */
+}
 
 .sign_in-container {
     display: flex;
