@@ -3,10 +3,14 @@
   justify-content: center; /* Centra horizontalmente */
   align-items: center; /* Centra verticalmente */
   height: 100vh; /* Ocupa toda la altura de la ventana */
+  width: 100%; /* Ancho del carrusel igual al 100% */
 }
-
-.carousel-container {
-  max-width: 800px; /* Ajusta el ancho máximo del carrusel según tus necesidades */
+.vmasC-container {
+  display: flex;
+  flex-direction: column; /* Para apilar los elementos verticalmente */
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+  height: 100vh; /* Opcional: Asegura que el contenedor ocupe toda la altura de la ventana */
 }
 .imagen-carrusel {
   max-width: 200px; /* Ajusta el tamaño máximo según tus necesidades */
@@ -122,6 +126,7 @@
     display: flex;
     justify-content: center;
     height: auto;
+    align-items: center;
     background-image: url('../../public/backgroundImage.jpg');
     background-size: cover;
     background-position: center;
@@ -176,7 +181,7 @@
 
   .glass {
     background: linear-gradient(135deg, rgba(255,255,0.1), rgba(255,255,255,0));
-    backdrop-filter: blur(10ptx);
+    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.18);

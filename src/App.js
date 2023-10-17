@@ -29,7 +29,7 @@ const App = () => {
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
-        <Route path='/verMasCliente' element={<VerMasCliente />} />
+        <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
       </Routes>
     </div>
