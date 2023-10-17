@@ -9,6 +9,7 @@ import InfoImagenAdmin from './components/InfoImagenAdmin';
 import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
 import AccederTiendaCliente from './components/AccederTiendaCliente';
+import CrearCategoria from './components/CrearCategoria';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -29,6 +30,7 @@ const App = () => {
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
         <Route path='/verMasCliente' element={<VerMasCliente />} />
+        <Route path='/crearCategoria' element={<CrearCategoria/>}/>
       </Routes>
     </div>
     </BrowserRouter>
