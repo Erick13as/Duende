@@ -1,3 +1,109 @@
+/* Clase para centrar horizontalmente el precio */
+.precio {
+  text-align: center;
+}
+/* Estilos para el contenedor en la parte superior */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f28484;
+  color: #fff;
+  padding: 10px;
+  width: 100%; 
+}
+
+/* Estilos para los botones en el contenedor superior */
+.header-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Cambiar el color de fondo de los botones al pasar el mouse */
+.header-button:hover {
+  background-color: #0056b3;
+}
+.inicio-button {
+  margin-left: 10px; /* Agrega margen izquierdo de 10px */
+  margin-right: 10px; /* Agrega margen derecho de 10px */
+}
+
+/* Estilo específico para el botón "Ordenes" */
+#ordenes-button {
+  margin-right: -1220px; /* Agregar un margen a la derecha  */
+}
+
+/* Estilo específico para el botón "Mi carrito" */
+#carrito-button {
+  margin-right: 7.5px; /* Agregar un margen a la derecha  */
+}
+
+
+
+/* Clase para contenedor de productos */
+.productos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Espacio entre productos */
+}
+
+/* Clase para cada producto en la lista */
+.producto {
+  width: calc(33.33% - 20px); /* Ancho para mostrar 3 productos por fila */
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color:  #fff;
+  border-radius: 9px;
+  margin-right: 0px;
+}
+
+/* Clase para contenedor de imagen de producto */
+.imagen-container2 {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+}
+
+
+/* Clase para contenedor de detalles del producto */
+.details-container {
+  padding: 10px;
+}
+
+/* Clase para el botón "Ver detalles" */
+.botonImagen2 {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* Estilo para los títulos de producto */
+.titleAccederTienda {
+  text-align: center;
+  margin-bottom: 10px; /* Ajusta el margen inferior según tus preferencias */
+  color: #333;
+}
+
+/* Estilo para el texto de producto */
+.text {
+  color: #555;
+}
+
+/* Otros estilos que desees mantener de tu archivo original Design.css */
+/* ... */
+
+v
 .centered-carousel {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
@@ -99,16 +205,9 @@
     font-size: 14px; /* Adjust font size */
   }
 
-  .galeria-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-image: url('../../public/backgroundImage.jpg');
-    background-size: cover;
-    background-position: center;
-  }
+ 
+
+  
   
   .carousel-container {
     display: flex;
@@ -122,17 +221,40 @@
     margin: 1rem;
   }
 
+  .imagen-galeria-container2 {
+    max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
+    margin: 1rem;
+  }
+  /* Clase para la imagen en el producto */
+  .imagen-galeria-container2 img {
+    width: 200px; /* Establece el ancho deseado */
+    height: 300px; /* Establece el alto deseado */
+    object-fit: cover; /* Ajusta el comportamiento de la imagen para cubrir el contenedor */
+  }
+
+
   .main_page-container {
+    flex-direction: column;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     height: auto;
     align-items: center;
-    background-image: url('../../public/backgroundImage.jpg');
+    background-image:  #fff;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
   }
-
+  .galeria-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
   .search_page-container {
     display: flex;
     justify-content: center;
