@@ -89,7 +89,7 @@ function ImageGallery() {
   return (
     <div className="galeria-container">
       <form className="formBarra">
-        <button className="botonBarra" onClick={() => navigate('/opciones')}>
+        <button className="botonBarra" onClick={() => navigate('/opcionesAdmin')}>
           Opciones
         </button>
         <span className="button-space"></span>
