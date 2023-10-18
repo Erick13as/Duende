@@ -10,39 +10,42 @@ import 'firebase/firestore';
     const [uploading, setUploading] = useState(false);
 
     const handleNameChange = (e) => {
-        setNombre(e.target.value);
+      setNombre(e.target.value);
     };
 
     const handleDescriptionChange = (e) => {
-        setDescripcion(e.target.value);
+      setDescripcion(e.target.value);
     };
 
-    const handleNewCategory = async () => {
-        var errorMessage = document.getElementById('errorLogin');
-        if (!nombreC || !descripcion) {
-          setErrorText('Complete el nombre y la descripción antes de subir la categoría.');
-          errorMessage.style.display = "block";
-          return; 
-        }
+    const handleNewCategory = async (e) => {
+      e.preventDefault();
+      var errorMessage = document.getElementById('errorLogin');
+      if (!nombreC || !descripcion) {
+        setErrorText('Complete el nombre y la descripción antes de subir la categoría.');
+        errorMessage.style.display = "block";
+        return; 
+      }
       
-        errorMessage.style.display = "none";
-        setUploading(true);
-        setErrorText(""); 
+      errorMessage.style.display = "none";
+      setUploading(true);
+      setErrorText(""); 
       
-        try {
-          const docRef = await addDoc(collection(db, 'categoria'), {
-            nombre: nombreC,
-            descripcion: descripcion,
-          });
+      try {
+        const docRef = await addDoc(collection(db, 'categoria'), {
+          nombre: nombreC,
+          descripcion: descripcion,
+        });
       
-          console.log('Categoría subida con éxito. ID del documento:', docRef.id);
-        } catch (error) {
-          console.error('Error al subir la categoría:', error);
-          setErrorText('Hubo un error al subir la categoría. Por favor, inténtelo nuevamente.');
-        } finally {
-          setUploading(false);
-        }
-      };
+        console.log('Categoría subida con éxito. ID del documento:', docRef.id);
+        setNombre('');
+        setDescripcion('');
+      } catch (error) {
+        console.error('Error al subir la categoría:', error);
+        setErrorText('Hubo un error al subir la categoría. Por favor, inténtelo nuevamente.');
+      } finally {
+        setUploading(false);
+      }
+    };
 
     return(
         <div className='crearCategoria-containter'>
