@@ -10,6 +10,12 @@ import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
 import AccederTiendaCliente from './components/AccederTiendaCliente';
 import CrearCategoria from './components/CrearCategoria';
+import { ImageGalleryController } from './controllers/ImageGalleryController';
+import { Prueba } from './controllers/ImageGalleryController';
+import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
+import EliminarCategoria from './components/EliminarCategoria';
+import EliminarSubCategoria from './components/EliminarSubCategoria';
+import CrearSubcategoria from './components/CrearSubcategoria';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -31,6 +37,12 @@ const App = () => {
         <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
         <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
+        <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
+        <Route path='/Prueba' element={<Prueba/>}/>
+        <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
+        <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
+        <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
+        <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
       </Routes>
     </div>
     </BrowserRouter>
