@@ -14,6 +14,7 @@ import { ImageGalleryController } from './controllers/ImageGalleryController';
 import { Prueba } from './controllers/ImageGalleryController';
 import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import EliminarCategoria from './components/EliminarCategoria';
+import EliminarSubCategoria from './components/EliminarSubCategoria';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -39,6 +40,7 @@ const App = () => {
         <Route path='/Prueba' element={<Prueba/>}/>
         <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
+        <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
       </Routes>
     </div>
     </BrowserRouter>
