@@ -91,4 +91,12 @@ function ImageGalleryController() {
   );
 }
 
-export default ImageGalleryController;
+function Prueba(){
+    return(
+        <div>
+            <h1>Prueba</h1>
+        </div>
+    );
+}
+
+export { ImageGalleryController, Prueba };
