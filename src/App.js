@@ -10,6 +10,7 @@ import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
 import AccederTiendaCliente from './components/AccederTiendaCliente';
 import CrearCategoria from './components/CrearCategoria';
+import Prueba from './controllers/ImageGalleryController';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
         <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
+        <Route path='/prueba' element={<Prueba/>}/>
       </Routes>
     </div>
     </BrowserRouter>
