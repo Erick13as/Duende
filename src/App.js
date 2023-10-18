@@ -12,6 +12,7 @@ import AccederTiendaCliente from './components/AccederTiendaCliente';
 import CrearCategoria from './components/CrearCategoria';
 import { ImageGalleryController } from './controllers/ImageGalleryController';
 import { Prueba } from './controllers/ImageGalleryController';
+import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -35,6 +36,7 @@ const App = () => {
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
         <Route path='/Prueba' element={<Prueba/>}/>
+        <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
       </Routes>
     </div>
     </BrowserRouter>
