@@ -23,7 +23,7 @@ const MostrarOpcionesAdmin = ( ) => {
                 <button onClick={()=>navigate('/subirImagen')} className='botonOOA'>Agregar Imagen</button>
                 <button onClick={()=>navigate('/crearCategoria')} className='botonOOA'>Crear Categoría</button>
                 <button onClick={()=>navigate('/eliminarCategoria')} className='botonOOA'>Eliminar Categoría</button>
-                <button onClick={()=>navigate('/opcionesAdmin')} className='botonOOA'>Crear SubCategoría</button>
+                <button onClick={()=>navigate('/crearSubcategoria')} className='botonOOA'>Crear SubCategoría</button>
                 <button onClick={()=>navigate('/eliminarSubcategoria')} className='botonOOA'>Eliminar SubCategoría</button>
                 </div>
             </form>
