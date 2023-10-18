@@ -58,7 +58,24 @@ function ImageGalleryView(props) {
 
       <div className="carousel-container">
         <Carousel>
-          {imageUrls.map((image, index) => (
+          {imageUrls
+            .filter((image) => {
+              // Filtrar por categoría y subcategoría seleccionadas
+              if (selectedCategory && selectedCategory !== '') {
+                if (image.categoria !== selectedCategory) {
+                  return false;
+                }
+              }
+              if (selectedSubcategory && selectedSubcategory !== '') {
+                if (image.subcategoria !== selectedSubcategory) {
+                  return false;
+                }
+              }
+              // Si no se selecciona ninguna categoría ni subcategoría o si la imagen cumple con las condiciones,
+              // mostrar la imagen
+              return true;
+            })
+          .map((image, index) => (
             <div key={index} className="imagen-galeria-container">
               <img src={image.url} alt={`Imagen ${index}`} />
             </div>
