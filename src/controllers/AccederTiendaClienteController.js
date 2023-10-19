@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { onSnapshot, collection } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 /*import { ProductModel } from './productosModel';*/
-import AccederTiendaClienteView from'../views/AccederTiendaClienteView'; 
+import AccederTiendaClienteView from '../views/AccederTiendaClienteView'; 
 import { useNavigate } from 'react-router-dom';
 
 function AccederTiendaClienteController() {
@@ -24,7 +24,7 @@ function AccederTiendaClienteController() {
     });
 
     return () => unsubscribe();
-  }, [productos]);
+  }, []); // Remove productos from the dependency array
 
   const handleNavigate = (route) => {
     navigate(route);

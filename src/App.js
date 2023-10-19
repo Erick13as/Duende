@@ -8,7 +8,6 @@ import GaleriaCliente from './components/GaleriaCliente';
 import InfoImagenAdmin from './components/InfoImagenAdmin';
 import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
-import AccederTiendaCliente from './components/AccederTiendaCliente';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import CrearCategoria from './components/CrearCategoria';
 import { ImageGalleryController } from './controllers/ImageGalleryController';
