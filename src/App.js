@@ -9,6 +9,7 @@ import InfoImagenAdmin from './components/InfoImagenAdmin';
 import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
 import AccederTiendaCliente from './components/AccederTiendaCliente';
+import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import CrearCategoria from './components/CrearCategoria';
 import { ImageGalleryController } from './controllers/ImageGalleryController';
 import { Prueba } from './controllers/ImageGalleryController';
@@ -34,7 +35,7 @@ const App = () => {
         <Route path='/galeriaCliente' element={<GaleriaCliente />} />
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
-        <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
+        <Route path='AccederTiendaClienteController/' element={<AccederTiendaClienteController />}/>
         <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
