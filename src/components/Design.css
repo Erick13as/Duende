@@ -232,18 +232,6 @@
   max-width: 100%;
 }
 
-button.add-to-cart-button {
-  background-color: rgb(255, 0, 157);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button.add-to-cart-button:hover {
-  background-color: rgb(255, 0, 157);
-}
 .imagen-carrusel {
   max-width: 200px; /* Ajusta el tamaño máximo según tus necesidades */
   display: block;
@@ -353,10 +341,7 @@ button.add-to-cart-button:hover {
     font-size: 14px; /* Adjust font size */
   }
 
- 
 
-  
-  
   .carousel-container {
     display: flex;
     justify-content: center;
@@ -368,11 +353,7 @@ button.add-to-cart-button:hover {
     max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
     margin: 1rem;
   }
-
-  .imagen-galeria-container2 {
-    max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
-    margin: 1rem;
-  }
+  
   /* Clase para la imagen en el producto */
   .imagen-galeria-container2 img {
     width: 200px; /* Establece el ancho deseado */
@@ -380,7 +361,26 @@ button.add-to-cart-button:hover {
     object-fit: cover; /* Ajusta el comportamiento de la imagen para cubrir el contenedor */
   }
 
+  .add-to-cart-button {
+    background-color: rgb(226, 68, 144); /* Color de fondo del botón después de agregar al carrito */
+    color: white; /* Color del texto después de agregar al carrito */
+    border: none;
+    padding: 10px 20px;
+    cursor: default; /* Deshabilitar el botón después de agregar al carrito */
+    font-size: 16px;
+    border-radius: 5px;
 
+  }
+  /* CSS para el botón después de agregar al carrito */
+  .added-to-cart {
+    background-color: rgb(116, 43, 78); /* Color de fondo del botón después de agregar al carrito */
+    color: white; /* Color del texto después de agregar al carrito */
+    border: none;
+    padding: 10px 20px;
+    cursor: default; /* Deshabilitar el botón después de agregar al carrito */
+    font-size: 16px;
+    border-radius: 5px;
+  }
   .main_page-container {
     flex-direction: column;
     min-height: 100vh;
@@ -805,6 +805,88 @@ button.add-to-cart-button:hover {
   }
 
 
+  .carrito-container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('../../public/backgroundImage.jpg');
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .carrito-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+  
+  .carrito-table th, .carrito-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+  }
+  
+  .carrito-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .carrito-total {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  .carrito-th {
+    font-weight: bold;
+    text-align: center; 
+    background-color: #f2f2f2;
+  }
+  
+  .carrito-td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .carrito-product-img {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  
+  .carrito-product-actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .carrito-quantity-input {
+    width: 30px;
+    text-align: center;
+  }
+  
+  .carrito-remove-button {
+    background-color: #ff6347;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .carrito-remove-button:hover {
+    background-color: #d9534f;
+  }
+  
+  .carrito-checkout-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .carrito-checkout-button:hover {
+    background-color: #0056b3;
+  }
   
 
   
