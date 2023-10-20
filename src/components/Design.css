@@ -1,3 +1,4 @@
+
 .input-containerProducto {
   margin-bottom: 10px;
 }
@@ -74,6 +75,17 @@
   color: #fff;
   padding: 8px;
   width: 98.97%; 
+}
+.header-containerVerMas{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a4b5be8b;
+  color: #fff;
+  padding: 8px 20px;
+  width: 100%; 
+  top:0;
+  
 }
 /* Estilos para los botones en el contenedor superior */
 .header-buttonProducto {
@@ -200,15 +212,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: auto;
   padding: 20px;
+  flex-direction: column;
+  min-height: 95vh;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .image-info-container {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: 120px;
 }
 
 .image-button-container,

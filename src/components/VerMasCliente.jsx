@@ -93,6 +93,19 @@ function VerMasCliente() {
 
   return (
     <div className="vmasC-container">
+      {/* Barra de navegación */}
+      <div className="header-containerVerMas">
+        <button className="header-button inicio-button">
+          Inicio
+        </button>
+        <button className="header-button" id="ordenes-button">
+          Ordenes
+        </button>
+        <button className="header-button" id="carrito-button">
+          Mi Carrito
+        </button>
+      </div>
+
       <div className="image-info-container">
         <div className="image-button-container">
           <img
