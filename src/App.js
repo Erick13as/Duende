@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import './index.css';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Agenda from './components/Agenda';
@@ -8,19 +10,25 @@ import GaleriaCliente from './components/GaleriaCliente';
 import InfoImagenAdmin from './components/InfoImagenAdmin';
 import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
+import Carrito from './components/Carrito';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import CrearCategoria from './components/CrearCategoria';
 import { ImageGalleryController } from './controllers/ImageGalleryController';
-import { Prueba } from './controllers/ImageGalleryController';
 import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
 import CrearSubcategoria from './components/CrearSubcategoria';
-import React from 'react'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
 
+
 const App = () => {
+  const [carrito, setCarrito] = useState([]);
+  const removeFromCart = (producto) => {
+    const updatedCarrito = carrito.filter((item) => item.id !== producto.id);
+    setCarrito(updatedCarrito);
+  };
+
   return (
     <BrowserRouter>
     <div className="App">
@@ -35,10 +43,10 @@ const App = () => {
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path='AccederTiendaClienteController/' element={<AccederTiendaClienteController />}/>
+        <Route path="/Carrito" element={<Carrito carrito={carrito} removeFromCart={removeFromCart} />} />
         <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
-        <Route path='/Prueba' element={<Prueba/>}/>
         <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
