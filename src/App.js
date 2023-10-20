@@ -7,6 +7,7 @@ import SubirImagen from './components/SubirImagen';
 import GaleriaSinLogin from './components/GaleriaSinLogin';
 import GaleriaAdmin from './components/GaleriaAdmin';
 import GaleriaCliente from './components/GaleriaCliente';
+import AgregarProducto from './components/AgregarProducto';
 import InfoImagenAdmin from './components/InfoImagenAdmin';
 import InfoImagenCliente from './components/InfoImagenCliente';
 import VerMasCliente from './components/VerMasCliente';
@@ -19,6 +20,7 @@ import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
 import CrearSubcategoria from './components/CrearSubcategoria';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { Prueba } from './controllers/ImageGalleryController';
 import "./components/Design.css"
 
 
@@ -33,6 +35,7 @@ const App = () => {
     <BrowserRouter>
     <div className="App">
       <Routes>
+      <Route path='/AgregarProducto' element={<AgregarProducto />} />
         <Route path='/registro' element={<SignUp />} />
         <Route path='/login' element={<SignIn />} /> 
         <Route path='/agenda' element={<Agenda />} />
@@ -47,6 +50,7 @@ const App = () => {
         <Route path='/VerMasCliente/:id' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
+        <Route path='/Prueba' element={<Prueba/>}/>
         <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
