@@ -105,11 +105,26 @@
 
 /* Estilo específico para el botón "Ordenes" */
 #ordenes-button {
-  margin-right: -1220px; /* Agregar un margen a la derecha  */
+  margin-right: -1080px; /* Agregar un margen a la derecha  */
 }
 
 /* Estilo específico para el botón "Mi carrito" */
 #carrito-button {
+  margin-right: 7.5px; /* Agregar un margen a la derecha  */
+}
+
+.inicio-buttonAdmin {
+  margin-left: 10px; /* Agrega margen izquierdo de 10px */
+  margin-right: 10px; /* Agrega margen derecho de 10px */
+}
+
+/* Estilo específico para el botón "Ordenes" */
+#ordenes-buttonAdmin {
+  margin-right: -990px; /* Agregar un margen a la derecha  */
+}
+
+/* Estilo específico para el botón "Mi carrito" */
+#carrito-buttonAdmin {
   margin-right: 7.5px; /* Agregar un margen a la derecha  */
 }
 

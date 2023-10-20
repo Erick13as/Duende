@@ -1,7 +1,7 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 
-function AccederTiendaClienteView(props) {
+function AccederTiendaAdminView(props) {
   const {
     productos,
     handleNavigate,
@@ -11,14 +11,14 @@ function AccederTiendaClienteView(props) {
     <div className="main_page-container">
       {/* Contenedor rectangular en la parte superior con tres botones */}
       <div className="header-container">
-        <button className="header-button inicio-button" id="inicio-button" onClick={() => handleNavigate('/')}>
+        <button className="header-button inicio-button" id="inicio-buttonAdmin" onClick={() => handleNavigate('/')}>
           Inicio
         </button>
-        <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/ordenes')}>
-          Ordenes
+        <button className="header-button" id="ordenes-buttonAdmin" onClick={() => handleNavigate('/ordenes')}>
+          Gestión Ordenes
         </button>
-        <button className="header-button" id="carrito-button" onClick={() => handleNavigate('/carrito')}>
-          Mi Carrito
+        <button className="header-button" id="carrito-buttonAdmin" onClick={() => handleNavigate('/AgregarProducto')}>
+          Añadir Producto
         </button>
       </div>
 
@@ -35,7 +35,7 @@ function AccederTiendaClienteView(props) {
                 <h3 className="titleAccederTienda">{product.nombre}</h3>
                 <p className="precio"> ${product.precio}</p>
                 <button className="botonImagen2" onClick={() => handleNavigate(`/detalle/${product.id}`)}>
-                  Ver detalles
+                  Editar Producto
                 </button>
               </div>
             </div>
@@ -46,4 +46,4 @@ function AccederTiendaClienteView(props) {
   );
 }
 
-export default AccederTiendaClienteView;
+export default AccederTiendaAdminView;

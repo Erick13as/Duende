@@ -37,10 +37,11 @@ function ProductUpload() {
 
       const productData = {
         nombre: productName,
+        marca:productBrand,
         descripcion: productDescription,
         precio: productPrice,
         cantidad: productQuantity,
-        imagenUrl: downloadURL,
+        imagen: downloadURL,
         fechaSubida: serverTimestamp(),
       };
 
