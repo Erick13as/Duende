@@ -12,6 +12,7 @@ import { AccederTiendaClienteController } from './controllers/AccederTiendaClien
 import CrearCategoria from './components/CrearCategoria';
 import { ImageGalleryController } from './controllers/ImageGalleryController';
 import { Prueba } from './controllers/ImageGalleryController';
+import AgregarProducto  from './components/AgregarProducto';
 import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
@@ -39,6 +40,7 @@ const App = () => {
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/ImageGalleryController' element={<ImageGalleryController/>}/>
         <Route path='/Prueba' element={<Prueba/>}/>
+        <Route path='/AgregarProducto' element={<AgregarProducto/>}/>
         <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
