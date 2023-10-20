@@ -44,7 +44,7 @@ function VerMasCliente() {
 
   useEffect(() => {
     if (id) {
-      const carritoDocRef = doc(db, 'carrito', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
       getDoc(carritoDocRef)
         .then((carritoDoc) => {
           if (carritoDoc.exists()) {
@@ -73,7 +73,7 @@ function VerMasCliente() {
         return;
       }
 
-      const carritoDocRef = doc(db, 'carrito', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
       try {
         await updateDoc(carritoDocRef, {
           listaIdCantidadProductos: arrayUnion({ id: id, cantidad: 1 }),
