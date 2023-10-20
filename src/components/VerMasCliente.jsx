@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { collection, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion
+} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 function VerMasCliente() {
   const { id } = useParams();
   const [productos, setProductos] = useState([]);
   const [product, setProduct] = useState(null);
-  const [carrito, setCarrito] = useState([]); // Estado del carrito
-  const [addedToCart, setAddedToCart] = useState(false); // Estado para mostrar "Añadido al carrito"
+  const [carrito, setCarrito] = useState([]);
+  const [isInCart, setIsInCart] = useState(false);
 
   useEffect(() => {
     const q = collection(db, 'productos');
@@ -35,16 +42,54 @@ function VerMasCliente() {
     }
   }, [id, productos]);
 
+  useEffect(() => {
+    if (id) {
+      const carritoDocRef = doc(db, 'carrito', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      getDoc(carritoDocRef)
+        .then((carritoDoc) => {
+          if (carritoDoc.exists()) {
+            const carritoData = carritoDoc.data();
+            const listaIdCantidadProductos =
+              carritoData.listaIdCantidadProductos || [];
+
+            // Verificar si el producto ya está en el carrito
+            const productIndex = listaIdCantidadProductos.findIndex(
+              (item) => item.id === id
+            );
+            if (productIndex !== -1) {
+              setIsInCart(true);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error al verificar el producto en el carrito', error);
+        });
+    }
+  }, [id]);
+
+  const handleAddToCart = async () => {
+    if (product) {
+      if (isInCart) {
+        return;
+      }
+
+      const carritoDocRef = doc(db, 'carrito', 'ID_DEL_USUARIO'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      try {
+        await updateDoc(carritoDocRef, {
+          listaIdCantidadProductos: arrayUnion({ id: id, cantidad: 1 }),
+        });
+
+        setCarrito([...carrito, product]);
+        setIsInCart(true);
+      } catch (error) {
+        console.error('Error al agregar el producto al carrito en la base de datos', error);
+      }
+    }
+  };
+
   if (!product) {
     return <div>No se encontró el producto o ocurrió un error.</div>;
   }
-
-  const handleAddToCart = () => {
-    if (product) {
-      setCarrito([...carrito, product]);
-      setAddedToCart(true); // Cambiar el estado para mostrar "Añadido al carrito"
-    }
-  };
 
   return (
     <div className="vmasC-container">
@@ -56,11 +101,10 @@ function VerMasCliente() {
             alt={product.nombre}
           />
           <button
-            className={`add-to-cart-button ${addedToCart ? 'added' : ''}`} // Agregar clase 'added' si se ha añadido al carrito
+            className={`add-to-cart-button ${isInCart ? 'added-to-cart' : ''}`}
             onClick={handleAddToCart}
-            disabled={addedToCart} // Deshabilitar el botón si ya se añadió al carrito
           >
-            {addedToCart ? 'Añadido al carrito' : 'Añadir al carrito'}
+            {isInCart ? 'Añadido al carrito' : 'Añadir al carrito'}
           </button>
         </div>
         <div className="product-info">

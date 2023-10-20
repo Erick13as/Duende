@@ -146,18 +146,6 @@
   max-width: 100%;
 }
 
-button.add-to-cart-button {
-  background-color: rgb(255, 0, 157);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button.add-to-cart-button:hover {
-  background-color: rgb(255, 0, 157);
-}
 .imagen-carrusel {
   max-width: 200px; /* Ajusta el tamaño máximo según tus necesidades */
   display: block;
@@ -267,10 +255,7 @@ button.add-to-cart-button:hover {
     font-size: 14px; /* Adjust font size */
   }
 
- 
 
-  
-  
   .carousel-container {
     display: flex;
     justify-content: center;
@@ -282,11 +267,7 @@ button.add-to-cart-button:hover {
     max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
     margin: 1rem;
   }
-
-  .imagen-galeria-container2 {
-    max-width: 100%; /* Ancho máximo de las imágenes igual al 100% */
-    margin: 1rem;
-  }
+  
   /* Clase para la imagen en el producto */
   .imagen-galeria-container2 img {
     width: 200px; /* Establece el ancho deseado */
@@ -294,7 +275,26 @@ button.add-to-cart-button:hover {
     object-fit: cover; /* Ajusta el comportamiento de la imagen para cubrir el contenedor */
   }
 
+  .add-to-cart-button {
+    background-color: rgb(226, 68, 144); /* Color de fondo del botón después de agregar al carrito */
+    color: white; /* Color del texto después de agregar al carrito */
+    border: none;
+    padding: 10px 20px;
+    cursor: default; /* Deshabilitar el botón después de agregar al carrito */
+    font-size: 16px;
+    border-radius: 5px;
 
+  }
+  /* CSS para el botón después de agregar al carrito */
+  .added-to-cart {
+    background-color: rgb(116, 43, 78); /* Color de fondo del botón después de agregar al carrito */
+    color: white; /* Color del texto después de agregar al carrito */
+    border: none;
+    padding: 10px 20px;
+    cursor: default; /* Deshabilitar el botón después de agregar al carrito */
+    font-size: 16px;
+    border-radius: 5px;
+  }
   .main_page-container {
     flex-direction: column;
     min-height: 100vh;
