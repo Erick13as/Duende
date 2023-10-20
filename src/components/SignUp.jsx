@@ -40,7 +40,7 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
         agregarDatos();
-        navigate('/duende')
+        navigate('/login')
       })
       .catch((error) => {
         console.log(error);

@@ -338,7 +338,13 @@
   .imagen-container {
     display: flex;
     height: 71vh;
+  }
 
+  .imagen-container-info {
+    display: flex;
+    height: 71vh;
+    width: 71vh;
+    height: 71vh;
   }
 
   .formImagen {
@@ -347,8 +353,14 @@
     background-color: #f5f5f5;
     border-radius: 8px;
     position: absolute;
-    top: 50px;
+    top: 100px;
     left: 925px;
+  }
+
+  .formImagenInfo {
+    width: 350px;
+    padding: 20px;
+    border-radius: 8px;
   }
 
   .textarea-description {
@@ -431,6 +443,17 @@
     background-size: cover;
     background-position: center;
   }
+
+  .info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../../public/backgroundImage.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
   .search_page-container {
     display: flex;
     justify-content: center;
@@ -459,6 +482,13 @@
   }
   
   .formContainer {
+    width: 300px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  .formContainerInfo {
     width: 300px;
     padding: 20px;
     background-color: #f5f5f5;
@@ -800,6 +830,24 @@
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
+  }
+
+  .botonFijo {
+    width: 150px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* font-family: "Arial", sans-serif; */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    top: 10px; /* Ajusta la posición vertical según tus necesidades */
+    right: 10px; /* Ajusta la posición horizontal según tus necesidades */
+    z-index: 1;
   }
 
   .button-space {

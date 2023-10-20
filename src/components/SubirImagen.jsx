@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, serverTimestamp, getDocs, query, where, onSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
@@ -14,6 +15,7 @@ function ImageUpload() {
   const [subcategorias, setSubcategorias] = useState([]);
   const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
   const [errorText, setErrorText] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch categories when the component mounts
@@ -117,6 +119,13 @@ function ImageUpload() {
 
   return (
     <div className="subir_imagen-container">
+      <form className="formBarra">
+        <div className="botonBarra-container">
+          <button className="botonBarra" onClick={() => navigate('/duende')}>
+            Galería
+          </button>
+        </div>
+      </form>
       <form className="formSignUp">
         <h1 className="titleImagen">Nueva Imagen</h1>
         <h3 className="text">Ingrese la descripción de la imagen</h3>
