@@ -17,7 +17,6 @@ import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
 import CrearSubcategoria from './components/CrearSubcategoria';
 import EnviarReferencia from './components/EnviarReferencia';
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 
