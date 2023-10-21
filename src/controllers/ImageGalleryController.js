@@ -3,9 +3,11 @@ import { onSnapshot, collection, query, getDocs, where, updateDoc, deleteDoc } f
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import GaleriaSinLoginView from '../views/ImageGalleryView';
 import GaleriaAdminView from '../views/ImageGalleryAdminView';
 import InfoImagenAdminView from '../views/ImageGalleryAdminUpdateView';
+import GaleriaClientView from '../views/ImageGalleryClientView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -487,4 +489,123 @@ function InfoImagenAdmin() {
   );
 }
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin};
+function GaleriaCliente() {
+  const [imageUrls, setImageUrls] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [filteredImages, setFilteredImages] = useState([]); // Nuevo estado para imágenes filtradas
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const q = collection(db, 'imagen');
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const urls = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.imagenUrl) {
+          urls.push({ url: data.imagenUrl, categoria: data.categoria, subcategoria: data.subcategoria });
+        }
+      });
+      setImageUrls(urls);
+    });
+
+    const fetchCategories = async () => {
+      const categoryQuery = query(collection(db, 'categoria'));
+      const categorySnapshot = await getDocs(categoryQuery);
+      const categoryData = categorySnapshot.docs.map((doc) => doc.data().nombre);
+      setCategories(categoryData);
+    };
+
+    fetchCategories();
+
+    return () => unsubscribe();
+  }, []);
+
+  const fetchSubcategories = async () => {
+    if (selectedCategory) {
+      const subcategoryQuery = query(collection(db, 'subcategoria'), where('categoria', '==', selectedCategory));
+      const subcategorySnapshot = await getDocs(subcategoryQuery);
+      const subcategoryData = subcategorySnapshot.docs.map((doc) => doc.data().nombre);
+      setSubcategories(subcategoryData);
+    } else {
+      setSubcategories([]);
+    }
+  };
+
+  useEffect(() => {
+    setSelectedSubcategory('');
+    fetchSubcategories();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    // Filtrar imágenes según las selecciones de categoría y subcategoría
+    const filtered = imageUrls.filter((image) => {
+      if (selectedCategory && selectedCategory !== '') {
+        if (image.categoria !== selectedCategory) {
+          return false;
+        }
+      }
+      if (selectedSubcategory && selectedSubcategory !== '') {
+        if (image.subcategoria !== selectedSubcategory) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    // Actualizar el estado de las imágenes filtradas
+    setFilteredImages(filtered);
+  }, [selectedCategory, selectedSubcategory, imageUrls]);
+
+  const handleVerInfo = () => {
+    const currentFilteredImage = filteredImages[currentImageIndex]; // Obtener la imagen filtrada actual
+
+    if (currentFilteredImage) {
+      navigate('/infoImagenCliente', { state: { imagenUrl: currentFilteredImage.url } });
+    }
+  };
+
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
+
+  const navigateToTienda = () => {
+    navigate('/AccederTiendaClienteController');
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleIndex = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    setSelectedSubcategory(e.target.value);
+  };
+
+
+  return (
+    <GaleriaClientView
+      imageUrls={imageUrls}
+      selectedCategory={selectedCategory}
+      selectedSubcategory={selectedSubcategory}
+      categories={categories}
+      subcategories={subcategories}
+      handleCategoryChange={handleCategoryChange}
+      handleSubcategoryChange={handleSubcategoryChange}
+      navigateToLogin={navigateToLogin}
+      handleVerInfo={handleVerInfo}
+      navigateToTienda={navigateToTienda}
+      handleIndex={handleIndex}
+    />
+  );
+}
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente};
