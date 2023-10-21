@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { onSnapshot, collection, query, getDocs, where, updateDoc, deleteDoc } from 'firebase/firestore';
+import { onSnapshot, collection, query, getDocs, where, updateDoc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -8,6 +8,7 @@ import GaleriaSinLoginView from '../views/ImageGalleryView';
 import GaleriaAdminView from '../views/ImageGalleryAdminView';
 import InfoImagenAdminView from '../views/ImageGalleryAdminUpdateView';
 import GaleriaClientView from '../views/ImageGalleryClientView';
+import SubirImagenView from '../views/ImageGalleryAddImageView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -608,4 +609,155 @@ function GaleriaCliente() {
   );
 }
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente};
+function SubirImagen() {
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [descripcion, setDescripcion] = useState("");
+  const [etiquetas, setEtiquetas] = useState("");
+  const [categorias, setCategorias] = useState([]);
+  const [selectedCategoria, setSelectedCategoria] = useState("");
+  const [subcategorias, setSubcategorias] = useState([]);
+  const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch categories when the component mounts
+    const fetchCategorias = async () => {
+      try {
+        const categoriaCollection = collection(db, 'categoria');
+        const categoriaSnapshot = await getDocs(categoriaCollection);
+        const categoriaData = categoriaSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCategorias(categoriaData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
+  useEffect(() => {
+    // Fetch subcategories when the selectedCategoria changes
+    const fetchSubcategorias = async () => {
+      try {
+        if (selectedCategoria) {
+          const subcategoriaCollection = collection(db, 'subcategoria');
+          console.log('nombre:', selectedCategoria);
+          const subcategoriaQuery = query(subcategoriaCollection, where('categoria', '==', selectedCategoria));
+          const unsubscribe = onSnapshot(subcategoriaQuery, (snapshot) => {
+            const subcategoriaData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setSubcategorias(subcategoriaData);
+            setSelectedSubcategoria(""); // Clear selectedSubcategoria when changing categories
+          });
+          return unsubscribe;
+        } else {
+          setSubcategorias([]);
+          setSelectedSubcategoria("");
+        }
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+      }
+    };
+
+    fetchSubcategorias();
+  }, [selectedCategoria]);
+
+  const handleDescriptionChange = (e) => {
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+    setDescripcion(textarea.value);
+  };
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setImage(selectedImage);
+    }
+  };
+
+  const handleUpload = async () => {
+    var errorMessage = document.getElementById('errorLogin');
+    if (!descripcion || !etiquetas || !selectedCategoria || !selectedSubcategoria || !image) {
+      setErrorText('Complete todos los campos antes de subir la imagen.');
+      errorMessage.style.display = "block";
+      return; // Don't proceed with the upload if any field is missing
+    }
+
+    errorMessage.style.display = "none";
+    setUploading(true);
+    setErrorText(""); // Clear any previous error messages
+
+    try {
+      const storageRef = ref(storage, `imagen/${image.name}`);
+      await uploadBytes(storageRef, image);
+
+      const downloadURL = await getDownloadURL(storageRef);
+      const tagsArray = etiquetas.split(' ');
+
+      const docRef = await addDoc(collection(db, 'imagen'), {
+        imagenUrl: downloadURL,
+        descripcion: descripcion,
+        etiquetas: tagsArray,
+        categoria: selectedCategoria,
+        subcategoria: selectedSubcategoria,
+        fechaSubida: serverTimestamp(),
+      });
+
+      setImageUrl(downloadURL);
+      console.log('Imagen subida con éxito. ID del documento:', docRef.id);
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      setErrorText('Hubo un error al subir la imagen. Por favor, inténtelo nuevamente.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const navigateToGallery = () => {
+    navigate('/galeriaAdmin');
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategoria(e.target.value);
+  };
+
+  const handleEtiquetasChange = (e) => {
+    setEtiquetas(e.target.value);
+  };
+
+  const handleSubcategoryChange = (e) => {
+    setSelectedSubcategoria(e.target.value);
+  };
+
+  return (
+    <SubirImagenView
+      descripcion={descripcion}
+      handleDescriptionChange={handleDescriptionChange}
+      etiquetas={etiquetas}
+      selectedCategoria={selectedCategoria}
+      categorias={categorias}
+      selectedSubcategoria={selectedSubcategoria}
+      subcategorias={subcategorias}
+      handleImageChange={handleImageChange}
+      errorText={errorText}
+      handleUpload={handleUpload}
+      uploading={uploading}
+      imageUrl={imageUrl}
+      navigateToGallery={navigateToGallery}
+      handleEtiquetasChange={handleEtiquetasChange}
+      handleCategoryChange={handleCategoryChange}
+      handleSubcategoryChange={handleSubcategoryChange}
+    />
+  );
+}
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen };
