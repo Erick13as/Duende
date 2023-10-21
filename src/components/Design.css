@@ -1,4 +1,47 @@
+.edit-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
 
+.cancel-button {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+/* Campo de entrada de texto en modo de edición */
+input[type="text"],
+input[type="number"] {
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+/* Etiquetas y otros estilos de texto */
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+p {
+  font-size: 16px;
+  margin: 10px 0;
+}
 .input-containerProducto {
   margin-bottom: 10px;
 }
@@ -75,6 +118,15 @@
   color: #fff;
   padding: 8px;
   width: 98.97%; 
+}
+.header-containerEditarProducto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a4b5be8b;
+  color: #fff;
+  padding: 8px;
+  width: 102%; 
 }
 .header-containerVerMas{
   display: flex;
@@ -218,6 +270,20 @@
   min-height: 95vh;
   background-position: center;
   background-attachment: fixed;
+}
+.EditarProducto-container {
+  background-image: url('../../public/backgroundImage.jpg');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 20px;
+  flex-direction: column;
+  min-height: 100vh;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
 }
 
 .image-info-container {

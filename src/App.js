@@ -23,6 +23,7 @@ import { AccederTiendaClienteController } from './controllers/AccederTiendaClien
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 import { Prueba } from './controllers/ImageGalleryController';
 import "./components/Design.css"
+import EditarProductoAdmin from './components/EditarProductoAdmin';
 
 
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
         <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
+        <Route path='/EditarProductoAdmin/:id' element={<EditarProductoAdmin />}  />
       </Routes>
     </div>
     </BrowserRouter>
