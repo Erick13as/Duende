@@ -39,7 +39,6 @@ const App = () => {
         <Route path='/subirImagen' element={<SubirImagen />} />
         <Route path='/login' element={<SignIn />} /> 
         <Route path='/registro' element={<SignUp />} />
-
         <Route path='/AgregarProducto' element={<AgregarProducto />} />
         <Route path='AccederTiendaClienteController/' element={<AccederTiendaClienteController />}/>
         <Route path='AccederTiendaAdminController/' element={<AccederTiendaAdminController />}/>
