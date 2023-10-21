@@ -4,9 +4,10 @@ import { collection, query, getDocs, where, updateDoc, deleteDoc} from 'firebase
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 
-function InfoImagenAdmin() {
+function InfoImagenCliente() {
   const location = useLocation();
   const imagenUrl = location.state && location.state.imagenUrl;
+  //console.log(imagenUrl);
   const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
   const [descripcion, setDescripcion] = useState("");
   const [listaEtiquetas, setListaEtiquetas] = useState("");
@@ -133,6 +134,13 @@ function InfoImagenAdmin() {
     }
   };
 
+  const handleVerInfo = () => {
+    navigate('/enviarReferencia', {
+      state: { imagenUrl}
+    });
+    //navigate('/enviarReferencia', {state: imagenUrl});
+  }
+
   return (
     <div className="info-container">
       <form className='formTopOA'>
@@ -165,7 +173,7 @@ function InfoImagenAdmin() {
           style={{ display: "none" }}
           onChange={handleImageChange}
         />
-        <button className="buttons" type="button" onClick={() => navigate('/enviarReferencia')} >
+        <button className="buttons" type="button" onClick={handleVerInfo} >
           Enviar Referencia
         </button>
       </form>
@@ -220,4 +228,4 @@ function InfoImagenAdmin() {
   );
 }
 
-export default InfoImagenAdmin;
+export default InfoImagenCliente;

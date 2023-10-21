@@ -58,7 +58,7 @@ const App = () => {
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
         <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
-        <Route path='/enviarReferencia' element={<CrearCategoria />} />
+        <Route path='/enviarReferencia' element={<EnviarReferencia />} />
       </Routes>
     </div>
     </BrowserRouter>

@@ -665,6 +665,11 @@
     color: #555;
   }
 
+  text_ {
+    margin-top: 10px;
+    color: #555;
+  }
+
   .underlinedText {
     margin-top: 10px;
     color: #555;
@@ -703,6 +708,17 @@
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+
+  .textBox2 {
+    width: 278px;
+    height: 185px;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    vertical-align: top;
   }
 
   .textBoxSingUp {
