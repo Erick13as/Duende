@@ -42,10 +42,6 @@ const EnviarReferencia = () => {
         }
     };
 
-    const handleVerInfo = (e) => {
-
-    }
-
     const handleEnviarRef = async (e) => {
         e.preventDefault();
         const errorMessage = document.getElementById('errorLogin');
@@ -103,9 +99,16 @@ const EnviarReferencia = () => {
               )}
             </div>
             
-            <button className="buttons" type="button" onClick={handleVerInfo} >
-              Cambiar Imagen
+            <button className="buttons" type="button" onClick={handleCambiarClick} >
+              Seleccionar nueva Imagen
             </button>
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+            />
           </form>
           <div className="formContainerInfo">
             <label htmlFor="descripcion">Descripción:</label>
