@@ -4,9 +4,8 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen } from './controllers/ImageGalleryController';
+import { SignIn, SignUp } from './controllers/UserController';
 
-import SignUp from './components/SignUp';
-import SignIn from './components/SignIn';
 import Agenda from './components/Agenda';
 import AgregarProducto from './components/AgregarProducto';
 import InfoImagenCliente from './components/InfoImagenCliente';
@@ -36,12 +35,12 @@ const App = () => {
         <Route path='/infoImagenAdmin' element={<InfoImagenAdmin />} />
         <Route path='/galeriaCliente' element={<GaleriaCliente />} />
         <Route path='/subirImagen' element={<SubirImagen />} />
+        <Route path='/login' element={<SignIn />} /> 
+        <Route path='/registro' element={<SignUp />} />
 
         <Route path='/AgregarProducto' element={<AgregarProducto />} />
         <Route path='AccederTiendaClienteController/' element={<AccederTiendaClienteController />}/>
         <Route path='AccederTiendaAdminController/' element={<AccederTiendaAdminController />}/>
-        <Route path='/registro' element={<SignUp />} />
-        <Route path='/login' element={<SignIn />} /> 
         <Route path='/agenda' element={<Agenda />} />
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path="/Carrito" element={<Carrito carrito={carrito} removeFromCart={removeFromCart} />} />
