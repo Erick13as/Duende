@@ -165,7 +165,7 @@ function InfoImagenAdmin() {
           style={{ display: "none" }}
           onChange={handleImageChange}
         />
-        <button className="buttons" type="button" onClick={() => navigate('/galeriaCliente')} >
+        <button className="buttons" type="button" onClick={() => navigate('/enviarReferencia')} >
           Enviar Referencia
         </button>
       </form>

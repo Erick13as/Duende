@@ -18,6 +18,7 @@ import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
 import CrearSubcategoria from './components/CrearSubcategoria';
+import EnviarReferencia from './components/EnviarReferencia';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
@@ -57,6 +58,7 @@ const App = () => {
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
         <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
+        <Route path='/enviarReferencia' element={<CrearCategoria />} />
       </Routes>
     </div>
     </BrowserRouter>
