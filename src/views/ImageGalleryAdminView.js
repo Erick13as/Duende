@@ -1,24 +1,35 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 
-function GaleriaSinLoginView(props) {
-  const {
-    imageUrls,
-    selectedCategory,
-    selectedSubcategory,
-    categories,
-    subcategories,
-    handleCategoryChange,
-    handleSubcategoryChange,
-    navigateToLogin,
-  } = props;
-
-  return (
+function GaleriaAdminView(props) {
+    const {
+      imageUrls,
+      selectedCategory,
+      selectedSubcategory,
+      categories,
+      subcategories,
+      handleVerInfo,
+      navigateToLogin,
+      navigateToOpciones,
+      navigateToTienda,
+      handleCategoryChange,
+      handleSubcategoryChange,
+      handleIndex,
+    } = props;
+    
+return (
     <div className="galeria-container">
       <form className="formBarra">
+        <button className="botonBarra" onClick={navigateToOpciones}>
+          Opciones
+        </button>
+        <span className="button-space"></span>
+        <button className="botonBarra" onClick={navigateToTienda}>
+          Tienda
+        </button>
         <div className="botonBarra-container">
           <button className="botonBarra" onClick={navigateToLogin}>
-            Iniciar Sesión
+            Cerrar Sesión
           </button>
         </div>
       </form>
@@ -55,12 +66,14 @@ function GaleriaSinLoginView(props) {
           </select>
         </div>
       </form>
-
+      <button className="ver-info-button" onClick={handleVerInfo}>
+        Ver información de la imagen
+      </button>
+      
       <div className="carousel-container">
-        <Carousel>
+        <Carousel onChange={handleIndex}>
           {imageUrls
             .filter((image) => {
-              // Filtrar por categoría y subcategoría seleccionadas
               if (selectedCategory && selectedCategory !== '') {
                 if (image.categoria !== selectedCategory) {
                   return false;
@@ -71,19 +84,17 @@ function GaleriaSinLoginView(props) {
                   return false;
                 }
               }
-              // Si no se selecciona ninguna categoría ni subcategoría o si la imagen cumple con las condiciones,
-              // mostrar la imagen
               return true;
             })
-          .map((image, index) => (
-            <div key={index} className="imagen-galeria-container">
-              <img src={image.url} alt={`Imagen ${index}`} />
-            </div>
-          ))}
+            .map((image, index) => (
+              <div key={index} className="imagen-galeria-container">
+                <img src={image.url} alt={`Imagen ${index}`} />
+              </div>
+            ))}
         </Carousel>
       </div>
     </div>
   );
 }
 
-export default GaleriaSinLoginView;
+export default GaleriaAdminView;

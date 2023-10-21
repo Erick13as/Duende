@@ -1,5 +1,3 @@
-// models/ImageModel.js
-
 export class ImageModel {
     constructor() {
       this.imageUrls = [];
