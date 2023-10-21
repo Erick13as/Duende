@@ -19,6 +19,10 @@ import CrearSubcategoria from './components/CrearSubcategoria';
 import EnviarReferencia from './components/EnviarReferencia';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
+import { Prueba } from './controllers/ImageGalleryController';
+import EditarProductoAdmin from './components/EditarProductoAdmin';
+import "./components/Design.css"
+
 
 const App = () => {
   const [carrito, setCarrito] = useState([]);
@@ -50,6 +54,7 @@ const App = () => {
         <Route path='/eliminarCategoria' element={<EliminarCategoria />} />
         <Route path='/eliminarSubcategoria' element={<EliminarSubCategoria />} />
         <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
+        <Route path='/EditarProductoAdmin/:id' element={<EditarProductoAdmin />}  />
         <Route path='/enviarReferencia' element={<EnviarReferencia />} />
       </Routes>
     </div>
