@@ -20,6 +20,7 @@ import EnviarReferencia from './components/EnviarReferencia';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 import { Prueba } from './controllers/ImageGalleryController';
+import EditarProductoAdmin from './components/EditarProductoAdmin';
 import "./components/Design.css"
 
 

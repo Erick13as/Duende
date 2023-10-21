@@ -126,7 +126,7 @@ p {
   background-color: #a4b5be8b;
   color: #fff;
   padding: 8px;
-  width: 102%; 
+  width: 105%; 
 }
 .header-containerVerMas{
   display: flex;
@@ -271,6 +271,7 @@ p {
   background-position: center;
   background-attachment: fixed;
 }
+
 .EditarProducto-container {
   background-image: url('../../public/backgroundImage.jpg');
   background-size: cover;
@@ -278,13 +279,21 @@ p {
   align-items: center;
   justify-content: center;
   height: auto;
-  padding: 20px;
+  padding: 40px;
   flex-direction: column;
-  min-height: 100vh;
-  background-position: center;
+  min-height: auto;
+  width: auto;
+  background-position: center top;
   background-attachment: fixed;
-  margin: 0;
+  margin: auto;
+  margin-top: auto;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: auto;
+  padding-inline-end: 1%;
+  background-origin: padding-box; /* El fondo se coloca y dimensiona desde el borde interior del padding */
 }
+
 
 .image-info-container {
   display: flex;
