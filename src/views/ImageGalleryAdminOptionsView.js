@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-const MostrarOpcionesAdmin = ( ) => {
-    //
-
-    const navigate = useNavigate();
+function OpcionesAdminView(props) {
+    const {
+        navigate,
+    } =props;
 
     return(
         <div className='opcionesAdmin-container'>
@@ -31,6 +29,7 @@ const MostrarOpcionesAdmin = ( ) => {
 
     );
 
+
 };
 
-export default MostrarOpcionesAdmin;
+export default OpcionesAdminView;

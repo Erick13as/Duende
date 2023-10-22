@@ -13,6 +13,7 @@ import CrearCategoriaView from '../views/ImageGalleryAddCategoryView';
 import CrearSubCategoriaView from '../views/ImageGalleryAddSubcategoryView';
 import EliminarCategoriaView from '../views/ImageGalleryDeleteCategoryView';
 import EliminarSubCategoriaView from '../views/ImageGalleryDeleteSubcategoryView';
+import OpcionesAdminView from '../views/ImageGalleryAdminOptionsView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -1045,4 +1046,16 @@ const EliminarSubCategoria = () => {
 
 };
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria };
+const MostrarOpcionesAdmin = ( ) => {
+  
+  const navigate = useNavigate();
+
+  return (
+    <OpcionesAdminView
+      navigate={navigate}
+    />
+  );
+
+};
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin };
