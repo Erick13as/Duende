@@ -12,6 +12,7 @@ import SubirImagenView from '../views/ImageGalleryAddImageView';
 import CrearCategoriaView from '../views/ImageGalleryAddCategoryView';
 import CrearSubCategoriaView from '../views/ImageGalleryAddSubcategoryView';
 import EliminarCategoriaView from '../views/ImageGalleryDeleteCategoryView';
+import EliminarSubCategoriaView from '../views/ImageGalleryDeleteSubcategoryView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -973,4 +974,75 @@ const EliminarCategoria = () => {
 
 };
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria };
+const EliminarSubCategoria = () => {
+  const [selectedSCategory, setSelectedSCategory] = useState('');
+  const [Scategories, setSCategories] = useState([]);
+  const navigate = useNavigate();
+  const [errorText, setErrorText] = useState("");
+
+  useEffect(() => {
+      const fetchSCategories = async () => {
+      const ScategoryQuery = query(collection(db, 'subcategoria'));
+      const ScategorySnapshot = await getDocs(ScategoryQuery);
+      const ScategoryData = ScategorySnapshot.docs.map((doc) => doc.data().nombre);
+      setSCategories(ScategoryData);
+      };
+
+      fetchSCategories();
+
+  }, []);
+
+  const handleDeleteSCategory = async (e) => {
+      e.preventDefault();
+      
+      if (!selectedSCategory) {
+          setErrorText('No se ha seleccionado una Subcategoría para eliminar.');
+          return;
+      }
+      
+      try {
+
+          const querySnapshot = await getDocs(collection(db, 'subcategoria'));
+
+          querySnapshot.forEach(async (doc) => {
+              const data = doc.data();
+              if (data.nombre === selectedSCategory) {
+                  const ScategoryRef = doc.ref;
+
+                  await deleteDoc(ScategoryRef);
+
+                  console.log(`Categoría "${selectedSCategory}" eliminada con éxito.`);
+
+                  const updatedCategories = await fetchSCategories();
+                  setSCategories(updatedCategories);
+              }
+
+          });
+      
+      } catch (error) {
+          // Manejo de errores: muestra un mensaje de error al usuario o realiza cualquier otra acción necesaria.
+          console.error('Error al eliminar la subCategoría:', error);
+      }
+  };
+
+  const fetchSCategories = async () => {
+      const ScategoryQuery = query(collection(db, 'subcategoria'));
+      const ScategorySnapshot = await getDocs(ScategoryQuery);
+      const ScategoryData = ScategorySnapshot.docs.map((doc) => doc.data().nombre);
+      return ScategoryData;
+  };
+
+  return (
+    <EliminarSubCategoriaView
+    selectedSCategory={selectedSCategory}
+    setSelectedSCategory={setSelectedSCategory}
+    Scategories={Scategories}
+    navigate={navigate}
+    errorText={errorText}
+    handleDeleteSCategory={handleDeleteSCategory}
+    />
+  );
+
+};
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria };
