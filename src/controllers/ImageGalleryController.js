@@ -15,6 +15,7 @@ import EliminarCategoriaView from '../views/ImageGalleryDeleteCategoryView';
 import EliminarSubCategoriaView from '../views/ImageGalleryDeleteSubcategoryView';
 import OpcionesAdminView from '../views/ImageGalleryAdminOptionsView';
 import ImageInfoView from '../views/ImageGalleryInfoView.js';
+import SendReferenceView from '../views/ImageGallerySendReferenceView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -1223,4 +1224,92 @@ function InfoImagenCliente() {
   );
 }
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente };
+const EnviarReferencia = () => {
+  const { state } = useLocation();
+  const { imagenUrl} = state;
+  
+  const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
+  const navigate = useNavigate();
+  const [newImage, setNewImage] = useState(null);
+  const [descripcion, setDescripcion] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+      // Realiza la consulta para obtener la descripción y etiquetas solo cuando se monta el componente
+      const fetchData = async () => {
+        try {
+          const querySnapshot = await getDocs(imagenQuery);
+          if (!querySnapshot.empty) {
+            const data = querySnapshot.docs[0].data();
+          } 
+        } catch (error) {
+          console.error("Error al obtener datos:", error);
+        }
+      };
+      fetchData();
+  }, []);
+
+  const handleCambiarClick = () => {
+      const fileInput = document.getElementById('imageInput');
+      fileInput.click();
+    };
+  
+  const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+          setNewImage(file);
+      }
+  };
+
+  const handleEnviarRef = async (e) => {
+      e.preventDefault();
+      const errorMessage = document.getElementById('errorLogin');
+      if (!descripcion) {
+        setErrorText('Complete la descripción antes de enviar la referencia.');
+        errorMessage.style.display = "block";
+        return; 
+      }
+      
+      errorMessage.style.display = "none";
+      setUploading(true);
+      setErrorText(""); 
+      
+      try {
+        const docRef = await addDoc(collection(db, 'referencia'), {
+          imagenUrl: imagenUrl,
+          referencia: descripcion,
+        });
+      
+        console.log('Referencia enviada con exito. ID del documento:', docRef.id);
+        setDescripcion('');
+      } catch (error) {
+        console.error('Error al subir la referencia:', error);
+        setErrorText('Hubo un error al subir la referencia. Por favor, inténtelo nuevamente.');
+      } finally {
+        setUploading(false);
+      }
+  };
+
+  console.log("llegando",imagenUrl);
+  
+  return (
+      <SendReferenceView
+      state={state}
+      imagenUrl={imagenUrl}
+      imagenQuery={imagenQuery}
+      navigate={navigate}
+      newImage={newImage}
+      descripcion={descripcion}
+      setDescripcion={setDescripcion}
+      errorText={errorText}
+      uploading={uploading}
+      handleCambiarClick={handleCambiarClick}
+      handleImageChange={handleImageChange}
+      handleEnviarRef={handleEnviarRef}
+      />
+    );
+
+};
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia };
