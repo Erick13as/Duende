@@ -14,6 +14,7 @@ import CrearSubCategoriaView from '../views/ImageGalleryAddSubcategoryView';
 import EliminarCategoriaView from '../views/ImageGalleryDeleteCategoryView';
 import EliminarSubCategoriaView from '../views/ImageGalleryDeleteSubcategoryView';
 import OpcionesAdminView from '../views/ImageGalleryAdminOptionsView';
+import ImageInfoView from '../views/ImageGalleryInfoView.js';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -1058,4 +1059,168 @@ const MostrarOpcionesAdmin = ( ) => {
 
 };
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin };
+function InfoImagenCliente() {
+  const location = useLocation();
+  const imagenUrl = location.state && location.state.imagenUrl;
+  //console.log(imagenUrl);
+  const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
+  const [descripcion, setDescripcion] = useState("");
+  const [listaEtiquetas, setListaEtiquetas] = useState("");
+  const [categorias, setCategorias] = useState([]);
+  const [subcategorias, setSubcategorias] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const [subcategoriaSeleccionada, setSubcategoriaSeleccionada] = useState("");
+
+  const [categoriaEncontrada, setCategoriaEncontrada] = useState("");
+  const [subcategoriaEncontrada, setSubcategoriaEncontrada] = useState("");
+
+  const [subcategoriaAnterior, setSubcategoriaAnterior] = useState("");
+  const navigate = useNavigate();
+  const [newImage, setNewImage] = useState(null);
+
+  useEffect(() => {
+    // Realiza la consulta para obtener la descripción y etiquetas solo cuando se monta el componente
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(imagenQuery);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          setDescripcion(data.descripcion || "");
+          // Convierte el array de etiquetas en una cadena separada por espacios
+          setListaEtiquetas(data.etiquetas ? data.etiquetas.join(' ') : "");
+
+          // Obtener categoría y subcategoría relacionadas
+          setCategoriaEncontrada(data.categoria);
+          setSubcategoriaEncontrada(data.subcategoria);
+          setCategoriaSeleccionada(data.categoria);
+          setSubcategoriaSeleccionada(data.subcategoria);
+        } 
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+    fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Consulta todas las categorías desde Firestore
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const categoriasRef = collection(db, 'categoria');
+        const categoriasSnapshot = await getDocs(categoriasRef);
+        const categoriasData = categoriasSnapshot.docs.map((doc) => doc.data().nombre);
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error("Error al obtener categorías:", error);
+      }
+    };
+    fetchCategorias();
+  }, []);
+
+  // Consulta todas las subcategorías desde Firestore
+  useEffect(() => {
+    const fetchSubcategorias = async () => {
+      try {
+        // Verifica si se ha seleccionado una categoría
+        if (categoriaSeleccionada) {
+          const subcategoriasRef = collection(db, 'subcategoria');
+          const subcategoriasQuery = query(subcategoriasRef, where('categoria', '==', categoriaSeleccionada));
+          const subcategoriasSnapshot = await getDocs(subcategoriasQuery);
+          const subcategoriasData = subcategoriasSnapshot.docs.map((doc) => doc.data().nombre);
+          if ((categoriaEncontrada !== categoriaSeleccionada && subcategoriaEncontrada !== "...")) {
+            setSubcategoriaAnterior(subcategoriaEncontrada);
+            setSubcategoriaEncontrada("...");
+          }
+          if (categoriaEncontrada === categoriaSeleccionada && subcategoriaEncontrada === "...") {
+            setSubcategoriaAnterior(subcategoriaSeleccionada);
+          }
+          setSubcategorias(subcategoriasData);
+        } else {
+          // Si no se ha seleccionado una categoría, muestra todas las subcategorías
+          const subcategoriasRef = collection(db, 'subcategoria');
+          const subcategoriasSnapshot = await getDocs(subcategoriasRef);
+          const subcategoriasData = subcategoriasSnapshot.docs.map((doc) => doc.data().nombre);
+          setSubcategorias(subcategoriasData);
+        }
+      } catch (error) {
+        console.error("Error al obtener subcategorías:", error);
+      }
+    };
+    fetchSubcategorias();
+  }, [categoriaSeleccionada, categoriaEncontrada, subcategoriaEncontrada, subcategoriaAnterior, subcategoriaSeleccionada]);
+
+  // Lógica para construir las opciones de categoría y subcategoría
+  const categoriasOptions = [
+    <option key={categoriaEncontrada} value={categoriaEncontrada}>
+      {categoriaEncontrada}
+    </option>,
+    ...categorias
+      .filter((categoria) => categoria !== categoriaEncontrada)
+      .map((categoria) => (
+        <option key={categoria} value={categoria}>
+          {categoria}
+        </option>
+      ))
+  ];
+
+  const subcategoriasOptions = [
+    <option key={subcategoriaEncontrada} value={subcategoriaEncontrada}>
+      {subcategoriaEncontrada}
+    </option>,
+    ...subcategorias
+      .filter((subcategoria) => subcategoria !== subcategoriaEncontrada)
+      .map((subcategoria) => (
+        <option key={subcategoria} value={subcategoria}>
+          {subcategoria}
+        </option>
+      ))
+  ];
+
+  const handleCambiarClick = () => {
+    const fileInput = document.getElementById('imageInput');
+    fileInput.click();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewImage(file);
+    }
+  };
+
+  const handleVerInfo = () => {
+    navigate('/enviarReferencia', {
+      state: { imagenUrl}
+    });
+    //navigate('/enviarReferencia', {state: imagenUrl});
+  }
+
+  return (
+    <ImageInfoView
+    location={location}
+    imagenUrl={imagenUrl}
+    imagenQuery={imagenQuery}
+    descripcion={descripcion}
+    setDescripcion={setDescripcion}
+    listaEtiquetas={listaEtiquetas}
+    setListaEtiquetas={setListaEtiquetas}
+    categorias={categorias}
+    subcategorias={subcategorias}
+    categoriaSeleccionada={categoriaSeleccionada}
+    setCategoriaSeleccionada={setCategoriaSeleccionada}
+    subcategoriaSeleccionada={subcategoriaSeleccionada}
+    setSubcategoriaSeleccionada={setSubcategoriaSeleccionada}
+    categoriaEncontrada={categoriaEncontrada}
+    subcategoriaEncontrada={subcategoriaEncontrada}
+    subcategoriaAnterior={subcategoriaAnterior}
+    navigate={navigate}
+    newImage={newImage}
+    handleImageChange={handleImageChange}
+    handleVerInfo={handleVerInfo}
+    />
+    
+  );
+}
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente };
