@@ -3,7 +3,7 @@ import './index.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
 
-import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria } from './controllers/ImageGalleryController';
+import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
 
 import Agenda from './components/Agenda';
@@ -14,7 +14,6 @@ import Carrito from './components/Carrito';
 import MostrarOpcionesAdmin from './components/MostrarOpcionesAdmin';
 import EliminarCategoria from './components/EliminarCategoria';
 import EliminarSubCategoria from './components/EliminarSubCategoria';
-import CrearSubcategoria from './components/CrearSubcategoria';
 import EnviarReferencia from './components/EnviarReferencia';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';

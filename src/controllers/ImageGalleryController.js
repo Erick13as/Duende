@@ -10,6 +10,7 @@ import InfoImagenAdminView from '../views/ImageGalleryAdminUpdateView';
 import GaleriaClientView from '../views/ImageGalleryClientView';
 import SubirImagenView from '../views/ImageGalleryAddImageView';
 import CrearCategoriaView from '../views/ImageGalleryAddCategoryView';
+import CrearSubCategoriaView from '../views/ImageGalleryAddSubcategoryView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -822,4 +823,82 @@ const CrearCategoria = () => {
 
 };
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria };
+const CrearSubcategoria = () => {
+  const [nombreC, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [errorText, setErrorText] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  const handleNameChange = (e) => {
+      setNombre(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+      setDescripcion(e.target.value);
+  };
+
+  useEffect(() => {
+      const fetchCategories = async () => {
+      const categoryQuery = query(collection(db, 'categoria'));
+      const categorySnapshot = await getDocs(categoryQuery);
+      const categoryData = categorySnapshot.docs.map((doc) => doc.data().nombre);
+      setCategories(categoryData);
+      };
+
+      fetchCategories();
+
+  }, []);
+
+  const handleNewSCategory = async (e) => {
+      e.preventDefault();
+      var errorMessage = document.getElementById('errorLogin');
+      if (!nombreC || !descripcion || !selectedCategory) {
+          setErrorText('Complete el nombre, la descripción y la categoria antes de subir la Subcategoría.');
+          errorMessage.style.display = "block";
+          return; 
+      }
+      
+      errorMessage.style.display = "none";
+      setUploading(true);
+      setErrorText(""); 
+      
+      try {
+          const docRef = await addDoc(collection(db, 'subcategoria'), {
+          nombre: nombreC,
+          descripcion: descripcion,
+          categoria: selectedCategory,
+        });
+      
+        console.log('SubCategoría creada con éxito. ID del documento:', docRef.id);
+        setNombre('');
+        setDescripcion('');
+      } catch (error) {
+          console.error('Error al crear la Subcategoría:', error);
+          setErrorText('Hubo un error al crear la subcategoría. Por favor, inténtelo nuevamente.');
+      } finally {
+          setUploading(false);
+      }
+    };
+
+    const navigate = useNavigate();
+
+    return(
+      <CrearSubCategoriaView
+        nombreC={nombreC}
+        descripcion={descripcion}
+        errorText={errorText}
+        uploading={uploading}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        categories={categories}
+        handleNameChange={handleNameChange}
+        handleDescriptionChange={handleDescriptionChange}
+        handleNewSCategory={handleNewSCategory}
+      />
+    );
+
+};
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria };
