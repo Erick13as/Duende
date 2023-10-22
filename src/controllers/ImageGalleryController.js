@@ -9,6 +9,7 @@ import GaleriaAdminView from '../views/ImageGalleryAdminView';
 import InfoImagenAdminView from '../views/ImageGalleryAdminUpdateView';
 import GaleriaClientView from '../views/ImageGalleryClientView';
 import SubirImagenView from '../views/ImageGalleryAddImageView';
+import CrearCategoriaView from '../views/ImageGalleryAddCategoryView';
 
 function GaleriaSinLogin() {
     const [imageUrls, setImageUrls] = useState([]);
@@ -760,4 +761,65 @@ function SubirImagen() {
   );
 }
 
-export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen };
+const CrearCategoria = () => {
+  const [nombreC, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [errorText, setErrorText] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const handleNameChange = (e) => {
+    setNombre(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescripcion(e.target.value);
+  };
+
+  const handleNewCategory = async (e) => {
+    e.preventDefault();
+    var errorMessage = document.getElementById('errorLogin');
+    if (!nombreC || !descripcion) {
+      setErrorText('Complete el nombre y la descripción antes de subir la categoría.');
+      errorMessage.style.display = "block";
+      return; 
+    }
+    
+    errorMessage.style.display = "none";
+    setUploading(true);
+    setErrorText(""); 
+    
+    try {
+      const docRef = await addDoc(collection(db, 'categoria'), {
+        nombre: nombreC,
+        descripcion: descripcion,
+      });
+    
+      console.log('Categoría subida con éxito. ID del documento:', docRef.id);
+      setNombre('');
+      setDescripcion('');
+    } catch (error) {
+      console.error('Error al subir la categoría:', error);
+      setErrorText('Hubo un error al subir la categoría. Por favor, inténtelo nuevamente.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const navigate = useNavigate();
+
+  return(
+    <CrearCategoriaView
+      nombreC={nombreC}
+      descripcion={descripcion}
+      errorText={errorText}
+      uploading={uploading}
+      handleNameChange={handleNameChange}
+      handleDescriptionChange={handleDescriptionChange}
+      handleNewCategory={handleNewCategory}
+    
+    />
+  );
+
+};
+
+export { GaleriaSinLogin,  GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria };
