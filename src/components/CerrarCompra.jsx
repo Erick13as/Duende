@@ -1,17 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 function CerrarCompra() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
 
+  const rechazarOrden = async () => {
+    try {
+      const orderDoc = doc(db, 'orden', id);
+      await updateDoc(orderDoc, {
+        estado: 'rechazada',
+      });
+      console.log('Orden rechazada con éxito');
+      // Redirige a la página OrdenesPendientes
+      window.location.href = '/OrdenesPendientes';
+    } catch (error) {
+      console.error('Error al rechazar la orden:', error);
+    }
+  };
+
+  const confirmarOrden = async () => {
+    try {
+      const orderDoc = doc(db, 'orden', id);
+      await updateDoc(orderDoc, {
+        estado: 'confirmada',
+      });
+      console.log('Orden confirmada con éxito');
+      // Redirige a la página OrdenesPendientes
+      window.location.href = '/OrdenesPendientes';
+    } catch (error) {
+      console.error('Error al confirmar la orden:', error);
+    }
+  };
+
   useEffect(() => {
     // Obtener la orden seleccionada desde la base de datos
     const getOrderDetails = async () => {
       try {
-        const orderDoc = doc(db, 'orden', "wHIeNi2LlgChwKb0FEer"); // 'ordenes' es la colección de órdenes
+        const orderDoc = doc(db, 'orden', id);
         const orderSnapshot = await getDoc(orderDoc);
         if (orderSnapshot.exists()) {
           const orderData = orderSnapshot.data();
@@ -31,7 +59,6 @@ function CerrarCompra() {
     return <div>No se encontró la orden o ocurrió un error.</div>;
   }
 
-  // Función para calcular el total de la compra
   const calcularTotalCompra = () => {
     if (order && order.ListaProductos && typeof order.ListaProductos === 'object') {
       const productList = Object.values(order.ListaProductos);
@@ -39,10 +66,9 @@ function CerrarCompra() {
         return total + producto.cantidad * producto.precio;
       }, 0);
     } else {
-      return 0; // Otra acción si no se puede calcular el total
+      return 0;
     }
   };
-  
 
   return (
     <div className="CerrarCompra-container">
@@ -55,6 +81,8 @@ function CerrarCompra() {
         <p>Comprobante de Pago:</p>
         <img src={order.comprobante} alt="Comprobante de Pago" />
         <p>Total de la Compra: ${calcularTotalCompra()}</p>
+        <button onClick={confirmarOrden}>Confirmar</button>
+        <button onClick={rechazarOrden}>Rechazar</button>
       </div>
     </div>
   );

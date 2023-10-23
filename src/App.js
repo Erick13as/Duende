@@ -52,7 +52,7 @@ const App = () => {
         <Route path='/EditarProductoAdmin/:id' element={<EditarProductoAdmin />}  />
         <Route path='/enviarReferencia' element={<EnviarReferencia />} />
         <Route path='/OrdenesPendientes' element={<OrdenesPendientes />}  />
-        <Route path='/CerrarCompra/:numeroOrden'element={<CerrarCompra />}  />
+        <Route path='/CerrarCompra/:id'element={<CerrarCompra />}  />
       </Routes>
     </div>
     </BrowserRouter>

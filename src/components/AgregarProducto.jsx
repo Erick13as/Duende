@@ -48,6 +48,7 @@ function ProductUpload() {
       const docRef = await addDoc(collection(db, 'productos'), productData);
 
       console.log('Producto subido con éxito. ID del documento:', docRef.id);
+      window.location.href = '/AccederTiendaAdminController';
     } catch (error) {
       console.error('Error al subir el producto:', error);
       setErrorText('Hubo un error al subir el producto. Por favor, inténtelo nuevamente.');

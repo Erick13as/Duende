@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { Link } from 'react-router-dom'; // Importa Link desde react-router-dom
 
 function ListaOrdenes() {
   const [ordenes, setOrdenes] = useState([]);
@@ -14,7 +15,6 @@ function ListaOrdenes() {
       .then((querySnapshot) => {
         const ordenesData = [];
         querySnapshot.forEach((doc) => {
-          // Aquí puedes acceder a los datos de cada orden
           const data = doc.data();
           ordenesData.push({
             id: doc.id,
@@ -30,10 +30,6 @@ function ListaOrdenes() {
       });
   }, []);
 
-  const handleOrdenSelection = (ordenId) => {
-    setSelectedOrden(ordenId);
-  };
-
   return (
     <div className="pendientes-container">
       <div className="header-containerOrdenesPendientes">
@@ -41,23 +37,18 @@ function ListaOrdenes() {
       </div>
       <h1>Lista de Órdenes Pendientes</h1>
       <ul>
-        
         {ordenes.map((orden) => (
           <li key={orden.id}>
             <p>Número de Orden: {orden.numeroOrden}</p>
             <p>Fecha de Emisión: {orden.fechaEmision}</p>
             <p>ID del Cliente: {orden.idCliente}</p>
-            <buttonOrdenesPendientes onClick={() => handleOrdenSelection(orden.id)}>Seleccionar Orden</buttonOrdenesPendientes>
+            {/* Utiliza Link para enlazar a la página de detalles de la orden */}
+            <Link to={`/CerrarCompra/${orden.id}`}>
+            <button className="botonImagen2">Seleccionar Orden</button>
+            </Link>
           </li>
         ))}
       </ul>
-
-      {selectedOrden && (
-        <div>
-          <h2Ordenes>Orden seleccionada: {selectedOrden}</h2Ordenes>
-          {/* Aquí puedes mostrar más detalles de la orden seleccionada */}
-        </div>
-      )}
     </div>
   );
 }

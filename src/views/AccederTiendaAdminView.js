@@ -14,7 +14,7 @@ function AccederTiendaAdminView(props) {
         <button className="header-button inicio-button" id="inicio-buttonAdmin" onClick={() => handleNavigate('/')}>
           Inicio
         </button>
-        <button className="header-button" id="ordenes-buttonAdmin" onClick={() => handleNavigate('/ordenes')}>
+        <button className="header-button" id="ordenes-buttonAdmin" onClick={() => handleNavigate('/OrdenesPendientes')}>
           Gestión Ordenes
         </button>
         <button className="header-button" id="carrito-buttonAdmin" onClick={() => handleNavigate('/AgregarProducto')}>
@@ -34,7 +34,7 @@ function AccederTiendaAdminView(props) {
               <div className="details-container">
                 <h3 className="titleAccederTienda">{product.nombre}</h3>
                 <p className="precio"> ${product.precio}</p>
-                <button className="botonImagen2" onClick={() => handleNavigate(`/detalle/${product.id}`)}>
+                <button className="botonImagen2" onClick={() => handleNavigate(`/EditarProductoAdmin/${product.id}`)}>
                   Editar Producto
                 </button>
               </div>
