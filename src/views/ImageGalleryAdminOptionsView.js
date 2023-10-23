@@ -9,8 +9,8 @@ function OpcionesAdminView(props) {
             <form className='formTopOA'>
                 <div>
                     <button onClick={()=>navigate('/galeriaAdmin')} className='botonOA'>Galería</button>
-                    <button onClick={()=>navigate('/opcionesAdmin')} className='botonOA'>Tienda</button>
-                    <button onClick={()=>navigate('/opcionesAdmin')} className='botonOA'>Agenda</button>
+                    <button onClick={()=>navigate('/AccederTiendaAdminController')} className='botonOA'>Tienda</button>
+                    {/* <button onClick={()=>navigate('/opcionesAdmin')} className='botonOA'>Agenda</button> */}
                     
                 </div>
                 <button onClick={()=>navigate('/login')} className='botonOA2'>Cerrar sesión</button>
