@@ -13,6 +13,9 @@ import Carrito from './components/Carrito';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 import EditarProductoAdmin from './components/EditarProductoAdmin';
+import OrdenesPendientes from './components/OrdenesPendientes';
+import CerrarCompra from './components/CerrarCompra';
+
 import "./components/Design.css"
 
 
