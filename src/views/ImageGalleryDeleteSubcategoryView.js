@@ -1,11 +1,9 @@
-
 function EliminarSubCategoriaView(props) {
     const {
         selectedSCategory,
         setSelectedSCategory,
         Scategories,
         navigate,
-        errorText,
         handleDeleteSCategory,
 
     } = props;

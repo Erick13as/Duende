@@ -20,17 +20,11 @@ function GaleriaAdminView(props) {
 return (
     <div className="galeria-container">
       <form className="formBarra">
-        <button className="botonBarra" onClick={navigateToOpciones}>
-          Opciones
-        </button>
+        <button onClick={navigateToOpciones} className='botonOA'>Opciones</button>
         <span className="button-space"></span>
-        <button className="botonBarra" onClick={navigateToTienda}>
-          Tienda
-        </button>
+        <button onClick={navigateToTienda} className='botonOA'>Tienda</button>
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={navigateToLogin}>
-            Cerrar Sesión
-          </button>
+          <button onClick={navigateToLogin} className='botonOA2'>Cerrar sesión</button>
         </div>
       </form>
       <form className="formFiltro">

@@ -811,8 +811,6 @@ const CrearCategoria = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   return(
     <CrearCategoriaView
       nombreC={nombreC}
@@ -886,8 +884,6 @@ const CrearSubcategoria = () => {
           setUploading(false);
       }
     };
-
-    const navigate = useNavigate();
 
     return(
       <CrearSubCategoriaView
@@ -1248,6 +1244,7 @@ const EnviarReferencia = () => {
         }
       };
       fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCambiarClick = () => {

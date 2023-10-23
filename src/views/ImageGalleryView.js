@@ -17,9 +17,7 @@ function GaleriaSinLoginView(props) {
     <div className="galeria-container">
       <form className="formBarra">
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={navigateToLogin}>
-            Iniciar Sesión
-          </button>
+          <button onClick={navigateToLogin} className='botonOA2'>Iniciar Sesión</button>
         </div>
       </form>
       <form className="formFiltro">

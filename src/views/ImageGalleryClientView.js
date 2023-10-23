@@ -19,13 +19,9 @@ function GaleriaClientView(props) {
 return (
     <div className="galeria-container">
       <form className="formBarra">
-        <button className="botonBarra" onClick={navigateToTienda}>
-          Tienda
-        </button>
+        <button onClick={navigateToTienda} className='botonOA'>Tienda</button>
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={navigateToLogin}>
-            Cerrar Sesión
-          </button>
+          <button onClick={navigateToLogin} className='botonOA2'>Cerrar sesión</button>
         </div>
       </form>
       <form className="formFiltro">

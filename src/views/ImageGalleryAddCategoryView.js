@@ -1,13 +1,11 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 function CrearCategoriaView(props) {
     const {
         nombreC,
         descripcion,
-        errorText,
-        uploading,
         handleNameChange,
         handleDescriptionChange,
         handleNewCategory,  

@@ -1,4 +1,3 @@
-
 function OpcionesAdminView(props) {
     const {
         navigate,

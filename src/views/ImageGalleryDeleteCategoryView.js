@@ -1,12 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-
 function EliminarCategoriaView(props) {
     const {
         selectedCategory,
         setSelectedCategory,
         categories,
         navigate,
-        errorText,
         handleDeleteCategory,
     
     } = props;

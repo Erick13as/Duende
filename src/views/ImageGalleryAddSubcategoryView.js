@@ -4,8 +4,6 @@ function CrearSubCategoriaView(props) {
     const {
         nombreC,
         descripcion,
-        errorText,
-        uploading,
         selectedCategory,
         setSelectedCategory,
         categories,

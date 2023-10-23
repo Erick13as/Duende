@@ -1,16 +1,10 @@
-
-
 function SendReferenceView(props) {
     const {
-        state,
         imagenUrl,
-        imagenQuery,
         navigate,
         newImage,
         descripcion,
         setDescripcion,
-        errorText,
-        uploading,
         handleCambiarClick,
         handleImageChange,
         handleEnviarRef,
@@ -20,13 +14,9 @@ function SendReferenceView(props) {
     return (
         <div className="info-container">
           <form className='formTopOA'>
-            <div>
-              <button className="botonFijo" onClick={() => navigate('/galeriaCliente')}>
-                Galería
-              </button>
-              <button className="botonOA" onClick={() => navigate('/AccederTiendaClienteController')}>
-                Tienda
-              </button>      
+            <button onClick={() => navigate('/AccederTiendaClienteController')} className='botonOA'>Tienda</button>
+            <div className="botonBarra-container">
+              <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
             </div>
           </form>
     

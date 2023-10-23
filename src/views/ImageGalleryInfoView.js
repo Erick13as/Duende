@@ -1,23 +1,14 @@
-
-
 function ImageInfoView(props) {
     const {
-        location,
         imagenUrl,
-        imagenQuery,
         descripcion,
         setDescripcion,
         listaEtiquetas,
         setListaEtiquetas,
-        categorias,
-        subcategorias,
         categoriaSeleccionada,
         setCategoriaSeleccionada,
         subcategoriaSeleccionada,
         setSubcategoriaSeleccionada,
-        categoriaEncontrada,
-        subcategoriaEncontrada,
-        subcategoriaAnterior,
         navigate,
         newImage,
         handleImageChange,
@@ -28,13 +19,9 @@ function ImageInfoView(props) {
     return (
         <div className="info-container">
           <form className='formTopOA'>
-            <div>
-              <button className="botonFijo" onClick={() => navigate('/galeriaCliente')}>
-                Galería
-              </button>
-              <button className="botonOA" onClick={() => navigate('/AccederTiendaClienteController')}>
-                Tienda
-              </button>      
+            <button onClick={() => navigate('/AccederTiendaClienteController')} className='botonOA'>Tienda</button>
+            <div className="botonBarra-container">
+              <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
             </div>
           </form>
     

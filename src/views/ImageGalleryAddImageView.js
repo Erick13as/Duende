@@ -24,9 +24,7 @@ function SubirImagenView(props) {
     <div className="subir_imagen-container">
       <form className="formBarra">
         <div className="botonBarra-container">
-          <button className="botonBarra" onClick={navigateToGallery}>
-            Galería
-          </button>
+          <button onClick={navigateToGallery} className='botonOA2'>Galería</button>
         </div>
       </form>
       <form className="formSignUp">

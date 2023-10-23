@@ -15,9 +15,7 @@ function SignInView(props) {
         <div className="galeria-container">
           <form className="formBarra">
             <div className="botonBarra-container">
-              <button className="botonBarra" onClick={navigateToGallery}>
-                Galería
-              </button>
+              <button onClick={navigateToGallery} className='botonOA2'>Galería</button>
             </div>
           </form>
           <div className="sign_in-container">
