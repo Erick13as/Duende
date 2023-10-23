@@ -14,6 +14,8 @@ import { AccederTiendaClienteController } from './controllers/AccederTiendaClien
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 import { Prueba } from './controllers/ImageGalleryController';
 import EditarProductoAdmin from './components/EditarProductoAdmin';
+import OrdenesPendientes from './components/OrdenesPendientes';
+import CerrarCompra from './components/CerrarCompra';
 import "./components/Design.css"
 
 
@@ -49,6 +51,8 @@ const App = () => {
         <Route path='/crearSubcategoria' element={<CrearSubcategoria />} />
         <Route path='/EditarProductoAdmin/:id' element={<EditarProductoAdmin />}  />
         <Route path='/enviarReferencia' element={<EnviarReferencia />} />
+        <Route path='/OrdenesPendientes' element={<OrdenesPendientes />}  />
+        <Route path='/CerrarCompra/:numeroOrden'element={<CerrarCompra />}  />
       </Routes>
     </div>
     </BrowserRouter>

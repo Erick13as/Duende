@@ -1,3 +1,136 @@
+/* Estilos para el contenedor principal */
+.CerraCompra-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la cabecera */
+.header-containerDetallesOrden {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  color: #fff;
+  padding: 8px;
+}
+
+.header-buttonOrden {
+  background-color: #4285f4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.header-buttonOrden:hover {
+  background-color: #3573c3;
+}
+
+/* Estilos para los detalles de la orden */
+.order-details-container {
+  margin-top: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.order-details-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.order-details-container p {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+/* Estilos para la imagen del comprobante de pago */
+.order-details-container img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/* Estilo para el contenedor principal */
+.pendientes-container {
+  background-image: url('../../public/backgroundImage.jpg'); /* Reemplaza URL_DE_TU_IMAGEN con la URL de tu imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos toda la altura de la pantalla */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Estilo para el título principal */
+h1Ordenes {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Estilo para la lista de órdenes */
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  
+}
+
+/* Estilo para cada elemento de la lista de órdenes */
+li {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+}
+
+/* Estilo para los botones de selección */
+buttonOrdenesPendientes {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+/* Estilo para la orden seleccionada */
+h2Ordenes {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+/* Estilo adicional para detalles de la orden seleccionada (personaliza según tus necesidades) */
+.selected-orden-details {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .edit-button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -128,6 +261,18 @@ p {
   padding: 8px;
   width: 105%; 
 }
+.header-containerOrdenesPendientes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a4b5be8b;
+  color: #fff;
+  padding: 8px;
+  width: 99%;
+  position: fixed;
+  top: 0;
+}
+
 .header-containerVerMas{
   display: flex;
   justify-content: space-between;
@@ -293,7 +438,6 @@ p {
   padding-inline-end: 1%;
   background-origin: padding-box; /* El fondo se coloca y dimensiona desde el borde interior del padding */
 }
-
 
 .image-info-container {
   display: flex;

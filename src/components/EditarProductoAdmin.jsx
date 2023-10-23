@@ -106,10 +106,8 @@ function EditarProductoAdmin() {
   }
 
   return (
-    <div className="EditarProducto-container">
-      <div className="header-containerEditarProducto">
-        <button className="header-buttonProducto">Inicio</button>
-      </div>
+    <div className="Pendientes-container">
+      c
       <div className="image-info-container">
         <div className="image-button-container">
           <img
