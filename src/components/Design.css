@@ -584,6 +584,13 @@ p {
     border-radius: 8px;
   }
 
+  .formImagenInfoAdmin {
+    width: 350px;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 50px;
+  }
+
   .textarea-description {
     resize: none; /* Prevent manual resizing */
     overflow-y: hidden; /* Hide vertical scrollbar */
