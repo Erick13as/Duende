@@ -83,7 +83,7 @@ h1Ordenes {
 }
 
 /* Estilo para la lista de órdenes */
-ul {
+.ul {
   list-style: none;
   padding: 0;
   display: flex;
@@ -94,7 +94,7 @@ ul {
 }
 
 /* Estilo para cada elemento de la lista de órdenes */
-li {
+.li {
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 8px;
