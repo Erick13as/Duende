@@ -48,7 +48,7 @@ function SendReferenceView(props) {
             <label htmlFor="descripcion">Descripción:</label>
             <br />
             <textarea
-                className="textBox2"
+                className="textBox2 textarea-description"
                 id="descripcion"
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
