@@ -3,6 +3,7 @@ import { onSnapshot, collection, query, getDocs, where, updateDoc, deleteDoc, ad
 import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import GaleriaSinLoginView from '../views/ImageGalleryView';
 import GaleriaAdminView from '../views/ImageGalleryAdminView';
@@ -781,11 +782,29 @@ const CrearCategoria = () => {
     setDescripcion(e.target.value);
   };
 
+  const mostrarAlertaError = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Alerta',
+      text: 'Complete el nombre y la descripción antes de crear la categoría.'
+    });
+  };
+
+  const mostrarAlertaExito = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Se ha creado una nueva categoría.'
+    });
+  };
+
   const handleNewCategory = async (e) => {
     e.preventDefault();
     var errorMessage = document.getElementById('errorLogin');
     if (!nombreC || !descripcion) {
-      setErrorText('Complete el nombre y la descripción antes de subir la categoría.');
+      mostrarAlertaError();
+      console.log('Ingrese nombre y categoria')
+      setErrorText('Complete el nombre y la descripción antes de crear la categoría.');
       errorMessage.style.display = "block";
       return; 
     }
@@ -803,6 +822,7 @@ const CrearCategoria = () => {
       console.log('Categoría subida con éxito. ID del documento:', docRef.id);
       setNombre('');
       setDescripcion('');
+      mostrarAlertaExito();
     } catch (error) {
       console.error('Error al subir la categoría:', error);
       setErrorText('Hubo un error al subir la categoría. Por favor, inténtelo nuevamente.');
@@ -854,11 +874,28 @@ const CrearSubcategoria = () => {
 
   }, []);
 
+  const mostrarAlertaError = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Alerta',
+      text: 'Complete el nombre, la descripción y la categoria antes de crear la Subcategoría.'
+    });
+  };
+
+  const mostrarAlertaExito = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Se ha creado una nueva Subcategoría.'
+    });
+  };
+
   const handleNewSCategory = async (e) => {
       e.preventDefault();
       var errorMessage = document.getElementById('errorLogin');
       if (!nombreC || !descripcion || !selectedCategory) {
-          setErrorText('Complete el nombre, la descripción y la categoria antes de subir la Subcategoría.');
+          mostrarAlertaError();
+          setErrorText('Complete el nombre, la descripción y la categoria antes de crear la Subcategoría.');
           errorMessage.style.display = "block";
           return; 
       }
@@ -877,6 +914,7 @@ const CrearSubcategoria = () => {
         console.log('SubCategoría creada con éxito. ID del documento:', docRef.id);
         setNombre('');
         setDescripcion('');
+        mostrarAlertaExito();
       } catch (error) {
           console.error('Error al crear la Subcategoría:', error);
           setErrorText('Hubo un error al crear la subcategoría. Por favor, inténtelo nuevamente.');
@@ -920,10 +958,27 @@ const EliminarCategoria = () => {
 
   }, []);
 
+  const mostrarAlertaError = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Alerta',
+      text: 'No se ha seleccionado una categoría para eliminar.'
+    });
+  };
+
+  const mostrarAlertaExito = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Se ha eliminado la categoría correctamente.'
+    });
+  };
+
   const handleDeleteCategory = async (e) => {
       e.preventDefault();
       
       if (!selectedCategory) {
+        mostrarAlertaError();
           setErrorText('No se ha seleccionado una categoría para eliminar.');
           return;
       }
@@ -943,6 +998,7 @@ const EliminarCategoria = () => {
 
                   const updatedCategories = await fetchCategories();
                   setCategories(updatedCategories);
+                  mostrarAlertaExito();
               }
 
           });
@@ -991,10 +1047,27 @@ const EliminarSubCategoria = () => {
 
   }, []);
 
+  const mostrarAlertaError = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Alerta',
+      text: 'No se ha seleccionado una Subcategoría para eliminar.'
+    });
+  };
+
+  const mostrarAlertaExito = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Se ha eliminado la Subcategoría correctamente.'
+    });
+  };
+
   const handleDeleteSCategory = async (e) => {
       e.preventDefault();
       
       if (!selectedSCategory) {
+        mostrarAlertaError();
           setErrorText('No se ha seleccionado una Subcategoría para eliminar.');
           return;
       }
@@ -1014,6 +1087,7 @@ const EliminarSubCategoria = () => {
 
                   const updatedCategories = await fetchSCategories();
                   setSCategories(updatedCategories);
+                  mostrarAlertaExito();
               }
 
           });
@@ -1190,7 +1264,6 @@ function InfoImagenCliente() {
     navigate('/enviarReferencia', {
       state: { imagenUrl}
     });
-    //navigate('/enviarReferencia', {state: imagenUrl});
   }
 
   return (
@@ -1244,7 +1317,6 @@ const EnviarReferencia = () => {
         }
       };
       fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCambiarClick = () => {
@@ -1259,10 +1331,27 @@ const EnviarReferencia = () => {
       }
   };
 
+  const mostrarAlertaError = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Alerta',
+      text: 'Complete la descripción antes de enviar la referencia.'
+    });
+  };
+
+  const mostrarAlertaExito = () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Se ha enviado la referencia correctamente.'
+    });
+  };
+
   const handleEnviarRef = async (e) => {
       e.preventDefault();
       const errorMessage = document.getElementById('errorLogin');
       if (!descripcion) {
+        mostrarAlertaError();
         setErrorText('Complete la descripción antes de enviar la referencia.');
         errorMessage.style.display = "block";
         return; 
@@ -1280,6 +1369,7 @@ const EnviarReferencia = () => {
       
         console.log('Referencia enviada con exito. ID del documento:', docRef.id);
         setDescripcion('');
+        mostrarAlertaExito();
       } catch (error) {
         console.error('Error al subir la referencia:', error);
         setErrorText('Hubo un error al subir la referencia. Por favor, inténtelo nuevamente.');
@@ -1287,8 +1377,6 @@ const EnviarReferencia = () => {
         setUploading(false);
       }
   };
-
-  console.log("llegando",imagenUrl);
   
   return (
       <SendReferenceView
