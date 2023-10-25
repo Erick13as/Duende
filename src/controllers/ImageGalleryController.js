@@ -697,12 +697,12 @@ function SubirImagen() {
     if (!descripcion || !etiquetas || !selectedCategoria || !selectedSubcategoria || !image) {
       setErrorText('Complete todos los campos antes de subir la imagen.');
       errorMessage.style.display = "block";
-      return; // Don't proceed with the upload if any field is missing
+      return; 
     }
 
     errorMessage.style.display = "none";
     setUploading(true);
-    setErrorText(""); // Clear any previous error messages
+    setErrorText(""); 
 
     try {
       const storageRef = ref(storage, `imagen/${image.name}`);
@@ -1324,27 +1324,21 @@ const EnviarReferencia = () => {
       fileInput.click();
     };
   
+  //Se encarga de cambiar la imagen de referencia que seleccione el usuario
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-        // Aquí debes cargar la imagen en Firebase Storage
         const storageRef = ref(storage, `imagen/${file.name}`);
         uploadBytes(storageRef, file).then(async () => {
             const newImageUrl = await getDownloadURL(storageRef);
-            // Ahora, newImageUrl contiene la URL real de la imagen en Firebase Storage
             setNewImage(file);
-            setNewImageUrl(newImageUrl); // Guarda la URL real en el estado
+            setNewImageUrl(newImageUrl);
             state.imagenUrl = newImageUrl;
         }).catch((error) => {
             console.error('Error al cargar la imagen en Firebase Storage:', error);
         });
     }
 };
-
-
-  useEffect( () => {
-    console.log(newImageUrl,"Y el imagenUrl:" , imagenUrl);
-  }, [newImageUrl]);
 
   const mostrarAlertaError = () => {
     Swal.fire({
