@@ -1295,8 +1295,8 @@ function InfoImagenCliente() {
 
 const EnviarReferencia = () => {
   const { state } = useLocation();
-  const { imagenUrl} = state;
-  
+  let { imagenUrl} = state;
+  const [newImageUrl, setNewImageUrl] = useState('');
   const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
   const navigate = useNavigate();
   const [newImage, setNewImage] = useState(null);
@@ -1325,11 +1325,26 @@ const EnviarReferencia = () => {
     };
   
   const handleImageChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-          setNewImage(file);
-      }
-  };
+    const file = e.target.files[0];
+    if (file) {
+        // Aquí debes cargar la imagen en Firebase Storage
+        const storageRef = ref(storage, `imagen/${file.name}`);
+        uploadBytes(storageRef, file).then(async () => {
+            const newImageUrl = await getDownloadURL(storageRef);
+            // Ahora, newImageUrl contiene la URL real de la imagen en Firebase Storage
+            setNewImage(file);
+            setNewImageUrl(newImageUrl); // Guarda la URL real en el estado
+            state.imagenUrl = newImageUrl;
+        }).catch((error) => {
+            console.error('Error al cargar la imagen en Firebase Storage:', error);
+        });
+    }
+};
+
+
+  useEffect( () => {
+    console.log(newImageUrl,"Y el imagenUrl:" , imagenUrl);
+  }, [newImageUrl]);
 
   const mostrarAlertaError = () => {
     Swal.fire({
