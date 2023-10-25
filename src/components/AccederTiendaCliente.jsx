@@ -41,9 +41,6 @@ function HomePage() {
         </button>
       </div>
 
-      <form className="formBarra">
-        {/* Botones de navegación... */}
-      </form>
 
       <div className="centered-carousel">
         <div className="productos-container">

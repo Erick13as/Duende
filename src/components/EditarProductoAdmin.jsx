@@ -11,7 +11,8 @@ import {
   updateDoc,
   query, where, getDocs
 } from 'firebase/firestore';
-import { db,storage} from '../firebase/firebaseConfig';
+import { db, storage } from '../firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 function EditarProductoAdmin() {
   const { id } = useParams();
@@ -19,7 +20,11 @@ function EditarProductoAdmin() {
   const [product, setProduct] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedProduct, setEditedProduct] = useState(null);
-  const [productImage, setEditedProductImage] = useState(null);
+  const [editedProductImage, setEditedProductImage] = useState(null);
+  const navigate = useNavigate();
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
 
   useEffect(() => {
     const q = collection(db, 'productos');
@@ -52,37 +57,35 @@ function EditarProductoAdmin() {
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditedProduct({ ...product });
+    setEditedProductImage(null); // Restablece la imagen seleccionada
   };
 
-  
   const handleSaveEdit = async () => {
     const productoId = id;
     const q = query(collection(db, 'productos'), where('id', '==', productoId));
     const querySnapshot = await getDocs(q);
-    let productIDFirestore=null;
-    
-
+    let productIDFirestore = null;
 
     if (!querySnapshot.empty) {
-      // Obtiene el primer documento que coincida (suponiendo que no hay duplicados)
       const productDoc = querySnapshot.docs[0];
-    
-      // Obtiene el ID asignado por Firestore del documento
       productIDFirestore = productDoc.id;
-    
+
       if (editedProduct) {
         const productDocRef = doc(db, 'productos', productIDFirestore);
         try {
-          const storageRef = ref(storage, `imagen/${productImage.name}`);
-          await uploadBytes(storageRef, productImage);
-          const downloadURL = await getDownloadURL(storageRef);
+          if (editedProductImage) {
+            const storageRef = ref(storage, `imagen/${editedProductImage.name}`);
+            await uploadBytes(storageRef, editedProductImage);
+            const downloadURL = await getDownloadURL(storageRef);
+            editedProduct.imagen = downloadURL;
+          }
           await updateDoc(productDocRef, {
             nombre: editedProduct.nombre,
             precio: editedProduct.precio,
             descripcion: editedProduct.descripcion,
             cantidad: editedProduct.cantidad,
             marca: editedProduct.marca,
-            imagen: downloadURL,
+            imagen: editedProduct.imagen,
           });
           setIsEditing(false);
         } catch (error) {
@@ -94,8 +97,6 @@ function EditarProductoAdmin() {
 
   const handleImageChange = (event) => {
     const newImage = event.target.files[0];
-    // Actualiza la URL de la imagen en el objeto editedProduct
-    //setEditedProduct({ ...editedProduct, imagen: URL.createObjectURL(newImage) });
     if (newImage) {
       setEditedProductImage(newImage);
     }
@@ -106,13 +107,24 @@ function EditarProductoAdmin() {
   }
 
   return (
-    <div className="Pendientes-container">
-      c
+    <div className="vmasC-container">
+      <div className="header-container">
+        <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdminController')}>
+          Inicio
+        </button>
+        <button className="header-button" id="ordenes-button" >
+          Gestion Ordenes
+        </button>
+        <button className="header-button" id="carrito-button">
+          Añadir Producto
+        </button>
+      </div>
+
       <div className="image-info-container">
         <div className="image-button-container">
           <img
             className="imagen-galeria-container2"
-            src={isEditing ? editedProduct.imagen : product.imagen}
+            src={isEditing ? editedProductImage ? URL.createObjectURL(editedProductImage) : editedProduct.imagen : product.imagen}
             alt={isEditing ? editedProduct.nombre : product.nombre}
           />
           {isEditing && (
@@ -184,4 +196,3 @@ function EditarProductoAdmin() {
 }
 
 export default EditarProductoAdmin;
-

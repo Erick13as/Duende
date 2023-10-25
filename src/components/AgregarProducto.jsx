@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 
@@ -30,14 +30,22 @@ function ProductUpload() {
     setUploading(true);
 
     try {
+      // Obtén el número de producto más alto actual
+      const productQuery = query(collection(db, 'productos'), orderBy('id', 'desc'), limit(1));
+      const productSnapshot = await getDocs(productQuery);
+      const latestProduct = productSnapshot.docs[0];
+      const latestProductId = latestProduct ? latestProduct.data().id : 0;
+      const newProductId = parseInt(latestProductId) + 1;
+
       const storageRef = ref(storage, `imagen/${productImage.name}`);
       await uploadBytes(storageRef, productImage);
 
       const downloadURL = await getDownloadURL(storageRef);
 
       const productData = {
+        id: newProductId, // Asigna el nuevo id
         nombre: productName,
-        marca:productBrand,
+        marca: productBrand,
         descripcion: productDescription,
         precio: productPrice,
         cantidad: productQuantity,
@@ -45,9 +53,9 @@ function ProductUpload() {
         fechaSubida: serverTimestamp(),
       };
 
-      const docRef = await addDoc(collection(db, 'productos'), productData);
+      await addDoc(collection(db, 'productos'), productData);
 
-      console.log('Producto subido con éxito. ID del documento:', docRef.id);
+      console.log('Producto subido con éxito. Nuevo ID del producto:', newProductId);
       window.location.href = '/AccederTiendaAdminController';
     } catch (error) {
       console.error('Error al subir el producto:', error);
@@ -56,7 +64,6 @@ function ProductUpload() {
       setUploading(false);
     }
   };
-
   return (
     <div className="main-containerProduct">
       

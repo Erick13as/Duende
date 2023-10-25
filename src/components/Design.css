@@ -411,14 +411,21 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: auto;
-  padding: 20px;
   flex-direction: column;
-  min-height: 95vh;
+  min-height: 92.3vh;
+  height: 100vh;
   background-position: center;
   background-attachment: fixed;
 }
-
+.header-containerVerMas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a4b5be8b;
+  color: #fff;
+  padding: 10px;
+  width: 100%; 
+}
 .EditarProducto-container {
   background-image: url('../../public/backgroundImage.jpg');
   background-size: cover;

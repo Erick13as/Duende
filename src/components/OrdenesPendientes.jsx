@@ -33,7 +33,9 @@ function ListaOrdenes() {
   return (
     <div className="pendientes-container">
       <div className="header-containerOrdenesPendientes">
-        <button className="header-buttonProducto">Inicio</button>
+        <Link to="/AccederTiendaAdminController">
+          <button className="header-buttonProducto">Inicio</button>
+        </Link>
       </div>
       <h1>Lista de Órdenes Pendientes</h1>
       <ul>
