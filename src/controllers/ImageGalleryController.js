@@ -650,7 +650,7 @@ function SubirImagen() {
   }, []);
 
   useEffect(() => {
-    // Fetch subcategories when the selectedCategoria changes
+    
     const fetchSubcategorias = async () => {
       try {
         if (selectedCategoria) {
@@ -663,7 +663,7 @@ function SubirImagen() {
               ...doc.data(),
             }));
             setSubcategorias(subcategoriaData);
-            setSelectedSubcategoria(""); // Clear selectedSubcategoria when changing categories
+            setSelectedSubcategoria(""); 
           });
           return unsubscribe;
         } else {
@@ -1133,7 +1133,6 @@ const MostrarOpcionesAdmin = ( ) => {
 function InfoImagenCliente() {
   const location = useLocation();
   const imagenUrl = location.state && location.state.imagenUrl;
-  //console.log(imagenUrl);
   const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
   const [descripcion, setDescripcion] = useState("");
   const [listaEtiquetas, setListaEtiquetas] = useState("");
@@ -1141,10 +1140,8 @@ function InfoImagenCliente() {
   const [subcategorias, setSubcategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [subcategoriaSeleccionada, setSubcategoriaSeleccionada] = useState("");
-
   const [categoriaEncontrada, setCategoriaEncontrada] = useState("");
   const [subcategoriaEncontrada, setSubcategoriaEncontrada] = useState("");
-
   const [subcategoriaAnterior, setSubcategoriaAnterior] = useState("");
   const navigate = useNavigate();
   const [newImage, setNewImage] = useState(null);
