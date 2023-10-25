@@ -9,7 +9,7 @@ import {
   doc,
   getDoc,
   updateDoc,
-  query, where, getDocs
+  query, where, getDocs, deleteDoc // Agregamos deleteDoc para eliminar productos
 } from 'firebase/firestore';
 import { db, storage } from '../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
@@ -102,6 +102,30 @@ function EditarProductoAdmin() {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('¿Seguro que quieres eliminar este producto?');
+
+    if (confirmDelete) {
+      try {
+        const productoId = id;
+        const q = query(collection(db, 'productos'), where('id', '==', productoId));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const productDoc = querySnapshot.docs[0];
+          const productIDFirestore = productDoc.id;
+          const productDocRef = doc(db, 'productos', productIDFirestore);
+
+          // Elimina el producto de la base de datos
+          await deleteDoc(productDocRef);
+          navigate('/AccederTiendaAdminController'); // Redirige a la página de administración
+        }
+      } catch (error) {
+        console.error('Error al eliminar el producto', error);
+      }
+    }
+  };
+
   if (!product) {
     return <div>No se encontró el producto o ocurrió un error.</div>;
   }
@@ -136,7 +160,12 @@ function EditarProductoAdmin() {
           )}
           {!isEditing && (
             <button className="edit-button" onClick={handleEdit}>
-              Editar
+              Editar Producto
+            </button>
+          )}
+          {!isEditing && (
+            <button className="cancel-button" onClick={handleDelete}>
+              Eliminar Producto
             </button>
           )}
           {isEditing && (

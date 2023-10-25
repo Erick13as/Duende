@@ -43,7 +43,7 @@ function ProductUpload() {
       const downloadURL = await getDownloadURL(storageRef);
 
       const productData = {
-        id: newProductId, // Asigna el nuevo id
+        id: newProductId.toString(), // Asigna el nuevo id
         nombre: productName,
         marca: productBrand,
         descripcion: productDescription,
@@ -73,7 +73,7 @@ function ProductUpload() {
       </div>
       <div className="subir_producto-container">
         <form className="formUploadProducto">
-          <h1 className="titleSu birProducto">Nuevo Producto</h1>
+          <h1 className="titleSubirProducto">Nuevo Producto</h1>
           <div className="input-containerProducto">
             <label htmlFor="productName">Nombre:</label>
             <input
@@ -124,6 +124,9 @@ function ProductUpload() {
             />
           </div>
           <input type="file" accept="imagen/*" onChange={handleImageChange} />
+          <div className="image-preview">
+            {productImage && <img src={URL.createObjectURL(productImage)} alt="Vista previa de la imagen" />}
+          </div>
           <h3 className="messageProducto">{errorText}</h3>
         </form>
         <button onClick={handleUpload} disabled={uploading} className="botonSubirProducto">
