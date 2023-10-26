@@ -5,14 +5,13 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
-import { AgregarProducto } from './controllers/AgregarProductoController';
+import { AgregarProducto,EditarProductoAdmin } from './controllers/ProductoController';
 
 // import Agenda from './components/Agenda';
 import VerMasCliente from './components/VerMasCliente';
 import Carrito from './components/Carrito';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
 import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
-import EditarProductoAdmin from './components/EditarProductoAdmin';
 import OrdenesPendientes from './components/OrdenesPendientes';
 import CerrarCompra from './components/CerrarCompra';
 
