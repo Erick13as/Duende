@@ -5,9 +5,9 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
+import { AgregarProducto } from './controllers/AgregarProductoController';
 
 // import Agenda from './components/Agenda';
-import AgregarProducto from './components/AgregarProducto';
 import VerMasCliente from './components/VerMasCliente';
 import Carrito from './components/Carrito';
 import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
