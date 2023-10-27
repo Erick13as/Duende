@@ -25,21 +25,6 @@ function AgregarProducto() {
   const [uploading, setUploading] = useState(false);
   const [errorText, setErrorText] = useState('');
   
-  const handlesetProductName = (e) => {
-    setProductName(e.target.value);
-  };
-  const handlesetProductBrand = (e) => {
-    setProductBrand(e.target.value);
-  };
-  const handlesetProductDescription = (e) => {
-    setProductDescription(e.target.value);
-  };
-  const handlesetProductPrice = (e) => {
-    setProductPrice(e.target.value);
-  };
-  const handlesetProductQuantity = (e) => {
-    setProductQuantity(e.target.value);
-  };
 
 
   const handleImageChange = (e) => {
@@ -111,11 +96,11 @@ function AgregarProducto() {
         handleImageChange={handleImageChange}
         handleUpload={handleUpload}
         handleNavigate={handleNavigate}
-        handlesetProductName={handlesetProductName}
-        handlesetProductBrand={handlesetProductBrand}
-        handlesetProductDescription={handlesetProductDescription}
-        handlesetProductPrice={handlesetProductPrice}
-        handlesetProductQuantity={handlesetProductQuantity}
+        setProductName={setProductName}
+        setProductBrand={setProductBrand}
+        setProductDescription={setProductDescription}
+        setProductPrice={setProductPrice}
+        setProductQuantity={setProductQuantity}
     />
   );
   
@@ -132,21 +117,6 @@ function EditarProductoAdmin() {
   const navigate = useNavigate();
   const handleNavigate = (route) => {
     navigate(route);
-  };
-  const handlesetProductos = (e) => {
-    setProductos(e.target.value);
-  };
-  const handlesetProduct = (e) => {
-    setProduct(e.target.value);
-  };
-  const handlesetIsEditing = (e) => {
-    setIsEditing(e.target.value);
-  };
-  const handlesetEditedProduct= (e) => {
-    setEditedProduct(e.target.value);
-  };
-  const handlesetEditedProductImage = (e) => {
-    setEditedProductImage(e.target.value);
   };
   useEffect(() => {
     const q = collection(db, 'productos');
@@ -267,11 +237,11 @@ function EditarProductoAdmin() {
         handleSaveEdit={handleSaveEdit}
         handleImageChange={handleImageChange}
         handleDelete={handleDelete}
-        handlesetProductos={handlesetProductos}
-        handlesetProduct={handlesetProduct}
-        handlesetIsEditing={handlesetIsEditing}
-        handlesetEditedProduct={handlesetEditedProduct}
-        handlesetEditedProductImage={handlesetEditedProductImage}
+        setProductos={setProductos}
+        setProduct={setProduct}
+        setIsEditing={setIsEditing}
+        setEditedProduct={setEditedProduct}
+        setEditedProductImage={setEditedProductImage}
     />
   );
 }

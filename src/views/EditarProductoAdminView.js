@@ -15,11 +15,11 @@ function EditarProductoAdmin(props) {
         handleSaveEdit,
         handleImageChange,
         handleDelete,
-        handlesetProductos,
-        handlesetProduct,
-        handlesetIsEditing,
-        handlesetEditedProduct,
-        handlesetEditedProductImage,
+        setProductos,
+        setProduct,
+        setIsEditing,
+        setEditedProduct,
+        setEditedProductImage,
     } = props;
     
     return (
@@ -80,7 +80,7 @@ function EditarProductoAdmin(props) {
                   <input
                     type="text"
                     value={editedProduct.nombre}
-                    onChange={(e) => handlesetEditedProduct({ ...editedProduct, nombre: e.target.value })}
+                    onChange={(e) => setEditedProduct({ ...editedProduct, nombre: e.target.value })}
                   />
                 </div>
                 <div className="input-field">
@@ -88,7 +88,7 @@ function EditarProductoAdmin(props) {
                   <input
                     type="number"
                     value={editedProduct.precio}
-                    onChange={(e) => handlesetEditedProduct({ ...editedProduct, precio: parseFloat(e.target.value) })}
+                    onChange={(e) => setEditedProduct({ ...editedProduct, precio: parseFloat(e.target.value) })}
                   />
                 </div>
                 <div className="input-field">
@@ -96,7 +96,7 @@ function EditarProductoAdmin(props) {
                   <input
                     type="text"
                     value={editedProduct.descripcion}
-                    onChange={(e) => handlesetEditedProduct({ ...editedProduct, descripcion: e.target.value })}
+                    onChange={(e) => setEditedProduct({ ...editedProduct, descripcion: e.target.value })}
                   />
                 </div>
                 <div className="input-field">
@@ -104,7 +104,7 @@ function EditarProductoAdmin(props) {
                   <input
                     type="number"
                     value={editedProduct.cantidad}
-                    onChange={(e) => handlesetEditedProduct({ ...editedProduct, cantidad: parseInt(e.target.value) })}
+                    onChange={(e) => setEditedProduct({ ...editedProduct, cantidad: parseInt(e.target.value) })}
                   />
                 </div>
                 <div className="input-field">
@@ -112,7 +112,7 @@ function EditarProductoAdmin(props) {
                   <input
                     type="text"
                     value={editedProduct.marca}
-                    onChange={(e) => handlesetEditedProduct({ ...editedProduct, marca: e.target.value })}
+                    onChange={(e) => setEditedProduct({ ...editedProduct, marca: e.target.value })}
                   />
                 </div>
               </div>

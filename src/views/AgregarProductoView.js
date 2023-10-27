@@ -14,11 +14,11 @@ function AgregarProductoView(props) {
         handleImageChange,
         handleUpload,
         handleNavigate,
-        handlesetProductName,
-        handlesetProductBrand,
-        handlesetProductDescription,
-        handlesetProductPrice,
-        handlesetProductQuantity,
+        setProductName,
+        setProductBrand,
+        setProductDescription,
+        setProductPrice,
+        setProductQuantity,
     } = props;
     
 return (
@@ -38,7 +38,7 @@ return (
               type="text"
               placeholder="Nombre del Producto"
               value={productName}
-              onChange={(e) => handlesetProductName(e.target.value)}
+              onChange={(e) => setProductName(e.target.value)}
             />
           </div>
           <div className="input-containerProducto">
@@ -47,7 +47,7 @@ return (
               className="textBoxUploadProducto"
               placeholder="Descripción del Producto"
               value={productDescription}
-              onChange={(e) => handlesetProductDescription(e.target.value)}
+              onChange={(e) => setProductDescription(e.target.value)}
             />
           </div>
           <div className="input-containerProducto">
@@ -57,7 +57,7 @@ return (
               type="text"
               placeholder="Marca del Producto"
               value={productBrand}
-              onChange={(e) => handlesetProductBrand(e.target.value)}
+              onChange={(e) => setProductBrand(e.target.value)}
             />
           </div>
           <div className="input-containerProducto">
@@ -67,7 +67,7 @@ return (
               type="number"
               placeholder="Precio"
               value={productPrice}
-              onChange={(e) => handlesetProductPrice(e.target.value)}
+              onChange={(e) => setProductPrice(e.target.value)}
             />
           </div>
           <div className="input-containerProducto">
@@ -77,7 +77,7 @@ return (
               type="number"
               placeholder="Cantidad"
               value={productQuantity}
-              onChange={(e) => handlesetProductQuantity(e.target.value)}
+              onChange={(e) => setProductQuantity(e.target.value)}
             />
           </div>
           <input type="file" accept="imagen/*" onChange={handleImageChange} />
