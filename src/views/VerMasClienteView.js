@@ -12,7 +12,7 @@ function VerMasClienteView(props) {
         <div className="vmasC-container">
         {/* Barra de navegación */}
         <div className="header-containerVerMas">
-            <button className="header-button inicio-button">
+            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaCliente')}>
             Inicio
             </button>
             <button className="header-button" id="ordenes-button">

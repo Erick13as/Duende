@@ -25,13 +25,13 @@ function EditarProductoAdmin(props) {
     return (
         <div className="vmasC-container">
           <div className="header-container">
-            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdminController')}>
+            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdmin')}>
               Inicio
             </button>
-            <button className="header-button" id="ordenes-button" >
+            <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/OrdenesPendientes')}>
               Gestion Ordenes
             </button>
-            <button className="header-button" id="carrito-button">
+            <button className="header-button" id="carrito-button" onClick={() => handleNavigate('/AgregarProducto')}>
               Añadir Producto
             </button>
           </div>

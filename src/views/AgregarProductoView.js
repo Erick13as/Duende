@@ -25,8 +25,10 @@ return (
     <div className="main-containerProduct">
       
       <div className="header-containerProducto">
-        <button className="header-buttonProducto">Inicio</button>
-        <button className="header-buttonProducto" >Gestión de Órdenes</button>
+        <button className="header-buttonProducto"onClick={() => handleNavigate('/AccederTiendaAdmin')}>
+          Inicio</button>
+        <button className="header-buttonProducto" onClick={() => handleNavigate('/OrdenesPendientes')} >
+          Gestión de Órdenes</button>
       </div>
       <div className="subir_producto-container">
         <form className="formUploadProducto">

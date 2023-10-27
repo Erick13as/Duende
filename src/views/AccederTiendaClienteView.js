@@ -11,7 +11,7 @@ function AccederTiendaClienteView(props) {
     <div className="main_page-container">
       {/* Contenedor rectangular en la parte superior con tres botones */}
       <div className="header-container">
-        <button className="header-button inicio-button" id="inicio-button" onClick={() => handleNavigate('/')}>
+        <button className="header-button inicio-button" id="inicio-button" onClick={() => handleNavigate('/duende')}>
           Inicio
         </button>
         <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/')}>

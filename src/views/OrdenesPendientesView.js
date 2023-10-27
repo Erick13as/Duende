@@ -11,7 +11,7 @@ function OrdenesPendientesView(props) {
     return (
         <div className="pendientes-container">
       <div className="header-containerOrdenesPendientes">
-            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdminController')}>
+            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdmin')}>
               Inicio
             </button>
       </div>

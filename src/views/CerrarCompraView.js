@@ -5,12 +5,14 @@ function CerrarCompraView(props) {
         rechazarOrden,
         confirmarOrden,
         calcularTotalCompra,
+        handleNavigate
     } = props;
     
     return (
         <div className="CerrarCompra-container">
         <div className="header-containerDetallesOrden">
-            <button className="header-buttonOrden">Inicio</button>
+            <button className="header-buttonOrden"onClick={() => handleNavigate('/AccederTiendaAdmin')}>
+                Inicio</button>
         </div>
         <div className="order-details-container">
             <h1>Detalles de la Orden</h1>
