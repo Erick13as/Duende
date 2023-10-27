@@ -5,13 +5,11 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
-import { AgregarProducto,EditarProductoAdmin,VerMasCliente } from './controllers/ProductoController';
+import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
 import { CerrarCompra,OrdenesPendientes} from './controllers/CompraController';
 
 // import Agenda from './components/Agenda';
 import Carrito from './components/Carrito';
-import { AccederTiendaClienteController } from './controllers/AccederTiendaClienteController';
-import { AccederTiendaAdminController } from './controllers/AccederTiendaAdminController';
 
 import "./components/Design.css"
 
@@ -35,8 +33,8 @@ const App = () => {
         <Route path='/login' element={<SignIn />} /> 
         <Route path='/registro' element={<SignUp />} />
         <Route path='/AgregarProducto' element={<AgregarProducto />} />
-        <Route path='AccederTiendaClienteController/' element={<AccederTiendaClienteController />}/>
-        <Route path='AccederTiendaAdminController/' element={<AccederTiendaAdminController />}/>
+        <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
+        <Route path='AccederTiendaAdmin/' element={<AccederTiendaAdmin />}/>
         {/* <Route path='/agenda' element={<Agenda />} /> */}
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path="/Carrito" element={<Carrito carrito={carrito} removeFromCart={removeFromCart} />} />

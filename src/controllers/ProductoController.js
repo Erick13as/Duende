@@ -15,6 +15,8 @@ import {
 import AgregarProductoView from '../views/AgregarProductoView';
 import EditarProductoAdminView from '../views/EditarProductoAdminView';
 import VerMasClienteView from '../views/VerMasClienteView';
+import AccederTiendaClienteView from '../views/AccederTiendaClienteView'; 
+import AccederTiendaAdminView from '../views/AccederTiendaAdminView'; 
 
 
 function AgregarProducto() {
@@ -348,4 +350,69 @@ function VerMasCliente() {
   );
 }
 
-export {AgregarProducto,EditarProductoAdmin,VerMasCliente};
+function AccederTiendaCliente() {
+  /*const [model, setModel] = useState(new ProductModel());*/
+  const [productos, setProductos] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Consulta Firestore para obtener los productos.
+    const q = collection(db, 'productos');
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const listaproductos = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        listaproductos.push(data);
+      });
+
+      setProductos(listaproductos);
+    });
+
+    return () => unsubscribe();
+  }, []); // Remove productos from the dependency array
+
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
+
+  return (
+    <AccederTiendaClienteView
+      productos={productos}
+      handleNavigate={handleNavigate}
+    />
+  );
+}
+function AccederTiendaAdmin() {
+  /*const [model, setModel] = useState(new ProductModel());*/
+  const [productos, setProductos] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Consulta Firestore para obtener los productos.
+    const q = collection(db, 'productos');
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const listaproductos = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        listaproductos.push(data);
+      });
+
+      setProductos(listaproductos);
+    });
+
+    return () => unsubscribe();
+  }, []); // Remove productos from the dependency array
+
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
+
+  return (
+    <AccederTiendaAdminView
+      productos={productos}
+      handleNavigate={handleNavigate}
+    />
+  );
+}
+
+export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin};
