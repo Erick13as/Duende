@@ -10,10 +10,12 @@ import {
   onSnapshot,
   doc,
   getDoc,
-  updateDoc, where, deleteDoc // Agregamos deleteDoc para eliminar productos
+  updateDoc, where, deleteDoc,arrayUnion // Agregamos deleteDoc para eliminar productos
 } from 'firebase/firestore';
 import AgregarProductoView from '../views/AgregarProductoView';
 import EditarProductoAdminView from '../views/EditarProductoAdminView';
+import VerMasClienteView from '../views/VerMasClienteView';
+
 
 function AgregarProducto() {
   const [productName, setProductName] = useState('');
@@ -245,4 +247,105 @@ function EditarProductoAdmin() {
     />
   );
 }
-export {AgregarProducto,EditarProductoAdmin};
+
+
+function VerMasCliente() {
+  const { id } = useParams();
+  const [productos, setProductos] = useState([]);
+  const [product, setProduct] = useState(null);
+  const [carrito, setCarrito] = useState([]);
+  const [isInCart, setIsInCart] = useState(false);
+  const navigate = useNavigate();
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
+  useEffect(() => {
+    const q = collection(db, 'productos');
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const products = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        products.push(data);
+      });
+
+      setProductos(products);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      const selectedProduct = productos.find((producto) => producto.id === id);
+      setProduct(selectedProduct);
+    }
+  }, [id, productos]);
+
+  useEffect(() => {
+    if (id) {
+      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      getDoc(carritoDocRef)
+        .then((carritoDoc) => {
+          if (carritoDoc.exists()) {
+            const carritoData = carritoDoc.data();
+            const listaIdCantidadProductos =
+              carritoData.listaIdCantidadProductos || [];
+
+            // Verificar si el producto ya está en el carrito
+            const productIndex = listaIdCantidadProductos.findIndex(
+              (item) => item.id === id
+            );
+            if (productIndex !== -1) {
+              setIsInCart(true);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error al verificar el producto en el carrito', error);
+        });
+    }
+  }, [id]);
+
+  const handleAddToCart = async () => {
+    if (product) {
+      if (isInCart) {
+        return;
+      }
+
+      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+      try {
+        await updateDoc(carritoDocRef, {
+          listaIdCantidadProductos: arrayUnion({ id: id, cantidad: 1 }),
+        });
+
+        setCarrito([...carrito, product]);
+        setIsInCart(true);
+      } catch (error) {
+        console.error('Error al agregar el producto al carrito en la base de datos', error);
+      }
+    }
+  };
+
+  if (!product) {
+    return <div>No se encontró el producto o ocurrió un error.</div>;
+  }
+
+  return (
+    <VerMasClienteView
+        id={id}
+        productos={productos}
+        product={product}
+        carrito={carrito}
+        isInCart={isInCart}
+        setProductos={setProductos}
+        setProduct={setProduct}
+        setCarrito={setCarrito}
+        setIsInCart={setIsInCart}
+        handleAddToCart={handleAddToCart}
+        handleNavigate={handleNavigate}
+    />
+  );
+}
+
+export {AgregarProducto,EditarProductoAdmin,VerMasCliente};
