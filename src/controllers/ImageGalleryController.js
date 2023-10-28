@@ -195,7 +195,7 @@ function GaleriaAdmin() {
   };
 
   const navigateToTienda = () => {
-    navigate('/AccederTiendaAdminController');
+    navigate('/AccederTiendaAdmin');
   };
 
   const handleCategoryChange = (e) => {
@@ -584,7 +584,7 @@ function GaleriaCliente() {
   };
 
   const navigateToTienda = () => {
-    navigate('/AccederTiendaClienteController');
+    navigate('/AccederTiendaCliente');
   };
 
   const handleCategoryChange = (e) => {
