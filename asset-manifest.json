@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/duende/static/css/main.7807a392.css",
-    "main.js": "/duende/static/js/main.1d172b58.js",
+    "main.css": "/duende/static/css/main.4a82ef49.css",
+    "main.js": "/duende/static/js/main.0394eb71.js",
     "static/media/slick.svg": "/duende/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/duende/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/duende/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/duende/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/duende/index.html",
-    "main.7807a392.css.map": "/duende/static/css/main.7807a392.css.map",
-    "main.1d172b58.js.map": "/duende/static/js/main.1d172b58.js.map"
+    "main.4a82ef49.css.map": "/duende/static/css/main.4a82ef49.css.map",
+    "main.0394eb71.js.map": "/duende/static/js/main.0394eb71.js.map"
   },
   "entrypoints": [
-    "static/css/main.7807a392.css",
-    "static/js/main.1d172b58.js"
+    "static/css/main.4a82ef49.css",
+    "static/js/main.0394eb71.js"
   ]
 }
