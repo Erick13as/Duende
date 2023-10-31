@@ -604,6 +604,13 @@ p {
     font-size: 14px; /* Adjust font size */
   }
 
+  .textarea-detalles {
+    resize: none; /* Prevent manual resizing */
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    font-size: 14px; /* Adjust font size */
+    border: 1px solid #070000;
+  }
+
 
   .carousel-container {
     display: flex;
@@ -756,6 +763,18 @@ p {
     align-items: center;
     width: 700px;
     height: 450px;
+    padding: 20px;
+    background-color:  #f5f5f573;
+    border-radius: 8px;
+  }
+
+  .formCCC {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 750px;
+    height: 550px;
     padding: 20px;
     background-color:  #f5f5f573;
     border-radius: 8px;
@@ -955,6 +974,17 @@ p {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+    vertical-align: top;
+  }
+
+  .textBox3 {
+    width: 278px;
+    height: 88px;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #0f0101;
     border-radius: 4px;
     vertical-align: top;
   }

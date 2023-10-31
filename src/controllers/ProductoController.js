@@ -424,6 +424,7 @@ const IngresarDireccion = () => {
   const [cantonSeleccionado, setCantonSeleccionado] = useState('');
   const [distritos, setDistritos] = useState([]);
   const [distritoSeleccionado, setDistritoSeleccionado] = useState('');
+  const [detalles, setDetalles] = useState('');
 
   const handleContinuar = async (e) => {
     //estoy probando si se guarda la provincia seleccionada.
@@ -514,6 +515,8 @@ const IngresarDireccion = () => {
     handleDistritoChange={handleDistritoChange}
     distritos={distritos}
     distritoSeleccionado={distritoSeleccionado}
+    detalles={detalles}
+    setDetalles={setDetalles}
 
     />
   );
