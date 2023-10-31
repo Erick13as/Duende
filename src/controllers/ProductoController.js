@@ -427,7 +427,7 @@ const IngresarDireccion = () => {
   const [detalles, setDetalles] = useState('');
 
   const handleContinuar = async (e) => {
-    //estoy probando si se guarda la provincia seleccionada.
+    //estoy probando si se guarda la provincia seleccionada. Aquí navega a la siguiente pantalla pero no estoy seguro cuál es.
     e.preventDefault();
     console.log(provinciaSeleccionada);
   }

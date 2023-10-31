@@ -21,7 +21,11 @@ function IngresarDireccionView(props) {
         <div className='eliminarCategoria-container'>
             <form className='formTopOA'>
                 <div>
-                    <button onClick={()=>navigate('/AccederTiendaCliente')} className='botonOA'>Inicio</button>     
+                    <button onClick={()=>navigate('/galeriaCliente')} className='botonOA'>Inicio</button>
+                    <button onClick={() => navigate('/AccederTiendaCliente')} className='botonOA'>Tienda</button>     
+                </div>
+                <div className="botonBarra-container">
+                    <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
                 </div>
             </form>
 
