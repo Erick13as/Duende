@@ -422,6 +422,8 @@ const IngresarDireccion = () => {
   const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
   const [cantones, setCantones] = useState([]);
   const [cantonSeleccionado, setCantonSeleccionado] = useState('');
+  const [distritos, setDistritos] = useState([]);
+  const [distritoSeleccionado, setDistritoSeleccionado] = useState('');
 
   const handleContinuar = async (e) => {
     //estoy probando si se guarda la provincia seleccionada.
@@ -438,6 +440,12 @@ const IngresarDireccion = () => {
       obtenerCantones(provinciaSeleccionada);
     }
   }, [provinciaSeleccionada]);
+
+  useEffect(() => {
+    if (cantonSeleccionado !== '') {
+      obtenerDistritos(provinciaSeleccionada, cantonSeleccionado);
+    }
+  }, [cantonSeleccionado]);
 
   const obtenerProvincias = () => {
     fetch('https://ubicaciones.paginasweb.cr/provincias.json')
@@ -463,6 +471,18 @@ const IngresarDireccion = () => {
       });
   };
 
+  const obtenerDistritos = (provinciaId, cantonId) => {
+    fetch(`https://ubicaciones.paginasweb.cr/provincia/${provinciaId}/canton/${cantonId}/distritos.json`)
+      .then(response => response.json())
+      .then(data => {
+        const distritosArray = Object.entries(data).map(([key, value]) => ({ id: key, nombre: value }));
+        setDistritos(distritosArray);
+      })
+      .catch(error => {
+        console.error('Error al obtener los distritos:', error);
+      });
+  };
+
   const handleProvinciaChange = (event) => {
     const selectedProvincia = event.target.value;
     setProvinciaSeleccionada(selectedProvincia);
@@ -470,7 +490,14 @@ const IngresarDireccion = () => {
   };
 
   const handleCantonChange = (event) => {
-    setCantonSeleccionado(event.target.value);
+    const selectedCanton = event.target.value;
+    setCantonSeleccionado(selectedCanton);
+    setDistritoSeleccionado('');
+  };
+
+  const handleDistritoChange = (event) => {
+    const selectedDistrito = event.target.value;
+    setDistritoSeleccionado(selectedDistrito);
   };
 
   return (
@@ -484,6 +511,10 @@ const IngresarDireccion = () => {
     cantones={cantones}
     handleCantonChange={handleCantonChange}
     cantonSeleccionado={cantonSeleccionado}
+    handleDistritoChange={handleDistritoChange}
+    distritos={distritos}
+    distritoSeleccionado={distritoSeleccionado}
+
     />
   );
 

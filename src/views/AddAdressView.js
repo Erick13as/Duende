@@ -9,6 +9,9 @@ function IngresarDireccionView(props) {
         cantones,
         handleCantonChange,
         cantonSeleccionado,
+        handleDistritoChange,
+        distritos,
+        distritoSeleccionado,
 
     } = props;
 
@@ -46,6 +49,18 @@ function IngresarDireccionView(props) {
                             {cantones.map(canton => (
                                 <option key={canton.id} value={canton.id}>
                                     {canton.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <h3 className='text'>Seleccione el Distrito:</h3>
+                    <div>
+                        <select onChange={handleDistritoChange} value={distritoSeleccionado}>
+                            <option value="">Seleccione un distrito</option>
+                            {distritos.map(distrito => (
+                                <option key={distrito.id} value={distrito.id}>
+                                    {distrito.nombre}
                                 </option>
                             ))}
                         </select>
