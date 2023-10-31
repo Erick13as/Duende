@@ -3,6 +3,9 @@ function IngresarDireccionView(props) {
         provincias,
         handleContinuar,
         navigate,
+        obtenerProvincias,
+        handleProvinciaChange,
+        provinciaSeleccionada,
 
     } = props;
 
@@ -21,6 +24,15 @@ function IngresarDireccionView(props) {
                     <h3 className='text'>Seleccione la Provincia:</h3>
                     <div className='select-container'>
                     <label htmlFor='categorySelect'></label>
+                    </div>
+                    <div>
+                        <select onChange={handleProvinciaChange} value={provinciaSeleccionada} >
+                            {provincias.map(provincia => (
+                                <option key={provincia.id} value={provincia.id}>
+                                    {provincia.nombre}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div>
                         <button onClick={handleContinuar} className='botonOOA'>

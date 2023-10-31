@@ -419,16 +419,42 @@ function AccederTiendaAdmin() {
 const IngresarDireccion = () => {
   const [provincias, setProvincias] = useState([]);
   const navigate = useNavigate();
+  const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
 
   const handleContinuar = async (e) => {
-
+    //estoy probando si se guarda la provincia seleccionada.
+    e.preventDefault();
+    console.log(provinciaSeleccionada);
   }
+
+  useEffect(() => {
+    obtenerProvincias();
+  }, []);
+
+  const obtenerProvincias = () => {
+    fetch('https://ubicaciones.paginasweb.cr/provincias.json')
+      .then(response => response.json())
+      .then(data => {
+        const provinciasArray = Object.entries(data).map(([key, value]) => ({ id: key, nombre: value }));
+        setProvincias(provinciasArray);
+      })
+      .catch(error => {
+        console.error('Error al obtener las provincias:', error);
+      });
+  };
+
+  const handleProvinciaChange = (event) => {
+    setProvinciaSeleccionada(event.target.value);
+  };
 
   return (
     <IngresarDireccionView
     provincias={provincias}
     handleContinuar={handleContinuar}
     navigate={navigate}
+    obtenerProvincias={obtenerProvincias}
+    handleProvinciaChange={handleProvinciaChange}
+    provinciaSeleccionada={provinciaSeleccionada}
     />
   );
 
