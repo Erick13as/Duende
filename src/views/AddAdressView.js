@@ -6,6 +6,9 @@ function IngresarDireccionView(props) {
         obtenerProvincias,
         handleProvinciaChange,
         provinciaSeleccionada,
+        cantones,
+        handleCantonChange,
+        cantonSeleccionado,
 
     } = props;
 
@@ -33,7 +36,21 @@ function IngresarDireccionView(props) {
                                 </option>
                             ))}
                         </select>
+
                     </div>
+                    
+                    <h3 className='text'>Seleccione el Cantón:</h3>
+                    <div>
+                        <select onChange={handleCantonChange} value={cantonSeleccionado} >
+                            <option value="">Seleccione un cantón</option>
+                            {cantones.map(canton => (
+                                <option key={canton.id} value={canton.id}>
+                                    {canton.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div>
                         <button onClick={handleContinuar} className='botonOOA'>
                             Continuar

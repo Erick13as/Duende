@@ -420,6 +420,8 @@ const IngresarDireccion = () => {
   const [provincias, setProvincias] = useState([]);
   const navigate = useNavigate();
   const [provinciaSeleccionada, setProvinciaSeleccionada] = useState('');
+  const [cantones, setCantones] = useState([]);
+  const [cantonSeleccionado, setCantonSeleccionado] = useState('');
 
   const handleContinuar = async (e) => {
     //estoy probando si se guarda la provincia seleccionada.
@@ -430,6 +432,12 @@ const IngresarDireccion = () => {
   useEffect(() => {
     obtenerProvincias();
   }, []);
+
+  useEffect(() => {
+    if (provinciaSeleccionada !== '') {
+      obtenerCantones(provinciaSeleccionada);
+    }
+  }, [provinciaSeleccionada]);
 
   const obtenerProvincias = () => {
     fetch('https://ubicaciones.paginasweb.cr/provincias.json')
@@ -443,8 +451,26 @@ const IngresarDireccion = () => {
       });
   };
 
+  const obtenerCantones = (provinciaId) => {
+    fetch(`https://ubicaciones.paginasweb.cr/provincia/${provinciaId}/cantones.json`)
+      .then(response => response.json())
+      .then(data => {
+        const cantonesArray = Object.entries(data).map(([key, value]) => ({ id: key, nombre: value }));
+        setCantones(cantonesArray);
+      })
+      .catch(error => {
+        console.error('Error al obtener los cantones:', error);
+      });
+  };
+
   const handleProvinciaChange = (event) => {
-    setProvinciaSeleccionada(event.target.value);
+    const selectedProvincia = event.target.value;
+    setProvinciaSeleccionada(selectedProvincia);
+    setCantonSeleccionado('');
+  };
+
+  const handleCantonChange = (event) => {
+    setCantonSeleccionado(event.target.value);
   };
 
   return (
@@ -455,6 +481,9 @@ const IngresarDireccion = () => {
     obtenerProvincias={obtenerProvincias}
     handleProvinciaChange={handleProvinciaChange}
     provinciaSeleccionada={provinciaSeleccionada}
+    cantones={cantones}
+    handleCantonChange={handleCantonChange}
+    cantonSeleccionado={cantonSeleccionado}
     />
   );
 
