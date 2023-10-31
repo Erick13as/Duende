@@ -5,7 +5,7 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
-import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
+import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion} from './controllers/ProductoController';
 import { CerrarCompra,OrdenesPendientes} from './controllers/CompraController';
 
 // import Agenda from './components/Agenda';
@@ -48,6 +48,7 @@ const App = () => {
         <Route path='/enviarReferencia' element={<EnviarReferencia />} />
         <Route path='/OrdenesPendientes' element={<OrdenesPendientes />}  />
         <Route path='/CerrarCompra/:id'element={<CerrarCompra />}  />
+        <Route path='/ingresarDireccion' element={<IngresarDireccion />} />
       </Routes>
     </div>
     </BrowserRouter>

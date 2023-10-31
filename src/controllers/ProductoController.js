@@ -16,7 +16,8 @@ import AgregarProductoView from '../views/AgregarProductoView';
 import EditarProductoAdminView from '../views/EditarProductoAdminView';
 import VerMasClienteView from '../views/VerMasClienteView';
 import AccederTiendaClienteView from '../views/AccederTiendaClienteView'; 
-import AccederTiendaAdminView from '../views/AccederTiendaAdminView'; 
+import AccederTiendaAdminView from '../views/AccederTiendaAdminView';
+import IngresarDireccionView from '../views/AddAdressView';
 
 
 function AgregarProducto() {
@@ -415,4 +416,22 @@ function AccederTiendaAdmin() {
   );
 }
 
-export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin};
+const IngresarDireccion = () => {
+  const [provincias, setProvincias] = useState([]);
+  const navigate = useNavigate();
+
+  const handleContinuar = async (e) => {
+
+  }
+
+  return (
+    <IngresarDireccionView
+    provincias={provincias}
+    handleContinuar={handleContinuar}
+    navigate={navigate}
+    />
+  );
+
+}
+
+export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion};
