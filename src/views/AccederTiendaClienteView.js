@@ -6,6 +6,8 @@ function AccederTiendaClienteView(props) {
     productos,
     handleNavigate,
     navigateToCarrito,
+    email,
+    navigate,
   } = props;
 
   return (
@@ -35,7 +37,7 @@ function AccederTiendaClienteView(props) {
               <div className="details-container">
                 <h3 className="titleAccederTienda">{product.nombre}</h3>
                 <p className="precio"> ${product.precio}</p>
-                <button className="botonImagen2" onClick={() => handleNavigate(`/VerMasCliente/${product.id}`)}>
+                <button className="botonImagen2" onClick={() => navigate('/VerMasCliente', { state: { correo: email, producto: product.id } })}>
                   Ver detalles
                 </button>
               </div>

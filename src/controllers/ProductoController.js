@@ -253,7 +253,9 @@ function EditarProductoAdmin() {
 
 
 function VerMasCliente() {
-  const { id } = useParams();
+  const location = useLocation();
+  const email = location.state && location.state.correo;
+  const id = location.state && location.state.producto;
   const [productos, setProductos] = useState([]);
   const [product, setProduct] = useState(null);
   const [carrito, setCarrito] = useState([]);
@@ -262,6 +264,7 @@ function VerMasCliente() {
   const handleNavigate = (route) => {
     navigate(route);
   };
+  console.log(email)
   useEffect(() => {
     const q = collection(db, 'productos');
 
@@ -315,20 +318,37 @@ function VerMasCliente() {
       if (isInCart) {
         return;
       }
-
-      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
-      try {
-        await updateDoc(carritoDocRef, {
-          listaIdCantidadProductos: arrayUnion({ id: id, cantidad: 1 }),
+  
+      // Primero, consulta la colección 'carrito' para obtener el documento correcto.
+      const querySnapshot = await getDocs(query(collection(db, 'carrito'), where('correo', '==', email)));
+  
+      // Comprueba si existe un documento que cumple con la consulta.
+      if (querySnapshot.empty) {
+        // Si no existe un documento, puedes crear uno nuevo.
+        const newCartDocRef = await addDoc(collection(db, 'carrito'), {
+          correo: email,
+          listaIdCantidadProductos: [{ id, cantidad: 1 }],
         });
-
         setCarrito([...carrito, product]);
         setIsInCart(true);
-      } catch (error) {
-        console.error('Error al agregar el producto al carrito en la base de datos', error);
+      } else {
+        // Si existe un documento, obtén su referencia.
+        const cartDocRef = querySnapshot.docs[0].ref;
+  
+        // Actualiza el campo 'listaIdCantidadProductos' utilizando arrayUnion.
+        try {
+          await updateDoc(cartDocRef, {
+            listaIdCantidadProductos: arrayUnion({ id, cantidad: 1 }),
+          });
+  
+          setCarrito([...carrito, product]);
+          setIsInCart(true);
+        } catch (error) {
+          console.error('Error al agregar el producto al carrito en la base de datos', error);
+        }
       }
     }
-  };
+  };  
 
   if (!product) {
     return <div>No se encontró el producto o ocurrió un error.</div>;
@@ -387,6 +407,8 @@ function AccederTiendaCliente() {
       productos={productos}
       handleNavigate={handleNavigate}
       navigateToCarrito={navigateToCarrito}
+      email={email}
+      navigate={navigate}
     />
   );
 }
