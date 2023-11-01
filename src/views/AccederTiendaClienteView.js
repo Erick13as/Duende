@@ -5,6 +5,7 @@ function AccederTiendaClienteView(props) {
   const {
     productos,
     handleNavigate,
+    navigateToCarrito,
   } = props;
 
   return (
@@ -17,7 +18,7 @@ function AccederTiendaClienteView(props) {
         <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/')}>
           Ordenes
         </button>
-        <button className="header-button" id="carrito-button" onClick={() => handleNavigate('/carrito')}>
+        <button className="header-button" id="carrito-button" onClick={navigateToCarrito}>
           Mi Carrito
         </button>
       </div>

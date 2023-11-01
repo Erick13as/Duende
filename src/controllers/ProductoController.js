@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -353,6 +353,8 @@ function VerMasCliente() {
 
 function AccederTiendaCliente() {
   /*const [model, setModel] = useState(new ProductModel());*/
+  const location = useLocation();
+  const email = location.state && location.state.correo;
   const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
 
@@ -376,10 +378,15 @@ function AccederTiendaCliente() {
     navigate(route);
   };
 
+  const navigateToCarrito = () => {
+    navigate('/carrito', { state: { correo: email } });
+  };
+
   return (
     <AccederTiendaClienteView
       productos={productos}
       handleNavigate={handleNavigate}
+      navigateToCarrito={navigateToCarrito}
     />
   );
 }

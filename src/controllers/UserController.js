@@ -26,7 +26,7 @@ const SignIn = () => {
             if (rolValue === 'Admin') {
               navigate('/galeriaAdmin');
             } else {
-              navigate('/galeriaCliente');
+              navigate('/galeriaCliente', { state: { correo: email } });
             }
           });
         })

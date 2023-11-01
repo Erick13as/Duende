@@ -499,6 +499,8 @@ function InfoImagenAdmin() {
 }
 
 function GaleriaCliente() {
+  const location = useLocation();
+  const email = location.state && location.state.correo;
   const [imageUrls, setImageUrls] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
@@ -575,7 +577,7 @@ function GaleriaCliente() {
     const currentFilteredImage = filteredImages[currentImageIndex]; // Obtener la imagen filtrada actual
 
     if (currentFilteredImage) {
-      navigate('/infoImagenCliente', { state: { imagenUrl: currentFilteredImage.url } });
+      navigate('/infoImagenCliente', { state: { imagenUrl: currentFilteredImage.url, correo: email } });
     }
   };
 
@@ -584,7 +586,7 @@ function GaleriaCliente() {
   };
 
   const navigateToTienda = () => {
-    navigate('/AccederTiendaCliente');
+    navigate('/AccederTiendaCliente', { state: { correo: email } });
   };
 
   const handleCategoryChange = (e) => {
@@ -1133,6 +1135,7 @@ const MostrarOpcionesAdmin = ( ) => {
 function InfoImagenCliente() {
   const location = useLocation();
   const imagenUrl = location.state && location.state.imagenUrl;
+  const email = location.state && location.state.correo;
   const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
   const [descripcion, setDescripcion] = useState("");
   const [listaEtiquetas, setListaEtiquetas] = useState("");
@@ -1259,7 +1262,7 @@ function InfoImagenCliente() {
 
   const handleVerInfo = () => {
     navigate('/enviarReferencia', {
-      state: { imagenUrl}
+      state: { imagenUrl, email}
     });
   }
 
@@ -1292,7 +1295,7 @@ function InfoImagenCliente() {
 
 const EnviarReferencia = () => {
   const { state } = useLocation();
-  let { imagenUrl} = state;
+  let { imagenUrl, email} = state;
   const [newImageUrl, setNewImageUrl] = useState('');
   const imagenQuery = query(collection(db, 'imagen'), where('imagenUrl', '==', imagenUrl));
   const navigate = useNavigate();
@@ -1371,6 +1374,7 @@ const EnviarReferencia = () => {
         const docRef = await addDoc(collection(db, 'referencia'), {
           imagenUrl: imagenUrl,
           referencia: descripcion,
+          correo: email,
         });
       
         console.log('Referencia enviada con exito. ID del documento:', docRef.id);
