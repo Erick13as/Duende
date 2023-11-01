@@ -1,3 +1,10 @@
+/* Agrega estas clases a tu design.css */
+.orden-container {
+  background-color: #fff; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 15px; /* Espacio interno */
+  margin-bottom: 10px; /* Espacio entre órdenes */
+}
 
 /* Estilos para el contenedor principal */
 .CerraCompra-container {
@@ -81,6 +88,11 @@ h1Ordenes {
   font-size: 24px;
   margin-bottom: 20px;
 }
+/* design.css */
+.lista-ordenes {
+  background-color: #ffffff; /* Fondo blanco */
+}
+
 
 /* Estilo para la lista de órdenes */
 .ul {

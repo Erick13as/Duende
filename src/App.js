@@ -7,6 +7,8 @@ import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirIm
 import { SignIn, SignUp } from './controllers/UserController';
 import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion} from './controllers/ProductoController';
 import { CerrarCompra,OrdenesPendientes} from './controllers/CompraController';
+import ComprasRealizadas from './components/ComprasRealizadas';
+import Orden from './components/Orden';
 
 // import Agenda from './components/Agenda';
 import Carrito from './components/Carrito';
@@ -49,6 +51,8 @@ const App = () => {
         <Route path='/OrdenesPendientes' element={<OrdenesPendientes />}  />
         <Route path='/CerrarCompra/:id'element={<CerrarCompra />}  />
         <Route path='/ingresarDireccion' element={<IngresarDireccion />} />
+        <Route path='/ComprasRealizadas/:userId'element={<ComprasRealizadas />}  />
+        <Route path='/ComprasRealizadas/:orderId'element={<ComprasRealizadas />}  />
       </Routes>
     </div>
     </BrowserRouter>
