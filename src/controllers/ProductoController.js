@@ -454,10 +454,53 @@ const IngresarDireccion = () => {
   const email = location.state && location.state.correo;
 
   const handleContinuar = async (e) => {
-    //estoy probando si se guarda la provincia seleccionada. Aquí navega a la siguiente pantalla pero no estoy seguro cuál es.
     e.preventDefault();
-    console.log(provinciaSeleccionada);
-  }
+  
+    // Verifica que todos los campos necesarios estén seleccionados
+    if (provinciaSeleccionada && cantonSeleccionado && distritoSeleccionado && detalles && email) {
+      try {
+        // Obtiene los nombres correspondientes de provincia, cantón y distrito
+        const provinciaNombre = provincias.find((provincia) => provincia.id === provinciaSeleccionada).nombre;
+        const cantonNombre = cantones.find((canton) => canton.id === cantonSeleccionado).nombre;
+        const distritoNombre = distritos.find((distrito) => distrito.id === distritoSeleccionado).nombre;
+  
+        // Crea un objeto con los datos a guardar
+        const direccionData = {
+          provincia: provinciaNombre,
+          canton: cantonNombre,
+          distrito: distritoNombre,
+          detalles,
+          email,
+        };
+  
+        // Consulta para verificar si existe un documento con el mismo email
+        const direccionQuery = query(
+          collection(db, 'direccion'),
+          where('email', '==', email)
+        );
+
+        const direccionQuerySnapshot = await getDocs(direccionQuery);
+
+        // Si se encontró algún documento con el mismo email, elimínalo
+        direccionQuerySnapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+        });
+
+        // Agrega los datos a la colección "direccion" en Firebase
+        const docRef = await addDoc(collection(db, 'direccion'), direccionData);
+
+        // Puedes mostrar un mensaje de éxito o redirigir a la siguiente pantalla aquí
+        console.log('Dirección guardada con éxito', docRef.id);
+
+        
+        navigate('/finalizarCompra', { state: { correo: email } });
+      } catch (error) {
+        console.error('Error al guardar la dirección:', error);
+      }
+    } else {
+      console.error('Por favor, completa todos los campos antes de continuar.');
+    }
+  };
 
   useEffect(() => {
     obtenerProvincias();
