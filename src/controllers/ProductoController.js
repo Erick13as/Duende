@@ -707,12 +707,28 @@ const FinalizarCompra = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state && location.state.correo;
+  const [image, setImage] = useState(null);
+
+  const handleContinuar = async (e) => {
+    //Aquí navega a la siguiente pantalla. De momento no hace nada útil.
+    e.preventDefault();
+    console.log(email);
+  }
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      setImage(selectedImage);
+    }
+  };
 
   return (
     <FinalizarCompraView
       compobante={compobante}
       navigate={navigate}
       email={email}
+      handleContinuar={handleContinuar}
+      handleImageChange={handleImageChange}
     />
   );
 }

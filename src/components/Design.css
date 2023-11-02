@@ -792,6 +792,17 @@ p {
     border-radius: 8px;
   }
 
+  .formTotal {
+    display: flex;
+    background-color:  #915a5a73;
+    width: 170px;
+    height: 40px;
+    justify-content: space-evenly;
+    border-radius: 4px;
+    padding: auto;
+
+  }
+
   .centrar {
     display: flex;
     flex-direction: column;
@@ -933,6 +944,31 @@ p {
     margin-top: 10px;
     color: #555;
   }
+
+  .textP {
+    margin-top: 10px;
+    color: rgb(125, 33, 129);
+  }
+
+  .textPP {
+    margin-top: 10px;
+    color: rgb(125, 33, 129);
+    font-weight: bold;
+  }
+
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color:  #ae838373;
+    border-radius: 5px;
+  }
+  
+  .custom-file-upload input[type="file"] {
+    display: none; /* Oculta el control de archivo real */
+  }
+  
 
   text_ {
     margin-top: 10px;
