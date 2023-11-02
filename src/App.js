@@ -5,7 +5,7 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
-import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito} from './controllers/ProductoController';
+import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito,FinalizarCompra} from './controllers/ProductoController';
 import { CerrarCompra,OrdenesPendientes} from './controllers/CompraController';
 import ComprasRealizadas from './components/ComprasRealizadas';
 //import Orden from './components/Orden';
@@ -52,6 +52,7 @@ const App = () => {
         <Route path='/ingresarDireccion' element={<IngresarDireccion />} />
         <Route path='/ComprasRealizadas/:userId'element={<ComprasRealizadas />}  />
         <Route path='/ComprasRealizadas/:orderId'element={<ComprasRealizadas />}  />
+        <Route path='/finalizarCompra' element={<FinalizarCompra />} />
       </Routes>
     </div>
     </BrowserRouter>

@@ -12,6 +12,7 @@ import AccederTiendaClienteView from '../views/AccederTiendaClienteView';
 import AccederTiendaAdminView from '../views/AccederTiendaAdminView';
 import IngresarDireccionView from '../views/AddAdressView';
 import CarritoView from '../views/CarritoView';
+import FinalizarCompraView from '../views/FinishPurchaseView';
 
 
 function AgregarProducto() {
@@ -701,4 +702,19 @@ function Carrito({ carrito, removeFromCart }) {
   );
 }
 
-export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito};
+const FinalizarCompra = () => {
+  const [compobante, setComprobante] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state && location.state.correo;
+
+  return (
+    <FinalizarCompraView
+      compobante={compobante}
+      navigate={navigate}
+      email={email}
+    />
+  );
+}
+
+export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito,FinalizarCompra};
