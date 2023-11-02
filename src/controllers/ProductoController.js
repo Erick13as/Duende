@@ -450,6 +450,8 @@ const IngresarDireccion = () => {
   const [distritos, setDistritos] = useState([]);
   const [distritoSeleccionado, setDistritoSeleccionado] = useState('');
   const [detalles, setDetalles] = useState('');
+  const location = useLocation();
+  const email = location.state && location.state.correo;
 
   const handleContinuar = async (e) => {
     //estoy probando si se guarda la provincia seleccionada. Aquí navega a la siguiente pantalla pero no estoy seguro cuál es.
@@ -543,6 +545,7 @@ const IngresarDireccion = () => {
     distritoSeleccionado={distritoSeleccionado}
     detalles={detalles}
     setDetalles={setDetalles}
+    email={email}
 
     />
   );
@@ -670,7 +673,7 @@ function Carrito({ carrito, removeFromCart }) {
   };
   
   const finalizarCompra = () => {
-    navigate('/ingresarDireccion');
+    navigate('/ingresarDireccion', { state: { correo: email } });
   };
 
   useEffect(() => {

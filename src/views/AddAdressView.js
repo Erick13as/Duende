@@ -14,6 +14,7 @@ function IngresarDireccionView(props) {
         distritoSeleccionado,
         detalles,
         setDetalles,
+        email,
 
     } = props;
 
@@ -22,7 +23,7 @@ function IngresarDireccionView(props) {
             <form className='formTopOA'>
                 <div>
                     <button onClick={()=>navigate('/galeriaCliente')} className='botonOA'>Inicio</button>
-                    <button onClick={() => navigate('/AccederTiendaCliente')} className='botonOA'>Tienda</button>     
+                    <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>     
                 </div>
                 <div className="botonBarra-container">
                     <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
