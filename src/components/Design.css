@@ -1149,6 +1149,10 @@ p {
   .button-space {
     margin-right: 10px; /* Puedes ajustar el valor según tus preferencias de espacio */
   }
+
+  .button-space-tienda {
+    margin-right: -1000px; /* Puedes ajustar el valor según tus preferencias de espacio */
+  }
   
   .buttons:hover {
     background-color: #0056b3;

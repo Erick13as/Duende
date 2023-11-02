@@ -20,6 +20,7 @@ function AccederTiendaClienteView(props) {
         <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/')}>
           Ordenes
         </button>
+        <span className="button-space-tienda"></span>
         <button className="header-button" id="carrito-button" onClick={navigateToCarrito}>
           Mi Carrito
         </button>
