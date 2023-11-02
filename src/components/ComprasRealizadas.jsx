@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function ListaOrdenes() {
   const [ordenes, setOrdenes] = useState([]);
   const [selectedOrden, setSelectedOrden] = useState(null);
   const { userId } = useParams();
+  const navigate = useNavigate();
 
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
   useEffect(() => {
     const q = query(collection(db, 'orden'), where('idCliente', '==', userId));
     getDocs(q)
@@ -44,7 +48,7 @@ function ListaOrdenes() {
           <li key={orden.id} className="orden-container">
             <p>Número de Orden: {orden.numeroOrden}</p>
             <p>Fecha de Emisión: {orden.fechaEmision}</p>
-            <button className="header-buttonProducto" onClick={() => handleOrdenSelection(orden.id)}>Seleccionar Orden</button>
+            <button className="header-buttonProducto" onClick={() => handleNavigate(`/Orden/${orden.numeroOrden}`)}>Seleccionar Orden</button>
           </li>
         ))}
       </ul>
