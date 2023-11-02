@@ -780,6 +780,15 @@ p {
     border-radius: 8px;
   }
 
+  .formCC div {
+  margin-bottom: 10px; /* Agrega un espacio en blanco de 10px debajo de cada div dentro del formulario */
+}
+
+.espaciado {
+  border-bottom: 1px solid #ccc; /* Agrega un separador en la parte inferior de cada div */
+  padding-bottom: 10px; /* Opcional: agrega espacio en blanco debajo del separador */
+}
+
   .formCCC {
     display: flex;
     flex-direction: column;

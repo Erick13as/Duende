@@ -31,14 +31,14 @@ function FinalizarCompraView(props) {
                         <p>$ 100</p> 
                     </form>
 
+                   
+                    <div className="espaciado"></div>
                     <h4 className='text'>Adjunta imagen del comprobante de pago.</h4>
-                    <div>
-
-                    </div>
                     <label for="fileInput" class="custom-file-upload">
                         <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} />
                         Subir archivo
                     </label>
+                    <div className="espaciado"></div>
 
                     <div>
                         <button onClick={handleContinuar} className='botonOOA'>
