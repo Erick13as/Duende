@@ -6,13 +6,15 @@ function VerMasClienteView(props) {
         isInCart,
         handleAddToCart,
         handleNavigate,
+        navigate,
+        email,
     } = props;
     
     return (
         <div className="vmasC-container">
         {/* Barra de navegación */}
         <div className="header-containerVerMas">
-            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaCliente')}>
+            <button className="header-button inicio-button" onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })}>
             Inicio
             </button>
             <button className="header-button" id="ordenes-button">

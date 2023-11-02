@@ -264,7 +264,6 @@ function VerMasCliente() {
   const handleNavigate = (route) => {
     navigate(route);
   };
-  console.log(email)
   useEffect(() => {
     const q = collection(db, 'productos');
 
@@ -289,12 +288,13 @@ function VerMasCliente() {
   }, [id, productos]);
 
   useEffect(() => {
-    if (id) {
-      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
-      getDoc(carritoDocRef)
-        .then((carritoDoc) => {
-          if (carritoDoc.exists()) {
-            const carritoData = carritoDoc.data();
+    if (id && email) {
+      const carritoCollectionRef = collection(db, 'carrito');
+      const q = query(carritoCollectionRef, where('correo', '==', email));
+      getDocs(q)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const carritoData = doc.data();
             const listaIdCantidadProductos =
               carritoData.listaIdCantidadProductos || [];
 
@@ -305,13 +305,13 @@ function VerMasCliente() {
             if (productIndex !== -1) {
               setIsInCart(true);
             }
-          }
+          });
         })
         .catch((error) => {
           console.error('Error al verificar el producto en el carrito', error);
         });
     }
-  }, [id]);
+  }, [id, email]);
 
   const handleAddToCart = async () => {
     if (product) {
@@ -367,6 +367,8 @@ function VerMasCliente() {
         setIsInCart={setIsInCart}
         handleAddToCart={handleAddToCart}
         handleNavigate={handleNavigate}
+        navigate={navigate}
+        email={email}
     />
   );
 }

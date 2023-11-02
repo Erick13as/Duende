@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  doc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 function Carrito({ carrito, removeFromCart }) {
   const [carritoData, setCarritoData] = useState([]);
-  const [total] = useState(0);
+  const [total, setTotal] = useState(0);
   const [productData, setProductData] = useState([]);
+  const location = useLocation();
+  const email = location.state && location.state.correo;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (carrito) {
-      const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
-      getDoc(carritoDocRef)
-        .then((carritoDoc) => {
-          if (carritoDoc.exists()) {
-            const carritoData = carritoDoc.data();
+    if (email) {
+      const carritoQuery = query(collection(db, 'carrito'), where('correo', '==', email));
+      getDocs(carritoQuery)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const carritoData = querySnapshot.docs[0].data();
             setCarritoData(carritoData.listaIdCantidadProductos || []);
           }
         })
@@ -21,12 +32,12 @@ function Carrito({ carrito, removeFromCart }) {
           console.error('Error al cargar el carrito desde la base de datos', error);
         });
     }
-  }, [carrito]);
-  
+  }, [email]);
+
   useEffect(() => {
-    if (carritoData.length > 0) { // Asegurarse de que carritoData tenga elementos
+    if (carritoData.length > 0) {
       const productIds = carritoData.map((item) => item.id);
-      if (productIds.length > 0) { // Asegurarse de que productIds no esté vacío
+      if (productIds.length > 0) {
         const productQuery = query(collection(db, 'productos'), where('id', 'in', productIds));
         getDocs(productQuery)
           .then((querySnapshot) => {
@@ -46,7 +57,7 @@ function Carrito({ carrito, removeFromCart }) {
   const handleQuantityChange = async (id, amount) => {
     if (amount < 1) return;
 
-    const carritoDocRef = doc(db, 'carrito', '1'); // Reemplaza 'ID_DEL_USUARIO' por el ID de usuario
+    const carritoDocRef = doc(db, 'carrito', '1');
     const newCarritoData = carritoData.map((item) => {
       if (item.id === id) {
         item.cantidad = amount;
@@ -63,8 +74,25 @@ function Carrito({ carrito, removeFromCart }) {
     }
   };
 
+  useEffect(() => {
+    const newTotal = carritoData.reduce((acc, item) => {
+      const product = productData.find((p) => p.id === item.id);
+      if (product) {
+        acc += product.precio * item.cantidad;
+      }
+      return acc;
+    }, 0);
+    setTotal(newTotal);
+  }, [carritoData, productData]);
+
   return (
-    <div className="carrito-container" style={{ backgroundColor: 'white', padding: '20px', textAlign: 'center' }}>
+    <div className="carrito-container">
+      <form className="formBarra">
+        <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Inicio</button>
+        <div className="botonBarra-container">
+          <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       <h2>Carrito de Compras</h2>
       <table className="carrito-table" style={{ margin: '0 auto' }}>
         <thead>
@@ -80,7 +108,9 @@ function Carrito({ carrito, removeFromCart }) {
             const product = productData.find((p) => p.id === item.id);
             return (
               <tr key={item.id}>
-                <td>{product ? <img className="carrito-product-img" src={product.imagen} alt={product.nombre} /> : 'N/A'}</td>
+                <td>
+                  {product ? <img className="carrito-product-img" src={product.imagen} alt={product.nombre} /> : 'N/A'}
+                </td>
                 <td>{product ? product.descripcion : 'N/A'}</td>
                 <td>
                   <div className="carrito-product-actions">
