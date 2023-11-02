@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs, onSnapshot, doc, updateDoc, where, deleteDoc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import {
-  onSnapshot,
-  doc,
-  getDoc,
-  updateDoc, where, deleteDoc,arrayUnion // Agregamos deleteDoc para eliminar productos
-} from 'firebase/firestore';
 import AgregarProductoView from '../views/AgregarProductoView';
 import EditarProductoAdminView from '../views/EditarProductoAdminView';
 import VerMasClienteView from '../views/VerMasClienteView';
 import AccederTiendaClienteView from '../views/AccederTiendaClienteView'; 
 import AccederTiendaAdminView from '../views/AccederTiendaAdminView';
 import IngresarDireccionView from '../views/AddAdressView';
+import CarritoView from '../views/CarritoView';
 
 
 function AgregarProducto() {
@@ -477,6 +471,7 @@ const IngresarDireccion = () => {
     if (cantonSeleccionado !== '') {
       obtenerDistritos(provinciaSeleccionada, cantonSeleccionado);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cantonSeleccionado]);
 
   const obtenerProvincias = () => {
@@ -554,4 +549,153 @@ const IngresarDireccion = () => {
 
 }
 
-export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion};
+function Carrito({ carrito, removeFromCart }) {
+  const [carritoData, setCarritoData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [productData, setProductData] = useState([]);
+  const location = useLocation();
+  const email = location.state && location.state.correo;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (email) {
+      const carritoQuery = query(collection(db, 'carrito'), where('correo', '==', email));
+      getDocs(carritoQuery)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const carritoData = querySnapshot.docs[0].data();
+            setCarritoData(carritoData.listaIdCantidadProductos || []);
+          }
+        })
+        .catch((error) => {
+          console.error('Error al cargar el carrito desde la base de datos', error);
+        });
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (carritoData.length > 0) {
+      const productIds = carritoData.map((item) => item.id);
+      if (productIds.length > 0) {
+        const productQuery = query(collection(db, 'productos'), where('id', 'in', productIds));
+        getDocs(productQuery)
+          .then((querySnapshot) => {
+            const products = [];
+            querySnapshot.forEach((doc) => {
+              products.push(doc.data());
+            });
+            setProductData(products);
+          })
+          .catch((error) => {
+            console.error('Error al cargar la información de los productos', error);
+          });
+      }
+    }
+  }, [carritoData]);
+
+  const handleQuantityChange = async (id, amount) => {
+    if (amount <= 0) {
+      // Si la cantidad es igual o menor que 0, elimina el producto del carrito y de la colección de Firebase.
+      const updatedCarritoData = carritoData.filter((item) => item.id !== id);
+      setCarritoData(updatedCarritoData);
+  
+      try {
+        const carritoQuery = query(collection(db, 'carrito'), where('correo', '==', email));
+        const carritoQuerySnapshot = await getDocs(carritoQuery);
+  
+        if (carritoQuerySnapshot.size === 0) {
+          console.log("No se encontró un carrito para el correo electrónico proporcionado.");
+          return;
+        }
+  
+        // Supongo que solo hay un documento 'carrito' por correo electrónico, por lo que tomo el primero.
+        const carritoDoc = carritoQuerySnapshot.docs[0];
+  
+        // Elimina el producto del documento 'carrito' en la colección de Firebase.
+        const carritoData = carritoDoc.data();
+        const newCarritoData = carritoData.listaIdCantidadProductos.filter((item) => item.id !== id);
+  
+        // Actualiza el documento 'carrito' en la colección de Firebase sin el producto eliminado.
+        await updateDoc(carritoDoc.ref, {
+          listaIdCantidadProductos: newCarritoData,
+        });
+  
+        // Elimina el producto de la colección 'productos' en Firebase (opcional).
+        // Si deseas mantener un registro de productos eliminados, puedes omitir esta parte.
+        const productRef = doc(collection(db, 'productos'), id);
+        await deleteDoc(productRef);
+      } catch (error) {
+        console.error('Error al eliminar el producto del carrito y la colección de Firebase', error);
+      }
+    } else {
+      // Si la cantidad es mayor que 0, actualiza la cantidad en el carrito.
+      const updatedCarritoData = carritoData.map((item) => {
+        if (item.id === id) {
+          item.cantidad = amount;
+        }
+        return item;
+      });
+      setCarritoData(updatedCarritoData);
+  
+      // Actualiza la cantidad en la lista de productos dentro del documento de carrito en Firebase.
+      try {
+        const carritoQuery = query(collection(db, 'carrito'), where('correo', '==', email));
+        const carritoQuerySnapshot = await getDocs(carritoQuery);
+  
+        if (carritoQuerySnapshot.size === 0) {
+          console.log("No se encontró un carrito para el correo electrónico proporcionado.");
+          return;
+        }
+  
+        // Supongo que solo hay un documento 'carrito' por correo electrónico, por lo que tomo el primero.
+        const carritoDoc = carritoQuerySnapshot.docs[0];
+  
+        // Actualiza el producto en la lista de productos dentro del documento de carrito en la colección de Firebase.
+        const carritoData = carritoDoc.data();
+        const newCarritoData = carritoData.listaIdCantidadProductos.map((item) => {
+          if (item.id === id) {
+            item.cantidad = amount;
+          }
+          return item;
+        });
+  
+        // Actualiza el documento 'carrito' en la colección de Firebase con la cantidad actualizada.
+        await updateDoc(carritoDoc.ref, {
+          listaIdCantidadProductos: newCarritoData,
+        });
+      } catch (error) {
+        console.error('Error al actualizar la cantidad en la colección de Firebase', error);
+      }
+    }
+  };
+  
+  const finalizarCompra = () => {
+    navigate('/ingresarDireccion');
+  };
+
+  useEffect(() => {
+    const newTotal = carritoData.reduce((acc, item) => {
+      const product = productData.find((p) => p.id === item.id);
+      if (product) {
+        acc += product.precio * item.cantidad;
+      }
+      return acc;
+    }, 0);
+    setTotal(newTotal);
+  }, [carritoData, productData]);
+
+  return (
+    <CarritoView
+    navigate={navigate}
+    email={email}
+    carritoData={carritoData}
+    productData={productData}
+    total={total}
+    finalizarCompra={finalizarCompra}
+    handleQuantityChange={handleQuantityChange}
+
+    />
+  );
+}
+
+export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito};
