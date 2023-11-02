@@ -715,8 +715,45 @@ function Carrito({ carrito, removeFromCart }) {
     }
   };
   
-  const finalizarCompra = () => {
-    navigate('/ingresarDireccion', { state: { correo: email } });
+  const handlefinalizarCompra = async () => {
+    const carritoQuery = query(collection(db, 'carrito'), where('correo', '==', email));
+
+    try {
+      const carritoQuerySnapshot = await getDocs(carritoQuery);
+
+      if (carritoQuerySnapshot.empty) {
+        console.error('No se encontró un carrito para el correo electrónico proporcionado.');
+        return;
+      }
+
+      // Supongo que solo hay un documento 'carrito' por correo electrónico, por lo que tomo el primero.
+      const carritoDoc = carritoQuerySnapshot.docs[0];
+
+      // Obtiene el carrito actual
+      const carritoData = carritoDoc.data();
+      const listaIdCantidadProductos = carritoData.listaIdCantidadProductos;
+
+      // Calcula el nuevo total de la compra
+      const newTotal = listaIdCantidadProductos.reduce((acc, item) => {
+        const product = productData.find((p) => p.id === item.id);
+        if (product) {
+          acc += product.precio * item.cantidad;
+        }
+        return acc;
+      }, 0);
+
+      // Actualiza el total en el documento 'carrito' en la colección de Firebase
+      await updateDoc(carritoDoc.ref, {
+        total: newTotal,
+      });
+
+      console.log('Total de la compra actualizado con éxito en el carrito:', newTotal);
+
+      // Redirige a la página de ingresar dirección
+      navigate('/ingresarDireccion', { state: { correo: email } });
+    } catch (error) {
+      console.error('Error al finalizar la compra y actualizar el total en el carrito:', error);
+    }
   };
 
   useEffect(() => {
@@ -737,7 +774,7 @@ function Carrito({ carrito, removeFromCart }) {
     carritoData={carritoData}
     productData={productData}
     total={total}
-    finalizarCompra={finalizarCompra}
+    finalizarCompra={handlefinalizarCompra}
     handleQuantityChange={handleQuantityChange}
 
     />
@@ -745,7 +782,7 @@ function Carrito({ carrito, removeFromCart }) {
 }
 
 const FinalizarCompra = () => {
-  const [compobante, setComprobante] = useState([]);
+  const [comprobante, setComprobante] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state && location.state.correo;
@@ -766,7 +803,7 @@ const FinalizarCompra = () => {
 
   return (
     <FinalizarCompraView
-      compobante={compobante}
+      comprobante={comprobante}
       navigate={navigate}
       email={email}
       handleContinuar={handleContinuar}
