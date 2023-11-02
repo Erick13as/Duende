@@ -106,7 +106,6 @@ function AgregarProducto() {
   
 }
 
-
 function EditarProductoAdmin() {
   const { id } = useParams();
   const [productos, setProductos] = useState([]);
@@ -245,7 +244,6 @@ function EditarProductoAdmin() {
     />
   );
 }
-
 
 function VerMasCliente() {
   const location = useLocation();
@@ -396,7 +394,7 @@ function AccederTiendaCliente() {
   };
 
   const navigateToCarrito = () => {
-    navigate('/carrito', { state: { correo: email } });
+    navigate('/Carrito', { state: { correo: email } });
   };
 
   return (
@@ -409,6 +407,7 @@ function AccederTiendaCliente() {
     />
   );
 }
+
 function AccederTiendaAdmin() {
   /*const [model, setModel] = useState(new ProductModel());*/
   const [productos, setProductos] = useState([]);

@@ -12,18 +12,13 @@ function VerMasClienteView(props) {
     
     return (
         <div className="vmasC-container">
-        {/* Barra de navegación */}
-        <div className="header-containerVerMas">
-            <button className="header-button inicio-button" onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })}>
-            Inicio
-            </button>
-            <button className="header-button" id="ordenes-button">
-            Ordenes
-            </button>
-            <button className="header-button" id="carrito-button">
-            Mi Carrito
-            </button>
-        </div>
+        <form className="formBarra">
+            <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
+            <div className="botonBarra-container">
+                <button onClick={() => handleNavigate('/')} className='botonOA2'>Ordenes</button>
+                <button onClick={() => navigate('/Carrito', { state: { correo: email } })} className='botonOA2'>Mi Carrito</button>
+            </div>
+        </form>
 
         <div className="image-info-container">
             <div className="image-button-container">

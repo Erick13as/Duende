@@ -14,7 +14,7 @@ function CarritoView(props) {
 return (
     <div className="carrito-container">
         <form className="formBarra">
-        <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Inicio</button>
+        <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
         <div className="botonBarra-container">
             <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
         </div>

@@ -12,20 +12,14 @@ function AccederTiendaClienteView(props) {
 
   return (
     <div className="main_page-container">
-      {/* Contenedor rectangular en la parte superior con tres botones */}
-      <div className="header-container">
-        <button className="header-button inicio-button" id="inicio-button" onClick={() => handleNavigate('/duende')}>
-          Inicio
-        </button>
-        <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/')}>
-          Ordenes
-        </button>
-        <span className="button-space-tienda"></span>
-        <button className="header-button" id="carrito-button" onClick={navigateToCarrito}>
-          Mi Carrito
-        </button>
-      </div>
-
+      <form className="formBarra">
+        <button onClick={()=>navigate('/galeriaCliente', { state: { correo: email } })} className='botonOA'>Galería</button>
+        <div className="botonBarra-container">
+            <button onClick={() => handleNavigate('/')} className='botonOA2'>Ordenes</button>
+            <button onClick={navigateToCarrito} className='botonOA2'>Mi Carrito</button>
+            <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       
 
       <div>
