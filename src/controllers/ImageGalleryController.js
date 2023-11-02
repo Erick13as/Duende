@@ -1288,6 +1288,7 @@ function InfoImagenCliente() {
     newImage={newImage}
     handleImageChange={handleImageChange}
     handleVerInfo={handleVerInfo}
+    email={email}
     />
     
   );
@@ -1402,6 +1403,7 @@ const EnviarReferencia = () => {
       handleCambiarClick={handleCambiarClick}
       handleImageChange={handleImageChange}
       handleEnviarRef={handleEnviarRef}
+      email={email}
       />
     );
 

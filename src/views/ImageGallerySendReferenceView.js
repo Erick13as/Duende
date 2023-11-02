@@ -8,13 +8,14 @@ function SendReferenceView(props) {
         handleCambiarClick,
         handleImageChange,
         handleEnviarRef,
+        email,
 
     } = props;
 
     return (
         <div className="info-container">
           <form className='formTopOA'>
-            <button onClick={() => navigate('/AccederTiendaCliente')} className='botonOA'>Tienda</button>
+            <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
             <div className="botonBarra-container">
               <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
             </div>
