@@ -474,6 +474,16 @@ p {
   height: 100vh; /* Ocupa toda la altura de la ventana */
   width: 100%; /* Ancho del carrusel igual al 100% */
 }
+.compra-container {
+  background-image: url('../../public/backgroundImage.jpg');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  background-position: center;
+  background-attachment: fixed;
+}
 .vmasC-container {
   background-image: url('../../public/backgroundImage.jpg');
   background-size: cover;
