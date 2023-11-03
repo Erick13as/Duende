@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 function DetallesOrden() {
   const { numeroOrden } = useParams();
   const [orden, setOrden] = useState(null);
   const [productos, setProductos] = useState([]);
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state && location.state.correo;
 
   const handleNavigate = (route) => {
     navigate(route);
@@ -71,6 +73,12 @@ function DetallesOrden() {
 
 return (
     <div className="vmasC-container">
+      <form className="formBarra">
+        <button onClick={()=>navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+            <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       {orden && (
         <div>
           <h1>Número de Orden: {orden.numeroOrden}</h1>
