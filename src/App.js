@@ -6,8 +6,7 @@ import "./components/Design.css"
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
 import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito,FinalizarCompra} from './controllers/ProductoController';
-import { CerrarCompra,OrdenesPendientes} from './controllers/CompraController';
-import ComprasRealizadas from './components/ComprasRealizadas';
+import { CerrarCompra, OrdenesPendientes, ListaOrdenes} from './controllers/CompraController';
 import Orden from './components/Orden';
 
 // import Agenda from './components/Agenda';
@@ -50,7 +49,7 @@ const App = () => {
         <Route path='/OrdenesPendientes' element={<OrdenesPendientes />}  />
         <Route path='/CerrarCompra/:id'element={<CerrarCompra />}  />
         <Route path='/ingresarDireccion' element={<IngresarDireccion />} />
-        <Route path='/ComprasRealizadas/:userId'element={<ComprasRealizadas />}  />
+        <Route path='/ComprasRealizadas/:userId'element={<ListaOrdenes />}  />
         <Route path='/finalizarCompra' element={<FinalizarCompra />} />
         <Route path='/Orden/:numeroOrden'element={<Orden />}  />
       </Routes>

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { Link } from 'react-router-dom'; // Importa Link desde react-router-dom
+import { Link, useLocation, useParams, useNavigate } from 'react-router-dom'; // Importa Link desde react-router-dom
 import CerrarCompraView from '../views/CerrarCompraView';
 import OrdenesPendientesView from '../views/OrdenesPendientesView';
-import { useParams } from 'react-router-dom';
-import {  doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import ListaOrdenesView from '../views/ComprasRealizadasView';
 
 function CerrarCompra() {
     const { id } = useParams();
@@ -129,7 +127,57 @@ function OrdenesPendientes() {
         handleNavigate={handleNavigate}
     />
     );
-  }
+}
   
+  function ListaOrdenes() {
+    const [ordenes, setOrdenes] = useState([]);
+    const [selectedOrden, setSelectedOrden] = useState(null);
+    const { userId } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const email = location.state && location.state.correo;
   
-export {CerrarCompra,OrdenesPendientes};
+    const handleNavigate = (route) => {
+      navigate(route);
+    };
+    useEffect(() => {
+      const q = query(collection(db, 'orden'), where('idCliente', '==', userId));
+      getDocs(q)
+        .then((querySnapshot) => {
+          const ordenesData = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            // Convierte el timestamp a una cadena de texto con el formato deseado (por ejemplo, 'yyyy-MM-dd')
+            const fechaEmision = data.fechaEmision.toDate(); // Convierte el timestamp a un objeto Date
+            const fechaEmisionFormateada = fechaEmision.toLocaleDateString(); // Formatea la fecha
+            ordenesData.push({
+              id: doc.id,
+              numeroOrden: data.numeroOrden,
+              fechaEmision: fechaEmisionFormateada, // Usa la fecha formateada
+              idCliente: data.idCliente,
+            });
+          });
+          setOrdenes(ordenesData);
+        })
+        .catch((error) => {
+          console.error('Error al obtener las órdenes:', error);
+        });
+    }, [userId]);
+  
+    const handleOrdenSelection = (ordenId) => {
+      setSelectedOrden(ordenId);
+    };
+  
+    return (
+      <ListaOrdenesView
+      navigate={navigate}
+      ordenes={ordenes}
+      selectedOrden={selectedOrden}
+      email={email}
+  />
+  );
+}
+
+
+  
+export {CerrarCompra,OrdenesPendientes,ListaOrdenes};
