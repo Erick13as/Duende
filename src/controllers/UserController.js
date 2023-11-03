@@ -74,17 +74,37 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const navigate = useNavigate();
   
-    const agregarDatos = async() => {        
+    const agregarDatos = async () => {
       try {
-        const docRef = await addDoc(collection(db, "usuario"), {
-          correo: email,
-          nombreCompleto: name,
-          rol: "Cliente",
-        });
-      
-        console.log("Document written with ID: ", docRef.id);
+          // Consulta para obtener el último ID existente
+          const querySnapshot = await getDocs(collection(db, "usuario"));
+          let lastId = 0;
+
+          querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              // Asegúrate de que el campo "id" sea un número
+              if (!isNaN(data.id)) {
+                  const id = parseInt(data.id);
+                  if (id > lastId) {
+                      lastId = id;
+                  }
+              }
+          });
+
+          // Calcula el nuevo ID
+          const newId = (lastId + 1).toString();
+
+          // Agrega un nuevo documento con el nuevo ID
+          const docRef = await addDoc(collection(db, "usuario"), {
+              id: newId, // Agrega el nuevo ID
+              correo: email,
+              nombreCompleto: name,
+              rol: "Cliente",
+          });
+
+          console.log("Document written with ID: ", docRef.id);
       } catch (e) {
-        console.error("Error adding document: ", e);
+          console.error("Error adding document: ", e);
       }
     }
   
