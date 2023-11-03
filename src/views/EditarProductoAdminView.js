@@ -24,17 +24,14 @@ function EditarProductoAdmin(props) {
     
     return (
         <div className="vmasC-container">
-          <div className="header-container">
-            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdmin')}>
-              Inicio
-            </button>
-            <button className="header-button" id="ordenes-button" onClick={() => handleNavigate('/OrdenesPendientes')}>
-              Gestion Ordenes
-            </button>
-            <button className="header-button" id="carrito-button" onClick={() => handleNavigate('/AgregarProducto')}>
-              Añadir Producto
-            </button>
-          </div>
+          <form className="formBarra">
+        <button onClick={()=>handleNavigate('/AccederTiendaAdmin')} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+            <button onClick={() => handleNavigate('/OrdenesPendientes')} className='botonOA2'>Gestión Ordenes</button>
+            <button onClick={() => handleNavigate('/AgregarProducto')} className='botonOA2'>Añadir Producto</button>
+            <button onClick={() => handleNavigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
     
           <div className="image-info-container">
             <div className="image-button-container">

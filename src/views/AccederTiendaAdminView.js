@@ -9,19 +9,14 @@ function AccederTiendaAdminView(props) {
 
   return (
     <div className="main_page-container">
-      {/* Contenedor rectangular en la parte superior con tres botones */}
-      <div className="header-container">
-        <button className="header-button inicio-button" id="inicio-buttonAdmin" onClick={() => handleNavigate('/duende')}>
-          Inicio
-        </button>
-        <button className="header-button" id="ordenes-buttonAdmin" onClick={() => handleNavigate('/OrdenesPendientes')}>
-          Gestión Ordenes
-        </button>
-        <button className="header-button" id="carrito-buttonAdmin" onClick={() => handleNavigate('/AgregarProducto')}>
-          Añadir Producto
-        </button>
-      </div>
-
+      <form className="formBarra">
+        <button onClick={()=>handleNavigate('/galeriaAdmin')} className='botonOA'>Galería</button>
+        <div className="botonBarra-container">
+            <button onClick={() => handleNavigate('/OrdenesPendientes')} className='botonOA2'>Gestión Ordenes</button>
+            <button onClick={() => handleNavigate('/AgregarProducto')} className='botonOA2'>Añadir Producto</button>
+            <button onClick={() => handleNavigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       
 
       <div>

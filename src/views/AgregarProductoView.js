@@ -24,12 +24,13 @@ function AgregarProductoView(props) {
 return (
     <div className="main-containerProduct">
       
-      <div className="header-containerProducto">
-        <button className="header-buttonProducto"onClick={() => handleNavigate('/AccederTiendaAdmin')}>
-          Inicio</button>
-        <button className="header-buttonProducto" onClick={() => handleNavigate('/OrdenesPendientes')} >
-          Gestión de Órdenes</button>
-      </div>
+      <form className="formBarra">
+        <button onClick={()=>handleNavigate('/AccederTiendaAdmin')} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+            <button onClick={() => handleNavigate('/OrdenesPendientes')} className='botonOA2'>Gestión Ordenes</button>
+            <button onClick={() => handleNavigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       <div className="subir_producto-container">
         <form className="formUploadProducto">
           <h1 className="titleSubirProducto">Nuevo Producto</h1>
