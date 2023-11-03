@@ -3,6 +3,7 @@ import { collection, addDoc, serverTimestamp, query, orderBy, limit, getDocs, on
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/firebaseConfig';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import Modal from 'react-modal'; // Importa react-modal
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import AgregarProductoView from '../views/AgregarProductoView';
@@ -14,6 +15,7 @@ import IngresarDireccionView from '../views/AddAdressView';
 import CarritoView from '../views/CarritoView';
 import FinalizarCompraView from '../views/FinishPurchaseView';
 
+Modal.setAppElement('#root');
 
 function AgregarProducto() {
   const [productName, setProductName] = useState('');
@@ -787,29 +789,128 @@ const FinalizarCompra = () => {
   const location = useLocation();
   const email = location.state && location.state.correo;
   const [image, setImage] = useState(null);
+  const [totalCompra, setTotalCompra] = useState(0);
+  const [provincia, setProvincia] = useState('');
+  const [selectedImageURL, setSelectedImageURL] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const calcularMontoAdicional = (provincia) => {
+    switch (provincia) {
+      case 'San José':
+        return 5;
+      case 'Alajuela':
+        return 10;
+      case 'Cartago':
+        return 15;
+      case 'Heredia':
+        return 20;
+      case 'Guanacaste':
+        return 25;
+      case 'Puntarenas':
+        return 30;
+      case 'Limón':
+        return 35;
+      default:
+        return 0;
+    }
+  };
+
+  useEffect(() => {
+    if (email) {
+      // Tu lógica para calcular el total de la compra y la provincia aquí
+      const carritoCollection = collection(db, 'carrito');
+      const q = query(carritoCollection, where('correo', '==', email));
+      getDocs(q)
+        .then((querySnapshot) => {
+          let total = 0;
+          querySnapshot.forEach((doc) => {
+            total += doc.data().total;
+          });
+
+          const direccionCollection = collection(db, 'direccion');
+          const direccionQuery = query(direccionCollection, where('email', '==', email));
+          getDocs(direccionQuery)
+            .then((direccionSnapshot) => {
+              direccionSnapshot.forEach((direccionDoc) => {
+                const provincia = direccionDoc.data().provincia;
+                const montoAdicional = calcularMontoAdicional(provincia);
+                setTotalCompra(total + montoAdicional);
+                setProvincia(provincia);
+              });
+            })
+            .catch((error) => {
+              console.error('Error obteniendo la provincia:', error);
+            });
+        })
+        .catch((error) => {
+          console.error('Error obteniendo el total de la compra:', error);
+        });
+    }
+  }, [email]);
 
   const handleContinuar = async (e) => {
-    //Aquí navega a la siguiente pantalla. De momento no hace nada útil.
     e.preventDefault();
-    console.log(email);
-  }
+
+    if (image) {
+      const imageName = `imagen/${image.name}`;
+      const imageRef = ref(storage, imageName);
+
+      try {
+        await uploadBytes(imageRef, image);
+        const imageURL = await getDownloadURL(imageRef);
+
+        const facturaCollection = collection(db, 'factura');
+        const newFacturaDoc = await addDoc(facturaCollection, {
+          comprobante: imageURL,
+          email: email,
+          totalCompra: totalCompra,
+          direccionEntrega: provincia,
+        });
+
+        console.log('Imagen subida exitosamente. URL de la imagen:', imageURL);
+
+        // Aquí puedes realizar otras acciones relacionadas con la factura si es necesario.
+        setShowSuccessModal(true);
+
+      } catch (error) {
+        console.error('Error al subir la imagen:', error);
+      }
+    } else {
+      console.error('No se ha seleccionado una imagen.');
+    }
+  };
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
     if (selectedImage) {
+      const imageURL = URL.createObjectURL(selectedImage);
+      setSelectedImageURL(imageURL);
       setImage(selectedImage);
     }
   };
 
+  const redirectToTienda = () => {
+    navigate('/AccederTiendaCliente', { state: { correo: email } }); // Ajusta la ruta según tu estructura de rutas
+  };
+
   return (
-    <FinalizarCompraView
-      comprobante={comprobante}
-      navigate={navigate}
-      email={email}
-      handleContinuar={handleContinuar}
-      handleImageChange={handleImageChange}
-    />
+    <div>
+      <FinalizarCompraView
+        comprobante={comprobante}
+        navigate={navigate}
+        email={email}
+        handleContinuar={handleContinuar}
+        handleImageChange={handleImageChange}
+        totalCompra={totalCompra}
+        provincia={provincia}
+        selectedImageURL={selectedImageURL}
+        Modal={Modal}
+        showSuccessModal={showSuccessModal}
+        setShowSuccessModal={setShowSuccessModal}
+        redirectToTienda={redirectToTienda}
+      />
+    </div>
   );
-}
+};
 
 export {AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito,FinalizarCompra};
