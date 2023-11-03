@@ -894,23 +894,26 @@ const FinalizarCompra = () => {
         await uploadBytes(imageRef, image);
         const imageURL = await getDownloadURL(imageRef);
   
-        // Obtener la fecha actual
         const fechaEmision = serverTimestamp();
-        // Calcular la fecha de entrega como una semana después de la fecha actual
         const fechaEntrega = new Date();
         fechaEntrega.setDate(fechaEntrega.getDate() + 7);
   
-        const carritoCollection = collection(db, 'carrito'); // Reemplaza 'carritos' con el nombre de tu colección de carritos
+        const carritoCollection = collection(db, 'carrito');
         const carritoQuery = query(carritoCollection, where('correo', '==', email));
         const carritoSnapshot = await getDocs(carritoQuery);
   
+        const userCollection = collection(db, 'usuario');
+        const userQuery = query(userCollection, where('correo', '==', email));
+        const userSnapshot = await getDocs(userQuery);
+  
         if (!carritoSnapshot.empty) {
-          // Supongamos que solo haya un carrito por usuario, de lo contrario, debes manejar múltiples resultados.
           const carritoDoc = carritoSnapshot.docs[0];
           const carritoData = carritoDoc.data();
   
-          // Ahora, puedes agregar el atributo 'ListaProductos' del carrito a la factura.
-          const facturaCollection = collection(db, 'factura');
+          const userDoc = userSnapshot.docs[0];
+          const userData = userDoc.data();
+  
+          const facturaCollection = collection(db, 'orden');
           const newFacturaDoc = await addDoc(facturaCollection, {
             comprobante: imageURL,
             email: email,
@@ -920,18 +923,29 @@ const FinalizarCompra = () => {
             fechaEntrega: fechaEntrega,
             estado: "pendiente",
             numeroOrden: uniqueNumeroOrden,
-            ListaProductos: carritoData.listaIdCantidadProductos, // Agrega la lista de productos del carrito a la factura
+            ListaProductos: carritoData.listaIdCantidadProductos,
+            idCliente: "C" + userData.id,
           });
   
           console.log('Imagen subida exitosamente. URL de la imagen:', imageURL);
   
+          if (carritoData.listaIdCantidadProductos) {
+            // Eliminar el carrito encontrado en la base de datos
+            const carritoId = carritoDoc.id;
+            const carritoRef = doc(db, 'carrito', carritoId);
+            await deleteDoc(carritoRef);
+            console.log('Carrito eliminado con éxito.');
+          } else {
+            console.error('No se encontró un carrito para el usuario actual.');
+          }
+          
           // Aquí puedes realizar otras acciones relacionadas con la factura si es necesario.
           setShowSuccessModal(true);
         } else {
           console.error('No se encontró un carrito para el usuario actual.');
         }
       } catch (error) {
-        console.error('Error al subir la imagen:', error);
+        console.error('Error al subir la imagen o eliminar el carrito:', error);
       }
     } else {
       console.error('No se ha seleccionado una imagen.');
