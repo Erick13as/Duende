@@ -377,34 +377,50 @@ function VerMasCliente() {
 }
 
 function AccederTiendaCliente() {
-  /*const [model, setModel] = useState(new ProductModel());*/
   const location = useLocation();
   const email = location.state && location.state.correo;
   const [productos, setProductos] = useState([]);
+  const [userId, setUserId] = useState(null); // Para almacenar el valor de 'id'
   const navigate = useNavigate();
 
   useEffect(() => {
+    const obtenerIdUsuario = async () => {
+      const usuarioQuery = query(collection(db, 'usuario'), where('correo', '==', email));
+      const usuarioSnapshot = await getDocs(usuarioQuery);
+
+      if (!usuarioSnapshot.empty) {
+        usuarioSnapshot.forEach((doc) => {
+          // Obtén el valor del atributo 'id' del documento de usuario
+          const data = doc.data();
+          const idUsuario = data.id;
+          setUserId(idUsuario);
+        });
+      }
+    };
+
+    obtenerIdUsuario();
+
     // Consulta Firestore para obtener los productos.
-    const q = collection(db, 'productos');
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const listaproductos = [];
+    const productosQuery = collection(db, 'productos');
+    const productosSnapshot = getDocs(productosQuery);
+
+    productosSnapshot.then((snapshot) => {
+      const productList = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
-        listaproductos.push(data);
+        productList.push(data);
       });
 
-      setProductos(listaproductos);
+      setProductos(productList);
     });
-
-    return () => unsubscribe();
-  }, []); // Remove productos from the dependency array
+  }, [email]);
 
   const handleNavigate = (route) => {
     navigate(route);
   };
 
   const navigateToCarrito = () => {
-    navigate('/Carrito', { state: { correo: email } });
+    navigate('/Carrito', { state: { correo: email, userId: userId } });
   };
 
   return (
@@ -414,6 +430,7 @@ function AccederTiendaCliente() {
       navigateToCarrito={navigateToCarrito}
       email={email}
       navigate={navigate}
+      userId={userId}
     />
   );
 }

@@ -10,11 +10,12 @@ function OrdenesPendientesView(props) {
     
     return (
         <div className="pendientes-container">
-      <div className="header-containerOrdenesPendientes">
-            <button className="header-button inicio-button" onClick={() => handleNavigate('/AccederTiendaAdmin')}>
-              Inicio
-            </button>
-      </div>
+      <form className="formBarra">
+        <button onClick={()=>handleNavigate('/AccederTiendaAdmin')} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+            <button onClick={() => handleNavigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       <h1>Lista de Órdenes Pendientes</h1>
       <ul>
         {ordenes.map((orden) => (

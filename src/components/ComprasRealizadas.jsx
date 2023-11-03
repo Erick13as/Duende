@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 function ListaOrdenes() {
   const [ordenes, setOrdenes] = useState([]);
   const [selectedOrden, setSelectedOrden] = useState(null);
   const { userId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state && location.state.correo;
 
   const handleNavigate = (route) => {
     navigate(route);
@@ -39,16 +41,19 @@ function ListaOrdenes() {
 
   return (
     <div className="pendientes-container">
-      <div className="header-containerOrdenesPendientes">
-        <button className="header-buttonProducto">Inicio</button>
-      </div>
+      <form className="formBarra">
+        <button onClick={()=>navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+            <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
       <h1>Lista de Órdenes del Cliente</h1>
       <ul>
         {ordenes.map((orden) => (
           <li key={orden.id} className="orden-container">
             <p>Número de Orden: {orden.numeroOrden}</p>
             <p>Fecha de Emisión: {orden.fechaEmision}</p>
-            <button className="header-buttonProducto" onClick={() => handleNavigate(`/Orden/${orden.numeroOrden}`)}>Seleccionar Orden</button>
+            <button className="header-buttonProducto" onClick={() => navigate(`/Orden/${orden.numeroOrden}`, { state: { correo: email } })}>Seleccionar Orden</button>
           </li>
         ))}
       </ul>
