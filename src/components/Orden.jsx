@@ -72,7 +72,7 @@ function DetallesOrden() {
   // ...
 
 return (
-    <div className="vmasC-container">
+    <div className="compra-container">
       <form className="formBarra">
         <button onClick={()=>navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
         <div className="botonBarra-container">

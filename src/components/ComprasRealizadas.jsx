@@ -21,10 +21,13 @@ function ListaOrdenes() {
         const ordenesData = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          // Convierte el timestamp a una cadena de texto con el formato deseado (por ejemplo, 'yyyy-MM-dd')
+          const fechaEmision = data.fechaEmision.toDate(); // Convierte el timestamp a un objeto Date
+          const fechaEmisionFormateada = fechaEmision.toLocaleDateString(); // Formatea la fecha
           ordenesData.push({
             id: doc.id,
             numeroOrden: data.numeroOrden,
-            fechaEmision: data.fechaEmision,
+            fechaEmision: fechaEmisionFormateada, // Usa la fecha formateada
             idCliente: data.idCliente,
           });
         });

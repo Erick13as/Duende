@@ -109,7 +109,7 @@ function OrdenesPendientes() {
             ordenesData.push({
               id: doc.id,
               numeroOrden: data.numeroOrden,
-              fechaEmision: data.fechaEmision,
+              fechaEmision: data.fechaEmision.toDate().toLocaleDateString(),
               idCliente: data.idCliente,
             });
           });
