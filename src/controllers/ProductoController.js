@@ -885,38 +885,51 @@ const FinalizarCompra = () => {
   
     const numeroOrden = generateNewRandomNumber();
     const uniqueNumeroOrden = await checkNumeroOrdenExists(numeroOrden);
-
+  
     if (image) {
       const imageName = `imagen/${image.name}`;
       const imageRef = ref(storage, imageName);
-
+  
       try {
         await uploadBytes(imageRef, image);
         const imageURL = await getDownloadURL(imageRef);
-
+  
         // Obtener la fecha actual
         const fechaEmision = serverTimestamp();
         // Calcular la fecha de entrega como una semana después de la fecha actual
         const fechaEntrega = new Date();
         fechaEntrega.setDate(fechaEntrega.getDate() + 7);
-
-        const facturaCollection = collection(db, 'factura');
-        const newFacturaDoc = await addDoc(facturaCollection, {
-          comprobante: imageURL,
-          email: email,
-          totalCompra: totalCompra,
-          direccionEntrega: provincia,
-          fechaEmision: fechaEmision,
-          fechaEntrega: fechaEntrega,
-          estado: "pendiente",
-          numeroOrden: uniqueNumeroOrden,
-        });
-
-        console.log('Imagen subida exitosamente. URL de la imagen:', imageURL);
-
-        // Aquí puedes realizar otras acciones relacionadas con la factura si es necesario.
-        setShowSuccessModal(true);
-
+  
+        const carritoCollection = collection(db, 'carrito'); // Reemplaza 'carritos' con el nombre de tu colección de carritos
+        const carritoQuery = query(carritoCollection, where('correo', '==', email));
+        const carritoSnapshot = await getDocs(carritoQuery);
+  
+        if (!carritoSnapshot.empty) {
+          // Supongamos que solo haya un carrito por usuario, de lo contrario, debes manejar múltiples resultados.
+          const carritoDoc = carritoSnapshot.docs[0];
+          const carritoData = carritoDoc.data();
+  
+          // Ahora, puedes agregar el atributo 'ListaProductos' del carrito a la factura.
+          const facturaCollection = collection(db, 'factura');
+          const newFacturaDoc = await addDoc(facturaCollection, {
+            comprobante: imageURL,
+            email: email,
+            totalCompra: totalCompra,
+            direccionEntrega: provincia,
+            fechaEmision: fechaEmision,
+            fechaEntrega: fechaEntrega,
+            estado: "pendiente",
+            numeroOrden: uniqueNumeroOrden,
+            ListaProductos: carritoData.listaIdCantidadProductos, // Agrega la lista de productos del carrito a la factura
+          });
+  
+          console.log('Imagen subida exitosamente. URL de la imagen:', imageURL);
+  
+          // Aquí puedes realizar otras acciones relacionadas con la factura si es necesario.
+          setShowSuccessModal(true);
+        } else {
+          console.error('No se encontró un carrito para el usuario actual.');
+        }
       } catch (error) {
         console.error('Error al subir la imagen:', error);
       }
