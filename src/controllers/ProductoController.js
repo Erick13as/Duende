@@ -77,7 +77,7 @@ function AgregarProducto() {
       await addDoc(collection(db, 'productos'), productData);
 
       console.log('Producto subido con éxito. Nuevo ID del producto:', newProductId);
-      window.location.href = '/AccederTiendaAdminController';
+      window.location.href = '/AccederTiendaAdmin';
     } catch (error) {
       console.error('Error al subir el producto:', error);
       setErrorText('Hubo un error al subir el producto. Por favor, inténtelo nuevamente.');
@@ -211,7 +211,7 @@ function EditarProductoAdmin() {
 
           // Elimina el producto de la base de datos
           await deleteDoc(productDocRef);
-          navigate('/AccederTiendaAdminController'); // Redirige a la página de administración
+          navigate('/AccederTiendaAdmin'); // Redirige a la página de administración
         }
       } catch (error) {
         console.error('Error al eliminar el producto', error);

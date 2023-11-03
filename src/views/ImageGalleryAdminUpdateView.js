@@ -53,7 +53,7 @@ return (
           onChange={handleImageChange}
         />
         <button className="buttons" type="button" onClick={handleReemplazarImagen}>
-          Reemplazar Imagen
+          Guardar Cambio
         </button>
       </form>
       <div className="formContainerInfo">
