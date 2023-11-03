@@ -848,8 +848,35 @@ const FinalizarCompra = () => {
     }
   }, [email]);
 
+  const checkNumeroOrdenExists = async (numeroOrden) => {
+    const ordenCollection = collection(db, 'orden');
+  
+    // Crea una consulta para buscar documentos con el mismo número de orden.
+    const q = query(ordenCollection, where('numeroOrden', '==', numeroOrden));
+  
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      // No se encontraron coincidencias, el número de orden es único.
+      return numeroOrden;
+    } else {
+      // El número de orden ya existe, genera uno nuevo y verifica nuevamente.
+      const newRandomNumber = generateNewRandomNumber();
+      return checkNumeroOrdenExists(newRandomNumber);
+    }
+  };
+  
+  const generateNewRandomNumber = () => {
+    const min = 1000;
+    const max = 9999;
+    return (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+  };
+  
+  // Luego, dentro de tu función handleContinuar, antes de crear la factura, verifica el número de orden.
   const handleContinuar = async (e) => {
     e.preventDefault();
+  
+    const numeroOrden = generateNewRandomNumber();
+    const uniqueNumeroOrden = await checkNumeroOrdenExists(numeroOrden);
 
     if (image) {
       const imageName = `imagen/${image.name}`;
@@ -859,12 +886,22 @@ const FinalizarCompra = () => {
         await uploadBytes(imageRef, image);
         const imageURL = await getDownloadURL(imageRef);
 
+        // Obtener la fecha actual
+        const fechaEmision = serverTimestamp();
+        // Calcular la fecha de entrega como una semana después de la fecha actual
+        const fechaEntrega = new Date();
+        fechaEntrega.setDate(fechaEntrega.getDate() + 7);
+
         const facturaCollection = collection(db, 'factura');
         const newFacturaDoc = await addDoc(facturaCollection, {
           comprobante: imageURL,
           email: email,
           totalCompra: totalCompra,
           direccionEntrega: provincia,
+          fechaEmision: fechaEmision,
+          fechaEntrega: fechaEntrega,
+          estado: "pendiente",
+          numeroOrden: uniqueNumeroOrden,
         });
 
         console.log('Imagen subida exitosamente. URL de la imagen:', imageURL);
@@ -878,7 +915,7 @@ const FinalizarCompra = () => {
     } else {
       console.error('No se ha seleccionado una imagen.');
     }
-  };
+  }
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
