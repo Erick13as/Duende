@@ -1,6 +1,6 @@
 export class ImageModel {
     constructor() {
-      this.imageUrls = [];
+      this.imageUrls = '';
       this.selectedCategory = '';
       this.selectedSubcategory = '';
       this.categories = [];
