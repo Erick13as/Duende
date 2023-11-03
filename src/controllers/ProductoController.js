@@ -253,6 +253,7 @@ function VerMasCliente() {
   const id = location.state && location.state.producto;
   const [productos, setProductos] = useState([]);
   const [product, setProduct] = useState(null);
+  const [precio, setPrecio] = useState('');
   const [carrito, setCarrito] = useState([]);
   const [isInCart, setIsInCart] = useState(false);
   const navigate = useNavigate();
@@ -313,6 +314,13 @@ function VerMasCliente() {
       if (isInCart) {
         return;
       }
+      const productQuery = query(collection(db, 'productos'), where('id', '==', id));
+      const productSnapshot = await getDocs(productQuery);
+
+      const productData = productSnapshot.docs[0].data();
+      const precio = ""+productData.precio;
+      setPrecio(precio);
+      console.log(precio)
   
       // Primero, consulta la colección 'carrito' para obtener el documento correcto.
       const querySnapshot = await getDocs(query(collection(db, 'carrito'), where('correo', '==', email)));
@@ -322,7 +330,7 @@ function VerMasCliente() {
         // Si no existe un documento, puedes crear uno nuevo.
         const newCartDocRef = await addDoc(collection(db, 'carrito'), {
           correo: email,
-          listaIdCantidadProductos: [{ id, cantidad: 1 }],
+          listaIdCantidadProductos: [{ id, cantidad: 1, precio }],
         });
         setCarrito([...carrito, product]);
         setIsInCart(true);
@@ -333,7 +341,7 @@ function VerMasCliente() {
         // Actualiza el campo 'listaIdCantidadProductos' utilizando arrayUnion.
         try {
           await updateDoc(cartDocRef, {
-            listaIdCantidadProductos: arrayUnion({ id, cantidad: 1 }),
+            listaIdCantidadProductos: arrayUnion({ id, cantidad: 1, precio }),
           });
   
           setCarrito([...carrito, product]);
