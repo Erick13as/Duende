@@ -419,7 +419,7 @@ const IngresarDireccion = () => {
 
 }
 
-function Carrito({ carrito, removeFromCart }) {
+function Carrito() {
   const [carritoData, setCarritoData] = useState([]);
   const [total, setTotal] = useState(0);
   const [productData, setProductData] = useState([]);

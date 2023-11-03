@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './index.css';
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import "./components/Design.css"
@@ -14,11 +14,6 @@ import "./components/Design.css"
 
 
 const App = () => {
-  const [carrito, setCarrito] = useState([]);
-  const removeFromCart = (producto) => {
-    const updatedCarrito = carrito.filter((item) => item.id !== producto.id);
-    setCarrito(updatedCarrito);
-  };
 
   return (
     <BrowserRouter>
@@ -36,7 +31,7 @@ const App = () => {
         <Route path='AccederTiendaAdmin/' element={<AccederTiendaAdmin />}/>
         {/* <Route path='/agenda' element={<Agenda />} /> */}
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
-        <Route path="/Carrito" element={<Carrito carrito={carrito} removeFromCart={removeFromCart} />} />
+        <Route path="/Carrito" element={<Carrito />} />
         <Route path='/VerMasCliente' element={<VerMasCliente />}  />
         <Route path='/crearCategoria' element={<CrearCategoria/>}/>
         <Route path='/opcionesAdmin' element={<MostrarOpcionesAdmin />} />
