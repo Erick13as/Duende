@@ -5,8 +5,8 @@ import "./components/Design.css"
 
 import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirImagen, CrearCategoria, CrearSubcategoria, EliminarCategoria, EliminarSubCategoria, MostrarOpcionesAdmin, InfoImagenCliente, EnviarReferencia } from './controllers/ImageGalleryController';
 import { SignIn, SignUp } from './controllers/UserController';
-import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin,IngresarDireccion,Carrito,FinalizarCompra} from './controllers/ProductoController';
-import { CerrarCompra, OrdenesPendientes, ListaOrdenes, DetallesOrden} from './controllers/CompraController';
+import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
+import { CerrarCompra, OrdenesPendientes, ListaOrdenes, DetallesOrden,IngresarDireccion,Carrito,FinalizarCompra} from './controllers/CompraController';
 
 // import Agenda from './components/Agenda';
 
