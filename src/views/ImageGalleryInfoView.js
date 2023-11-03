@@ -14,6 +14,8 @@ function ImageInfoView(props) {
         handleImageChange,
         handleVerInfo,
         email,
+        date,
+        setNewDate,
 
     } = props;
 
@@ -21,6 +23,7 @@ function ImageInfoView(props) {
         <div className="info-container">
           <form className='formTopOA'>
             <button onClick={() => navigate('/AccederTiendaCliente', { state: { correo: email } })} className='botonOA'>Tienda</button>
+            <button onClick={() => navigate('/galeriaCliente', { state: { correo: email } })} className='botonOA'>Galería</button>
             <div className="botonBarra-container">
               <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
             </div>
@@ -57,7 +60,7 @@ function ImageInfoView(props) {
               type="text"
               id="descripcion"
               value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
+              //onChange={(e) => setDescripcion(e.target.value)}
               disabled
             />
             <br />
@@ -68,7 +71,7 @@ function ImageInfoView(props) {
               type="text"
               id="listaEtiquetas"
               value={listaEtiquetas}
-              onChange={(e) => setListaEtiquetas(e.target.value)}
+              //onChange={(e) => setListaEtiquetas(e.target.value)}
               disabled
             />
             <br />
@@ -79,7 +82,7 @@ function ImageInfoView(props) {
               type="text"
               id="categoria"
               value={categoriaSeleccionada}
-              onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+              //onChange={(e) => setCategoriaSeleccionada(e.target.value)}
               disabled
             />
             <br />
@@ -90,7 +93,17 @@ function ImageInfoView(props) {
               type="text"
               id="subcategoria"
               value={subcategoriaSeleccionada}
-              onChange={(e) => setSubcategoriaSeleccionada(e.target.value)}
+              //onChange={(e) => setSubcategoriaSeleccionada(e.target.value)}
+              disabled
+            />
+            <br />
+            <label htmlFor="fecha">Fecha de subida:</label>
+            <br />
+            <input
+              className="textBox"
+              type="text"
+              id="fecha"
+              value={date || ''}
               disabled
             />
             <br />

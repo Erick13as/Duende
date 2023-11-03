@@ -1148,6 +1148,7 @@ function InfoImagenCliente() {
   const [subcategoriaAnterior, setSubcategoriaAnterior] = useState("");
   const navigate = useNavigate();
   const [newImage, setNewImage] = useState(null);
+  const [date, setNewDate] = useState(null);
 
   useEffect(() => {
     // Realiza la consulta para obtener la descripción y etiquetas solo cuando se monta el componente
@@ -1165,6 +1166,14 @@ function InfoImagenCliente() {
           setSubcategoriaEncontrada(data.subcategoria);
           setCategoriaSeleccionada(data.categoria);
           setSubcategoriaSeleccionada(data.subcategoria);
+          const timestamp = data.fechaSubida
+          const fechaLegible = timestamp.toDate().toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          });
+          setNewDate(fechaLegible);
+          
         } 
       } catch (error) {
         console.error("Error al obtener datos:", error);
@@ -1289,6 +1298,8 @@ function InfoImagenCliente() {
     handleImageChange={handleImageChange}
     handleVerInfo={handleVerInfo}
     email={email}
+    date={date}
+    setNewDate={setNewDate}
     />
     
   );
