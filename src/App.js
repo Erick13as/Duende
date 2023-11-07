@@ -8,7 +8,7 @@ import { SignIn, SignUp } from './controllers/UserController';
 import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
 import { CerrarCompra, OrdenesPendientes, ListaOrdenes, DetallesOrden,IngresarDireccion,Carrito,FinalizarCompra} from './controllers/CompraController';
 
-// import Agenda from './components/Agenda';
+import Calendar from './components/Agenda';
 
 import "./components/Design.css"
 
@@ -29,7 +29,7 @@ const App = () => {
         <Route path='/AgregarProducto' element={<AgregarProducto />} />
         <Route path='AccederTiendaCliente/' element={<AccederTiendaCliente />}/>
         <Route path='AccederTiendaAdmin/' element={<AccederTiendaAdmin />}/>
-        {/* <Route path='/agenda' element={<Agenda />} /> */}
+        <Route path='/agenda' element={<Calendar />} /> 
         <Route path='/infoImagenCliente' element={<InfoImagenCliente />} />
         <Route path="/Carrito" element={<Carrito />} />
         <Route path='/VerMasCliente' element={<VerMasCliente />}  />

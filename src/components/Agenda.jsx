@@ -1,28 +1,24 @@
 import React, { useState } from "react";
-// import {useNavigate} from 'react-router-dom'
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import Fullcalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
-const Agenda = () => {
-    const [date, setDate] = useState(new Date());
-
-    const handleDateChange = (date) => {
-        setDate(date);
-      };
-
-    // const navigate = useNavigate();
-
+function Calendar() {
     return (
-        <div className="agenda-container">
-
-            <h1>Agenda para {date.toLocaleDateString()}</h1>
-            <div className="calendar-container">
-                <Calendar onChange={handleDateChange} value={date} />
-            </div>
-
-        </div> 
-
+      <div>
+        <Fullcalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView={"dayGridMonth"}
+          headerToolbar={{
+            start: "today prev,next", // will normally be on the left. if RTL, will be on the right
+            center: "title",
+            end: "dayGridMonth,timeGridWeek,timeGridDay", // will normally be on the right. if RTL, will be on the left
+          }}
+          height={"90vh"}
+        />
+      </div>
     );
-};
-
-export default Agenda;
+  }
+  
+  export default Calendar;
