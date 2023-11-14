@@ -4,6 +4,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import esLocale from '@fullcalendar/core/locales/es'; 
 import { v4 as uuidv4 } from "uuid";
 
 function Calendar() {
@@ -82,6 +83,7 @@ function Calendar() {
 
     return (
       <div>
+        {/*Esta primera parte es el form que sale para añadir un evento*/}
         {showEventForm && (
           <div className="event-form-overlay">
             <div className="event-form-container">
@@ -128,6 +130,7 @@ function Calendar() {
           </div>
         )}
 
+        {/*Esta parte es la que muestra el calendario*/}
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={"dayGridMonth"}
@@ -152,6 +155,24 @@ function Calendar() {
           select={handleDateSelect}
           eventClick={handleEventClick}
           events={events}
+          //Estas 3 lineas son para ajustar un ver más cuando hay muchos eventos
+          dayMaxEventRows={true}
+          dayMaxEvents={4} // Cantidad de eventos que se muestran por día
+          moreLinkClick="popover"
+          editable={true} //permite arrastrar los eventos
+          eventDurationEditable={true} //editar la duración redimensionando el evento. Es horizontal, para varios días
+          eventStartEditable={true} // editar hora de inicio arrastrando la actividad
+          eventOverlap={false} // false para que no pueda haber un evento a la misma hora que el otro.
+          navLinks={true} // permite que los dias lleven a otra parte
+          navLinkDayClick="timeGridDay" // presionar el número del día lo lleva al a vista de ese día
+          weekNumbers={true} //muestra el número de la semana
+          weekNumberCalculation="ISO" //la semana empieza con lunes
+          weekNumberFormat={{
+            week: 'numeric', //Muestra la semana con número y no letras
+          }}
+          nowIndicator={true} //esto le dice en dónde está cuando utiliza la vista del día
+          locales={[esLocale]}  // Configura el locale español
+          locale="es"  // Establece el idioma español
         />
       </div>
     );
