@@ -198,6 +198,10 @@ function GaleriaAdmin() {
     navigate('/AccederTiendaAdmin');
   };
 
+  const navigateToAgenda = () => {
+    navigate('/agenda');
+  };
+
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
@@ -224,6 +228,7 @@ function GaleriaAdmin() {
       navigateToOpciones={navigateToOpciones}
       navigateToTienda={navigateToTienda}
       handleIndex={handleIndex}
+      navigateToAgenda={navigateToAgenda}
     />
   );
 }

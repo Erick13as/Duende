@@ -11,6 +11,9 @@ function AccederTiendaAdminView(props) {
     <div className="main_page-container">
       <form className="formBarra">
         <button onClick={()=>handleNavigate('/galeriaAdmin')} className='botonOA'>Galería</button>
+        <span className="button-space"></span>
+        <button onClick={()=>handleNavigate('/agenda')} className='botonOA'>Agenda</button>
+        <div className="botonBarra-container"></div>
         <div className="botonBarra-container">
             <button onClick={() => handleNavigate('/OrdenesPendientes')} className='botonOA2'>Gestión Ordenes</button>
             <button onClick={() => handleNavigate('/AgregarProducto')} className='botonOA2'>Añadir Producto</button>

@@ -15,6 +15,7 @@ function GaleriaAdminView(props) {
       handleCategoryChange,
       handleSubcategoryChange,
       handleIndex,
+      navigateToAgenda,
     } = props;
     
 return (
@@ -23,6 +24,8 @@ return (
         <button onClick={navigateToOpciones} className='botonOA'>Opciones</button>
         <span className="button-space"></span>
         <button onClick={navigateToTienda} className='botonOA'>Tienda</button>
+        <span className="button-space"></span>
+        <button onClick={navigateToAgenda} className='botonOA'>Agenda</button>
         <div className="botonBarra-container">
           <button onClick={navigateToLogin} className='botonOA2'>Cerrar sesión</button>
         </div>
