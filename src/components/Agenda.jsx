@@ -51,7 +51,7 @@ function Calendar() {
     };
 
     const handleGoStore= () => {
-      navigate('AccederTiendaAdmin/');
+      navigate('/AccederTiendaAdmin');
     };
 
     const handleCancel = () => {
