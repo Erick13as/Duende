@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -6,6 +6,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from '@fullcalendar/core/locales/es'; 
 import { v4 as uuidv4 } from "uuid";
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db, storage } from '../firebase/firebaseConfig';
 
 function Calendar() {
     const [events, setEvents] = useState([]);
@@ -20,6 +22,21 @@ function Calendar() {
       description: "",
     });
 
+    const [formattedStart, setFormattedStart] = useState("");
+    const [formattedEnd, setFormattedEnd] = useState("");
+
+    useEffect(() => {
+      // Cargar eventos desde la base de datos al montar el componente
+      const fetchEvents = async () => {
+        const eventsCollection = collection(db, 'evento');
+        const eventsSnapshot = await getDocs(eventsCollection);
+        const eventData = eventsSnapshot.docs.map((doc) => doc.data());
+        setEvents(eventData);
+      };
+  
+      fetchEvents();
+    }, []);
+
     const handleDateSelect = (selectInfo) => {
       setEventDetails({
         title: "",
@@ -31,16 +48,18 @@ function Calendar() {
     };
     
     const handleEventClick = (clickInfo) => {
-      // Muestra los detalles del evento al hacer clic
       setEventDetails({
         id: clickInfo.event.id,
         title: clickInfo.event.title,
-        start: clickInfo.event.startStr,
-        end: clickInfo.event.endStr,
+        start: clickInfo.event.start,
+        end: clickInfo.event.end,
         description: clickInfo.event.extendedProps.description || "",
       });
     
-      // Puedes incluso abrir el formulario directamente al hacer clic
+      // Selecciona solo la hora desde la fecha de inicio y fin
+      setFormattedStart(clickInfo.event.start.toLocaleString());
+      setFormattedEnd(clickInfo.event.end.toLocaleString());
+    
       setShowEventForm(true);
     };
     
@@ -58,28 +77,67 @@ function Calendar() {
       setShowEventForm(false);
     };
 
-    const handleSaveEvent = () => {
-      const newEvent = {
-        id: uuidv4(),
-        title: eventDetails.title,
-        start: eventDetails.start,
-        end: eventDetails.end,
-        description: eventDetails.description,
-      };
+    const handleSaveEvent = async () => {
+      if (eventDetails.id) {
+        // Si el evento ya tiene un ID, actualiza el evento existente
+        const eventRef = doc(db, 'evento', eventDetails.id);
+        await updateDoc(eventRef, {
+          title: eventDetails.title,
+          start: new Date(eventDetails.start).toISOString(),
+          end: new Date(eventDetails.end).toISOString(),
+          description: eventDetails.description,
+        });
+      } else {
+        // Si el evento no tiene un ID, crea un nuevo evento
+        const newEventRef = await addDoc(collection(db, 'evento'), {
+          id: uuidv4(),
+          title: eventDetails.title,
+          start: new Date(eventDetails.start).toISOString(),
+          end: new Date(eventDetails.end).toISOString(),
+          description: eventDetails.description,
+        });
+      }
     
-      setEvents([...events, newEvent]);
+      // Recarga los eventos desde la base de datos
+      const updatedEvents = await fetchEvents();
+      setEvents(updatedEvents);
+    
       setShowEventForm(false);
     };
 
-    const handleDeleteEvent = () => {
-      const updatedEvents = events.filter(
-        (event) => event.id !== eventDetails.id
-      );
+    const handleDeleteEvent = async () => {
+      if (eventDetails.id) {
+        try {
+          const eventRef = doc(db, 'evento', eventDetails.id);
+          await deleteDoc(eventRef);
     
-      setEvents(updatedEvents);
-      setShowEventForm(false);
+          // Recarga los eventos desde la base de datos
+          const updatedEvents = await fetchEvents();
+          setEvents(updatedEvents);
+    
+          setShowEventForm(false);
+        } catch (error) {
+          console.error('Error al eliminar el evento:', error);
+        }
+      }
     };
     
+    const fetchEvents = async () => {
+      const eventsCollection = collection(db, 'evento');
+      const eventsSnapshot = await getDocs(eventsCollection);
+      const eventData = eventsSnapshot.docs.map((doc) => doc.data());
+      return eventData;
+    };
+
+    const formatDatetimeLocal = (date) => {
+      const year = date.getFullYear();
+      const month = (`0${date.getMonth() + 1}`).slice(-2);
+      const day = (`0${date.getDate()}`).slice(-2);
+      const hours = (`0${date.getHours()}`).slice(-2);
+      const minutes = (`0${date.getMinutes()}`).slice(-2);
+    
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
 
     return (
       <div>
@@ -100,18 +158,24 @@ function Calendar() {
               <input
                 type="datetime-local"
                 id="eventStart"
-                value={eventDetails.start}
+                value={eventDetails.start ? formatDatetimeLocal(eventDetails.start) : ""}
                 onChange={(e) =>
-                  setEventDetails({ ...eventDetails, start: e.target.value })
+                  setEventDetails({
+                    ...eventDetails,
+                    start: new Date(e.target.value),
+                  })
                 }
               />
               <label htmlFor="eventEnd">Fecha de fin:</label>
               <input
                 type="datetime-local"
                 id="eventEnd"
-                value={eventDetails.end}
+                value={eventDetails.end ? formatDatetimeLocal(eventDetails.end) : ""}
                 onChange={(e) =>
-                  setEventDetails({ ...eventDetails, end: e.target.value })
+                  setEventDetails({
+                    ...eventDetails,
+                    end: new Date(e.target.value),
+                  })
                 }
               />
               <label htmlFor="eventDescription">Descripción:</label>
@@ -162,7 +226,7 @@ function Calendar() {
           editable={true} //permite arrastrar los eventos
           eventDurationEditable={true} //editar la duración redimensionando el evento. Es horizontal, para varios días
           eventStartEditable={true} // editar hora de inicio arrastrando la actividad
-          eventOverlap={false} // false para que no pueda haber un evento a la misma hora que el otro.
+          //eventOverlap={false} // false para que no pueda haber un evento a la misma hora que el otro.
           navLinks={true} // permite que los dias lleven a otra parte
           navLinkDayClick="timeGridDay" // presionar el número del día lo lleva al a vista de ese día
           weekNumbers={true} //muestra el número de la semana
