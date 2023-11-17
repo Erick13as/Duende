@@ -25,6 +25,8 @@ function Calendar() {
     const [formattedStart, setFormattedStart] = useState("");
     const [formattedEnd, setFormattedEnd] = useState("");
 
+    const [selectedEventId, setSelectedEventId] = useState(null);
+
     useEffect(() => {
       // Cargar eventos desde la base de datos al montar el componente
       const fetchEvents = async () => {
@@ -55,10 +57,14 @@ function Calendar() {
         end: clickInfo.event.end,
         description: clickInfo.event.extendedProps.description || "",
       });
+
+      setSelectedEventId(clickInfo.event.id);
     
-      // Selecciona solo la hora desde la fecha de inicio y fin
-      setFormattedStart(clickInfo.event.start.toLocaleString());
-      setFormattedEnd(clickInfo.event.end.toLocaleString());
+      if (clickInfo.event.start && clickInfo.event.end) {
+        // Selecciona solo la hora desde la fecha de inicio y fin
+        setFormattedStart(clickInfo.event.start.toLocaleString());
+        setFormattedEnd(clickInfo.event.end.toLocaleString());
+      }
     
       setShowEventForm(true);
     };
@@ -77,6 +83,14 @@ function Calendar() {
       setShowEventForm(false);
     };
 
+    const getNextEventId = (events) => {
+      // Obtener el máximo ID existente
+      const maxId = events.reduce((max, event) => (event.id > max ? event.id : max), 0);
+    
+      // Incrementar el máximo ID para el próximo evento
+      return maxId + 1;
+    };
+
     const handleSaveEvent = async () => {
       if (eventDetails.id) {
         // Si el evento ya tiene un ID, actualiza el evento existente
@@ -88,9 +102,11 @@ function Calendar() {
           description: eventDetails.description,
         });
       } else {
-        // Si el evento no tiene un ID, crea un nuevo evento
+        // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
+        const nextEventId = getNextEventId(events);
+    
         const newEventRef = await addDoc(collection(db, 'evento'), {
-          id: uuidv4(),
+          id: nextEventId,
           title: eventDetails.title,
           start: new Date(eventDetails.start).toISOString(),
           end: new Date(eventDetails.end).toISOString(),
@@ -106,21 +122,59 @@ function Calendar() {
     };
 
     const handleDeleteEvent = async () => {
-      if (eventDetails.id) {
+      console.log("Selected Event ID:", selectedEventId)
+      console.log("Tipo del Selected Event ID:", typeof selectedEventId)
+
+      if (selectedEventId){
         try {
-          const eventRef = doc(db, 'evento', eventDetails.id);
+
+          const querySnapshot = await getDocs(collection(db, 'evento'));
+
+          querySnapshot.forEach(async (doc) => {
+              const data = doc.data();
+              console.log("El id en la base", data.id)
+              console.log("El id en la base tiene tipo", typeof data.id)
+              if (data.id === parseInt(selectedEventId, 10)) {
+                console.log("dentro del if id's iguales", data.id, selectedEventId)
+                  const categoryRef = doc.ref;
+
+                  await deleteDoc(categoryRef);
+
+                  console.log(`Evento con id: "${selectedEventId}" eliminado con éxito.`);
+
+                  const updatedEvents = await fetchEvents();
+                  setEvents(updatedEvents);
+                  
+              }
+
+          });
+      
+        } catch (error) {
+          // Manejo de errores: muestra un mensaje de error al usuario o realiza cualquier otra acción necesaria.
+          console.error('Error al eliminar el evento:', error);
+        }
+      }
+
+      /*if (selectedEventId) {
+        try {
+          // Obtiene la referencia al documento del evento utilizando el ID almacenado
+          const eventRef = doc(db, 'evento', selectedEventId);
+    
+          // Elimina el documento del evento de la base de datos
           await deleteDoc(eventRef);
     
-          // Recarga los eventos desde la base de datos
+          // Recarga los eventos desde la base de datos (opcional, depende de tus necesidades)
           const updatedEvents = await fetchEvents();
           setEvents(updatedEvents);
     
+          // Oculta el formulario después de eliminar el evento
           setShowEventForm(false);
         } catch (error) {
           console.error('Error al eliminar el evento:', error);
         }
-      }
+      }*/
     };
+    
     
     const fetchEvents = async () => {
       const eventsCollection = collection(db, 'evento');
@@ -159,6 +213,10 @@ function Calendar() {
                   setEventDetails({ ...eventDetails, title: e.target.value })
                 }
               />
+
+              <label>ID del Evento:</label>
+              <span>{selectedEventId}</span>
+
               <label htmlFor="eventStart">Fecha de inicio:</label>
               <input
                 type="datetime-local"
