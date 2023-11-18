@@ -8,12 +8,11 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { v4 as uuidv4 } from "uuid";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db, storage } from '../firebase/firebaseConfig';
+import {query, where} from 'firebase/firestore';
 
 function Calendar() {
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
-    //const { state } = useLocation();   Para lo del correo, no me acuerdo cómo se maneja
-    //let { email} = state;
     const [showEventForm, setShowEventForm] = useState(false);
     const [eventDetails, setEventDetails] = useState({
       title: "",
@@ -45,7 +44,6 @@ function Calendar() {
       description: "",
     });
     
-
     useEffect(() => {
       // Cargar eventos desde la base de datos al montar el componente
       const fetchEvents = async () => {
@@ -85,10 +83,10 @@ function Calendar() {
       }
     
       setShowDetailsForm(true);
+      setSelectedEventId(clickInfo.event.id);
+
     };
     
-    
-
     const handleGoGalery= () => {
       console.log("Volver button clicked");
       navigate('/galeriaAdmin');
@@ -169,7 +167,7 @@ function Calendar() {
           });
 
           // Oculta el formulario después de eliminar el evento
-          setShowEventForm(false);
+          setShowEditForm(false);
       
         } catch (error) {
           // Manejo de errores: muestra un mensaje de error al usuario o realiza cualquier otra acción necesaria.
@@ -201,6 +199,42 @@ function Calendar() {
     };
     
 
+    const handleUpdateEvent = async () => {
+      try {
+        // Actualiza los datos en Firestore
+        const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start).toISOString() : null;
+        const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end).toISOString() : null;
+    
+        const updatedQuery = query(
+          collection(db, 'evento'),
+          where('id', '==', parseInt(selectedEventDetails.id))
+        );
+    
+        const querySnapshot = await getDocs(updatedQuery);
+    
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+    
+          // Actualiza el documento
+          await updateDoc(docRef, {
+            id: parseInt(selectedEventDetails.id),
+            title: selectedEventDetails.title,
+            start: formattedStart,
+            end: formattedEnd,
+            description: selectedEventDetails.description,
+          });
+    
+          // Actualiza el estado local con los eventos actualizados
+          const updatedEvents = await fetchEvents();
+          setEvents(updatedEvents);
+    
+          //alert("Datos actualizados correctamente");
+        }
+      } catch (error) {
+        console.error("Error al actualizar datos:", error);
+      }
+    };
+
     return (
       <div>
         {/*Esta primera parte es el form que sale para añadir un evento*/}
@@ -216,9 +250,6 @@ function Calendar() {
                   setEventDetails({ ...eventDetails, title: e.target.value })
                 }
               />
-
-              <label>ID del Evento:</label>
-              <span>{selectedEventId}</span>
 
               <label htmlFor="eventStart">Fecha de inicio:</label>
               <input
@@ -253,8 +284,7 @@ function Calendar() {
                 }
               />
               {/* Agrega otros campos del formulario según tus necesidades */}
-              <button onClick={handleSaveEvent}>Guardar Evento</button>
-              <button onClick={handleDeleteEvent}>Eliminar Evento</button>
+              <button onClick={handleSaveEvent}>Crear Evento</button>
               <button onClick={handleCancel}>Cerrar</button>
             </div>
           </div>
@@ -314,7 +344,7 @@ function Calendar() {
                 id="eventTitle"
                 value={selectedEventDetails.title}
                 onChange={(e) =>
-                  setEventDetails({ ...eventDetails, title: e.target.value })
+                  setSelectedEventDetails({ ...selectedEventDetails, title: e.target.value })
                 }
               />
 
@@ -324,8 +354,8 @@ function Calendar() {
                 id="eventStart"
                 value={selectedEventDetails.start ? formatDatetimeLocal(selectedEventDetails.start) : ""}
                 onChange={(e) =>
-                  setEventDetails({
-                    ...eventDetails,
+                  setSelectedEventDetails({
+                    ...selectedEventDetails,
                     start: new Date(e.target.value),
                   })
                 }
@@ -336,8 +366,8 @@ function Calendar() {
                 id="eventEnd"
                 value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
                 onChange={(e) =>
-                  setEventDetails({
-                    ...eventDetails,
+                  setSelectedEventDetails({
+                    ...selectedEventDetails,
                     end: new Date(e.target.value),
                   })
                 }
@@ -347,12 +377,12 @@ function Calendar() {
                 id="eventDescription"
                 value={selectedEventDetails.description}
                 onChange={(e) =>
-                  setEventDetails({ ...eventDetails, description: e.target.value })
+                  setSelectedEventDetails({ ...selectedEventDetails, description: e.target.value })
                 }
               />
-              {/* Agrega otros campos del formulario según tus necesidades 
-              <button onClick={handleSaveEvent}>Guardar Evento</button>
-              <button onClick={handleDeleteEvent}>Eliminar Evento</button>*/}
+              {/* Agrega otros campos del formulario según tus necesidades */}
+              <button onClick={handleUpdateEvent}>Guardar Cambios</button>
+              <button onClick={handleDeleteEvent}>Eliminar evento</button>
               <button onClick={handleCancel}>Cerrar</button>
             </div>
           </div>
