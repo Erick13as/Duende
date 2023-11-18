@@ -241,6 +241,7 @@ function Calendar() {
         {showEventForm && (
           <div className="event-form-overlay">
             <div className="event-form-container">
+              <h1>Creación de Evento</h1>
               <label htmlFor="eventTitle">Agregar Título:</label>
               <input
                 type="text"
@@ -294,6 +295,7 @@ function Calendar() {
         {showDetailsForm && (
           <div className="event-form-overlay">
             <div className="event-form-container">
+              <h1>Detalles del Evento</h1>
               <label htmlFor="eventTitle">Título:</label>
               <input
                 type="text"
@@ -338,6 +340,7 @@ function Calendar() {
         {showEditForm && (
           <div className="event-form-overlay">
             <div className="event-form-container">
+            <h1>Editar Evento</h1>
               <label htmlFor="eventTitle">Título del Evento:</label>
               <input
                 type="text"
