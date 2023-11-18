@@ -96,13 +96,18 @@ function Calendar() {
         const confirmedOrdersData = snapshot.docs.map((doc) => doc.data());
         setConfirmedEvents(confirmedOrdersData);
 
-        initialFetch();
+        //initialFetch();
       });
   
       // Limpia el listener al desmontar el component
       return () => unsubscribe();
 
     }, []);
+
+    useEffect(() => {
+      // Llama a la función para manejar eventos de órdenes cuando cambian los eventos confirmados
+      handleOrderEvent();
+    }, [confirmedEvents]);
 
     //con esta función voy a intentar crear eventos a partir de las ordenes confirmadas alamacenadas en confirmedOrdersData.
     const handleOrderEvent = async () => {
@@ -160,7 +165,7 @@ function Calendar() {
 
     // Función para agregar un evento a la base de datos
     const addEventToDatabase = async (event) => {
-      console.log("Me llegó para insertar", event)
+      console.log("Me llegó para insertar.", event)
       const eventCollection = collection(db, 'evento');
       
       await addDoc(eventCollection, {
@@ -347,6 +352,7 @@ function Calendar() {
       } catch (error) {
         console.error("Error al actualizar datos:", error);
       }
+      setShowEditForm(false);
     };
 
     const handleViewOrder = () => {
