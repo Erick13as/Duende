@@ -13,6 +13,7 @@ import {query, where} from 'firebase/firestore';
 function Calendar() {
     const [events, setEvents] = useState([]);
     const [confirmedEvents, setConfirmedEvents] = useState([]);
+    const [searchingConfirmedEvents, setSearchingConfirmedEvents] = useState(false);
     const navigate = useNavigate();
     const [showEventForm, setShowEventForm] = useState(false);
     const [eventDetails, setEventDetails] = useState({
@@ -57,6 +58,7 @@ function Calendar() {
       };
   
       fetchEvents();
+
     }, []);
 
     const handleDateSelect = (selectInfo) => {
@@ -73,26 +75,33 @@ function Calendar() {
     useEffect(() => {
       // Consulta inicial para obtener las órdenes confirmadas
       const initialFetch = async () => {
-        const confirmedOrdersQuery = query(collection(db, 'orden'), where('estado', '==', 'confirmada'));
-        const confirmedOrdersSnapshot = await getDocs(confirmedOrdersQuery);
-        const confirmedOrdersData = confirmedOrdersSnapshot.docs.map((doc) => doc.data());
+        try {
+          const confirmedOrdersQuery = query(collection(db, 'orden'), where('estado', '==', 'confirmada'));
+          const confirmedOrdersSnapshot = await getDocs(confirmedOrdersQuery);
+          const confirmedOrdersData = confirmedOrdersSnapshot.docs.map((doc) => doc.data());
   
-        setConfirmedEvents(confirmedOrdersData);
-        console.log(confirmedOrdersData)
+          setConfirmedEvents(confirmedOrdersData);
+          console.log("Dentro del original",confirmedOrdersData)
 
-        handleOrderEvent();
+          handleOrderEvent();
+        } catch (error) {
+          console.error('Error al obtener órdenes confirmadas:', error);
+        }
       };
   
       // Agrega el listener para escuchar cambios en las órdenes confirmadas
       const ordersCollection = collection(db, 'orden');
-      const confirmedOrdersQuery = query(ordersCollection, where('estado', '==', 'confirmado'));
+      const confirmedOrdersQuery = query(ordersCollection, where('estado', '==', 'confirmada'));
       const unsubscribe = onSnapshot(confirmedOrdersQuery, (snapshot) => {
-        // Actualiza los eventos cuando hay cambios en las órdenes confirmadas
+        const confirmedOrdersData = snapshot.docs.map((doc) => doc.data());
+        setConfirmedEvents(confirmedOrdersData);
+
         initialFetch();
       });
   
-      // Limpia el listener al desmontar el componente
+      // Limpia el listener al desmontar el component
       return () => unsubscribe();
+
     }, []);
 
     //con esta función voy a intentar crear eventos a partir de las ordenes confirmadas alamacenadas en confirmedOrdersData.
@@ -326,7 +335,7 @@ function Calendar() {
             start: formattedStart,
             end: formattedEnd,
             description: selectedEventDetails.description,
-            tipo: "maquillaje"
+            tipo: selectedEventDetails.tipo,
           });
     
           // Actualiza el estado local con los eventos actualizados
