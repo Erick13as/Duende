@@ -27,6 +27,25 @@ function Calendar() {
 
     const [selectedEventId, setSelectedEventId] = useState(null);
 
+    const [showDetailsForm, setShowDetailsForm] = useState(false);
+    const [selectedEventDetails, setSelectedEventDetails] = useState({
+      id: "",
+      title: "",
+      start: null,
+      end: null,
+      description: "",
+    });
+
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [selectedEditDetails, setSelectedEditDetails] = useState({
+      id: "",
+      title: "",
+      start: null,
+      end: null,
+      description: "",
+    });
+    
+
     useEffect(() => {
       // Cargar eventos desde la base de datos al montar el componente
       const fetchEvents = async () => {
@@ -50,24 +69,24 @@ function Calendar() {
     };
     
     const handleEventClick = (clickInfo) => {
-      setEventDetails({
+      setSelectedEventDetails({
         id: clickInfo.event.id,
         title: clickInfo.event.title,
         start: clickInfo.event.start,
         end: clickInfo.event.end,
         description: clickInfo.event.extendedProps.description || "",
       });
-
-      setSelectedEventId(clickInfo.event.id);
     
+      // Verificar que start y end no sean null antes de intentar formatear
       if (clickInfo.event.start && clickInfo.event.end) {
         // Selecciona solo la hora desde la fecha de inicio y fin
         setFormattedStart(clickInfo.event.start.toLocaleString());
         setFormattedEnd(clickInfo.event.end.toLocaleString());
       }
     
-      setShowEventForm(true);
+      setShowDetailsForm(true);
     };
+    
     
 
     const handleGoGalery= () => {
@@ -81,6 +100,13 @@ function Calendar() {
 
     const handleCancel = () => {
       setShowEventForm(false);
+      setShowDetailsForm(false);
+      setShowEditForm(false);
+    };
+
+    const handleEditEvent = () => {
+      setShowDetailsForm(false);
+      setShowEditForm(true);
     };
 
     const getNextEventId = (events) => {
@@ -122,9 +148,6 @@ function Calendar() {
     };
 
     const handleDeleteEvent = async () => {
-      console.log("Selected Event ID:", selectedEventId)
-      console.log("Tipo del Selected Event ID:", typeof selectedEventId)
-
       if (selectedEventId){
         try {
 
@@ -132,15 +155,11 @@ function Calendar() {
 
           querySnapshot.forEach(async (doc) => {
               const data = doc.data();
-              console.log("El id en la base", data.id)
-              console.log("El id en la base tiene tipo", typeof data.id)
+
               if (data.id === parseInt(selectedEventId, 10)) {
-                console.log("dentro del if id's iguales", data.id, selectedEventId)
                   const categoryRef = doc.ref;
 
                   await deleteDoc(categoryRef);
-
-                  console.log(`Evento con id: "${selectedEventId}" eliminado con éxito.`);
 
                   const updatedEvents = await fetchEvents();
                   setEvents(updatedEvents);
@@ -148,31 +167,15 @@ function Calendar() {
               }
 
           });
+
+          // Oculta el formulario después de eliminar el evento
+          setShowEventForm(false);
       
         } catch (error) {
           // Manejo de errores: muestra un mensaje de error al usuario o realiza cualquier otra acción necesaria.
           console.error('Error al eliminar el evento:', error);
         }
       }
-
-      /*if (selectedEventId) {
-        try {
-          // Obtiene la referencia al documento del evento utilizando el ID almacenado
-          const eventRef = doc(db, 'evento', selectedEventId);
-    
-          // Elimina el documento del evento de la base de datos
-          await deleteDoc(eventRef);
-    
-          // Recarga los eventos desde la base de datos (opcional, depende de tus necesidades)
-          const updatedEvents = await fetchEvents();
-          setEvents(updatedEvents);
-    
-          // Oculta el formulario después de eliminar el evento
-          setShowEventForm(false);
-        } catch (error) {
-          console.error('Error al eliminar el evento:', error);
-        }
-      }*/
     };
     
     
@@ -256,6 +259,105 @@ function Calendar() {
             </div>
           </div>
         )}
+
+        {/*Esta parte es el form para ver detalles del evento*/}
+        {showDetailsForm && (
+          <div className="event-form-overlay">
+            <div className="event-form-container">
+              <label htmlFor="eventTitle">Título:</label>
+              <input
+                type="text"
+                id="eventTitle"
+                value={selectedEventDetails.title}
+                readOnly={true}
+              />
+
+              <label>ID del Evento:</label>
+              <span>{selectedEventDetails.id}</span>
+
+              <label htmlFor="eventStart">Fecha de inicio:</label>
+              <input
+                type="datetime-local"
+                id="eventStart"
+                value={selectedEventDetails.start ? formatDatetimeLocal(selectedEventDetails.start) : ""}
+                readOnly={true}
+              />
+              <label htmlFor="eventEnd">Fecha de fin:</label>
+              <input
+                type="datetime-local"
+                id="eventEnd"
+                value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
+                readOnly={true}
+              />
+              <label htmlFor="eventDescription">Descripción:</label>
+              <textarea
+                id="eventDescription"
+                value={selectedEventDetails.description}
+                readOnly={true}
+              />
+        
+              {/* Agregar más detalles según sea necesario */}
+              {/* Agregar botones para realizar acciones específicas sobre el evento */}
+              <button onClick={handleEditEvent}>Editar Evento</button>
+              <button onClick={handleCancel}>Cerrar</button>
+            </div>
+          </div>
+        )}
+
+        {/*Esta parte es el form para editar el evento*/}
+        {showEditForm && (
+          <div className="event-form-overlay">
+            <div className="event-form-container">
+              <label htmlFor="eventTitle">Título del Evento:</label>
+              <input
+                type="text"
+                id="eventTitle"
+                value={selectedEventDetails.title}
+                onChange={(e) =>
+                  setEventDetails({ ...eventDetails, title: e.target.value })
+                }
+              />
+
+              <label htmlFor="eventStart">Fecha de inicio:</label>
+              <input
+                type="datetime-local"
+                id="eventStart"
+                value={selectedEventDetails.start ? formatDatetimeLocal(selectedEventDetails.start) : ""}
+                onChange={(e) =>
+                  setEventDetails({
+                    ...eventDetails,
+                    start: new Date(e.target.value),
+                  })
+                }
+              />
+              <label htmlFor="eventEnd">Fecha de fin:</label>
+              <input
+                type="datetime-local"
+                id="eventEnd"
+                value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
+                onChange={(e) =>
+                  setEventDetails({
+                    ...eventDetails,
+                    end: new Date(e.target.value),
+                  })
+                }
+              />
+              <label htmlFor="eventDescription">Descripción:</label>
+              <textarea
+                id="eventDescription"
+                value={selectedEventDetails.description}
+                onChange={(e) =>
+                  setEventDetails({ ...eventDetails, description: e.target.value })
+                }
+              />
+              {/* Agrega otros campos del formulario según tus necesidades 
+              <button onClick={handleSaveEvent}>Guardar Evento</button>
+              <button onClick={handleDeleteEvent}>Eliminar Evento</button>*/}
+              <button onClick={handleCancel}>Cerrar</button>
+            </div>
+          </div>
+        )}
+
 
         {/*Esta parte es la que muestra el calendario*/}
         <FullCalendar
