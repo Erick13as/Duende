@@ -111,36 +111,23 @@ function Calendar() {
 
     //con esta función voy a intentar crear eventos a partir de las ordenes confirmadas alamacenadas en confirmedOrdersData.
     const handleOrderEvent = async () => {
-      console.log("order event, 0: ", confirmedEvents[0])
       try {
-        var flag = true;
-        // Itera sobre cada orden en confirmedEvents
         for (const order of confirmedEvents) {
-          var nextEventId = uuidv4();
           const eventExists = await doesEventExistWithNumeroOrden(order.numeroOrden);
     
-          // Si el evento no existe, procede a agregarlo
           if (!eventExists) {
-            console.log("estoy if");
-            //ciclo malvado para tener un id único y que se puede pasar a numerovfff
-            do {
-              nextEventId = uuidv4();
-            } while (isNaN(parseInt(nextEventId, 10)));
-            
-            console.log("nextEventId es: ", nextEventId);
-            
-            // Crea un nuevo evento en la base de datos basado en la orden s
+            const nextEventId = generateUniqueEventId();
+    
             const newEvent = {
-              id: parseInt(nextEventId, 10),
+              id: nextEventId,
               title: `Orden ${order.numeroOrden}`,
-              start: order.fechaEntrega.toDate(), 
-              end: new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000), 
+              start: order.fechaEntrega.toDate(),
+              end: new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000),
               description: `Entrega de la Orden ${order.numeroOrden} con destino ${order.direccionEntrega}`,
               tipo: "orden",
               numeroOrden: order.numeroOrden,
             };
     
-            // Agrega el nuevo evento a la base de datos
             await addEventToDatabase(newEvent);
           }
         }
@@ -148,12 +135,32 @@ function Calendar() {
         console.error('Error al manejar eventos de órdenes:', error);
       }
     };
-
-    // Función para verificar si ya existe un evento con el mismo numeroOrden
+    
     const doesEventExistWithNumeroOrden = async (numeroOrden) => {
       const eventQuery = query(collection(db, 'evento'), where('numeroOrden', '==', numeroOrden));
       const eventSnapshot = await getDocs(eventQuery);
       return !eventSnapshot.empty;
+    };
+    
+    const addEventToDatabase = async (event) => {
+      const eventCollection = collection(db, 'evento');
+      await addDoc(eventCollection, {
+        id: event.id,
+        title: event.title,
+        start: new Date(event.start).toISOString(),
+        end: new Date(event.end).toISOString(),
+        description: event.description,
+        tipo: event.tipo,
+        numeroOrden: event.numeroOrden,
+      });
+    };
+    
+    const generateUniqueEventId = () => {
+      let nextEventId;
+      do {
+        nextEventId = uuidv4();
+      } while (isNaN(parseInt(nextEventId, 10)));
+      return parseInt(nextEventId, 10);
     };
 
     // Función para verificar si ya existe un evento con el mismo numeroOrden
@@ -161,26 +168,6 @@ function Calendar() {
       const eventQuery = query(collection(db, 'evento'), where('id', '==', numeroId));
       const eventSnapshot = await getDocs(eventQuery);
       return !eventSnapshot.empty;
-    };
-
-    // Función para agregar un evento a la base de datos
-    const addEventToDatabase = async (event) => {
-      console.log("Me llegó para insertar.", event)
-      const eventCollection = collection(db, 'evento');
-      
-      await addDoc(eventCollection, {
-        id: event.id,
-        title: event.title,
-        start: new Date(event.start).toISOString(), 
-        end: new Date(event.start).toISOString(),
-        description: event.description,
-        tipo: event.tipo,
-        numeroOrden: event.numeroOrden,
-      });
-
-      // Actualiza el estado local con el nuevo evento
-      setEvents((prevEvents) => [...prevEvents, event]);
-
     };
     
     const handleEventClick = (clickInfo) => {
