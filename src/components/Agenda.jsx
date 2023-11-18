@@ -33,6 +33,7 @@ function Calendar() {
       start: null,
       end: null,
       description: "",
+      tipo: "",
     });
 
     const [showEditForm, setShowEditForm] = useState(false);
@@ -42,6 +43,7 @@ function Calendar() {
       start: null,
       end: null,
       description: "",
+      tipo: "",
     });
     
     useEffect(() => {
@@ -73,6 +75,7 @@ function Calendar() {
         start: clickInfo.event.start,
         end: clickInfo.event.end,
         description: clickInfo.event.extendedProps.description || "",
+        tipo: clickInfo.event.extendedProps.tipo || "",
       });
     
       // Verificar que start y end no sean null antes de intentar formatear
@@ -88,7 +91,6 @@ function Calendar() {
     };
     
     const handleGoGalery= () => {
-      console.log("Volver button clicked");
       navigate('/galeriaAdmin');
     };
 
@@ -124,6 +126,7 @@ function Calendar() {
           start: new Date(eventDetails.start).toISOString(),
           end: new Date(eventDetails.end).toISOString(),
           description: eventDetails.description,
+          tipo: "maquillaje"
         });
       } else {
         // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
@@ -135,6 +138,7 @@ function Calendar() {
           start: new Date(eventDetails.start).toISOString(),
           end: new Date(eventDetails.end).toISOString(),
           description: eventDetails.description,
+          tipo: "maquillaje"
         });
       }
     
@@ -222,6 +226,7 @@ function Calendar() {
             start: formattedStart,
             end: formattedEnd,
             description: selectedEventDetails.description,
+            tipo: "maquillaje"
           });
     
           // Actualiza el estado local con los eventos actualizados
@@ -233,6 +238,10 @@ function Calendar() {
       } catch (error) {
         console.error("Error al actualizar datos:", error);
       }
+    };
+
+    const handleViewOrder = () => {
+
     };
 
     return (
@@ -304,8 +313,18 @@ function Calendar() {
                 readOnly={true}
               />
 
-              <label>ID del Evento:</label>
-              <span>{selectedEventDetails.id}</span>
+              <div style={{ marginBottom: '8px' }}>
+                <label>ID del Evento: </label>
+                <span style={{ fontWeight: 'bold' }}>{selectedEventDetails.id}</span>
+              </div>
+              
+
+              <div style={{ marginBottom: '8px' }}>
+                <label>Tipo: </label>
+                <span style={{ fontWeight: 'bold' }}>{selectedEventDetails.tipo}</span>
+              </div>
+
+              <span>{""}</span>
 
               <label htmlFor="eventStart">Fecha de inicio:</label>
               <input
@@ -327,9 +346,10 @@ function Calendar() {
                 value={selectedEventDetails.description}
                 readOnly={true}
               />
-        
-              {/* Agregar más detalles según sea necesario */}
-              {/* Agregar botones para realizar acciones específicas sobre el evento */}
+
+              {selectedEventDetails.tipo === "orden" && (
+                <button onClick={handleViewOrder}>Ver Orden</button>
+              )}
               <button onClick={handleEditEvent}>Editar Evento</button>
               <button onClick={handleCancel}>Cerrar</button>
             </div>
