@@ -133,8 +133,8 @@ function Calendar() {
             const newEvent = {
               id: parseInt(nextEventId, 10),
               title: `Orden ${order.numeroOrden}`,
-              start: order.fechaEntrega.toDate(), // Ajusta la propiedad 'start' según tu estructura de datos
-              end: order.fechaEntrega.toDate(), // Ajusta la propiedad 'end' según tu estructura de datos
+              start: order.fechaEntrega.toDate(), 
+              end: new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000), 
               description: `Entrega de la Orden ${order.numeroOrden} con destino ${order.direccionEntrega}`,
               tipo: "orden",
               numeroOrden: order.numeroOrden,
