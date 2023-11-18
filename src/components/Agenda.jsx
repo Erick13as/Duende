@@ -36,6 +36,7 @@ function Calendar() {
       end: null,
       description: "",
       tipo: "",
+      numeroOrden: "",
     });
 
     const [showEditForm, setShowEditForm] = useState(false);
@@ -46,6 +47,7 @@ function Calendar() {
       end: null,
       description: "",
       tipo: "",
+      numeroOrden: "",
     });
     
     useEffect(() => {
@@ -67,6 +69,7 @@ function Calendar() {
         start: selectInfo.startStr,
         end: selectInfo.endStr,
         description: "",
+        numeroOrden: "",
       });
       setShowEventForm(true);
     };
@@ -178,6 +181,7 @@ function Calendar() {
         end: clickInfo.event.end,
         description: clickInfo.event.extendedProps.description || "",
         tipo: clickInfo.event.extendedProps.tipo || "",
+        numeroOrden: clickInfo.event.extendedProps.numeroOrden,
       });
     
       // Verificar que start y end no sean null antes de intentar formatear
@@ -189,6 +193,7 @@ function Calendar() {
     
       setShowDetailsForm(true);
       setSelectedEventId(clickInfo.event.id);
+      console.log("ajua", selectedEventDetails)
 
     };
     
@@ -343,7 +348,8 @@ function Calendar() {
     };
 
     const handleViewOrder = () => {
-
+      const dirOrden = selectedEventDetails.numeroOrden
+      navigate(`/OrdenAdmin/${dirOrden}`);
     };
 
     return (
