@@ -11,6 +11,7 @@ function DetallesOrdenAdminView(props) {
 return (
     <div className="compra-container">
       <form className="formBarra">
+        <button onClick={()=>navigate('/agenda', )} className='botonOA'>Volver a Agenda</button>
         <button onClick={()=>navigate('/AccederTiendaAdmin', )} className='botonOA'>Tienda</button>
         <div className="botonBarra-container">
             <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
