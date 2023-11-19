@@ -236,8 +236,9 @@ function Calendar() {
       const newStartDate = new Date(eventDetails.start);
       const newEndDate = new Date(eventDetails.end);
   
-      // Agrega un día a la fecha de fin
-      newEndDate.setDate(newEndDate.getDate() + 1);
+      // Elimina un dia de la fecha inicio y fin
+      newStartDate.setDate(newStartDate.getDate() - 1);
+      newEndDate.setDate(newEndDate.getDate() - 1);
 
       if (eventDetails.id) {
         // Si el evento ya tiene un ID, actualiza el evento existente
