@@ -57,11 +57,13 @@ function Calendar() {
         const eventsSnapshot = await getDocs(eventsCollection);
         const eventData = eventsSnapshot.docs.map((doc) => {
           const data = doc.data();
-          // Suma un día a la fecha de inicio y fin al cargar por primera vez
-          data.start = data.start ? new Date(data.start) : null;
-          data.end = data.end ? new Date(data.end) : null;
-          if (data.start) data.start.setDate(data.start.getDate() + 1);
-          if (data.end) data.end.setDate(data.end.getDate() + 1);
+          // Suma un día a la fecha de inicio y fin solo si el tipo es distinto de "orden"
+          if (data.tipo !== "orden") {
+            data.start = data.start ? new Date(data.start) : null;
+            data.end = data.end ? new Date(data.end) : null;
+            if (data.start) data.start.setDate(data.start.getDate() + 1);
+            if (data.end) data.end.setDate(data.end.getDate() + 1);
+          }
           return data;
         });
         setEvents(eventData);
@@ -304,11 +306,13 @@ function Calendar() {
       const eventsSnapshot = await getDocs(eventsCollection);
       const eventData = eventsSnapshot.docs.map((doc) => {
         const data = doc.data();
-        // Suma un día a la fecha de inicio y fin
-        data.start = data.start ? new Date(data.start) : null;
-        data.end = data.end ? new Date(data.end) : null;
-        if (data.start) data.start.setDate(data.start.getDate() + 1);
-        if (data.end) data.end.setDate(data.end.getDate() + 1);
+        // Suma un día a la fecha de inicio y fin solo si el tipo es distinto de "orden"
+        if (data.tipo !== "orden") {
+          data.start = data.start ? new Date(data.start) : null;
+          data.end = data.end ? new Date(data.end) : null;
+          if (data.start) data.start.setDate(data.start.getDate() + 1);
+          if (data.end) data.end.setDate(data.end.getDate() + 1);
+        }
         return data;
       });
       return eventData;
