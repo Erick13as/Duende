@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,7 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import esLocale from '@fullcalendar/core/locales/es'; 
 import { v4 as uuidv4 } from "uuid";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc,onSnapshot } from "firebase/firestore";
-import { db, storage } from '../firebase/firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 import {query, where} from 'firebase/firestore';
 
 function Calendar() {
@@ -55,12 +55,19 @@ function Calendar() {
       const fetchEvents = async () => {
         const eventsCollection = collection(db, 'evento');
         const eventsSnapshot = await getDocs(eventsCollection);
-        const eventData = eventsSnapshot.docs.map((doc) => doc.data());
+        const eventData = eventsSnapshot.docs.map((doc) => {
+          const data = doc.data();
+          // Suma un día a la fecha de inicio y fin al cargar por primera vez
+          data.start = data.start ? new Date(data.start) : null;
+          data.end = data.end ? new Date(data.end) : null;
+          if (data.start) data.start.setDate(data.start.getDate() + 1);
+          if (data.end) data.end.setDate(data.end.getDate() + 1);
+          return data;
+        });
         setEvents(eventData);
       };
   
       fetchEvents();
-
     }, []);
 
     const handleDateSelect = (selectInfo) => {
@@ -224,13 +231,19 @@ function Calendar() {
     };
 
     const handleSaveEvent = async () => {
+      const newStartDate = new Date(eventDetails.start);
+      const newEndDate = new Date(eventDetails.end);
+  
+      // Agrega un día a la fecha de fin
+      newEndDate.setDate(newEndDate.getDate() + 1);
+
       if (eventDetails.id) {
         // Si el evento ya tiene un ID, actualiza el evento existente
         const eventRef = doc(db, 'evento', eventDetails.id);
         await updateDoc(eventRef, {
           title: eventDetails.title,
-          start: new Date(eventDetails.start).toISOString(),
-          end: new Date(eventDetails.end).toISOString(),
+          start: newStartDate.toISOString(),
+          end: newEndDate.toISOString(),
           description: eventDetails.description,
           tipo: "maquillaje"
         });
@@ -241,8 +254,8 @@ function Calendar() {
         const newEventRef = await addDoc(collection(db, 'evento'), {
           id: nextEventId,
           title: eventDetails.title,
-          start: new Date(eventDetails.start).toISOString(),
-          end: new Date(eventDetails.end).toISOString(),
+          start: newStartDate.toISOString(),
+          end: newEndDate.toISOString(),
           description: eventDetails.description,
           tipo: "maquillaje"
         });
@@ -254,7 +267,7 @@ function Calendar() {
     
       setShowEventForm(false);
     };
-
+    
     const handleDeleteEvent = async () => {
       if (selectedEventId){
         try {
@@ -286,13 +299,21 @@ function Calendar() {
       }
     };
     
-    
     const fetchEvents = async () => {
       const eventsCollection = collection(db, 'evento');
       const eventsSnapshot = await getDocs(eventsCollection);
-      const eventData = eventsSnapshot.docs.map((doc) => doc.data());
+      const eventData = eventsSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        // Suma un día a la fecha de inicio y fin
+        data.start = data.start ? new Date(data.start) : null;
+        data.end = data.end ? new Date(data.end) : null;
+        if (data.start) data.start.setDate(data.start.getDate() + 1);
+        if (data.end) data.end.setDate(data.end.getDate() + 1);
+        return data;
+      });
       return eventData;
     };
+    
 
     const formatDatetimeLocal = (date) => {
       if (!date || !(date instanceof Date)) {
@@ -308,12 +329,15 @@ function Calendar() {
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
     
-
     const handleUpdateEvent = async () => {
       try {
         // Actualiza los datos en Firestore
-        const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start).toISOString() : null;
-        const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end).toISOString() : null;
+        const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start) : null;
+        const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end) : null;
+    
+        // Resta un día a la fecha de inicio y fin
+        if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
+        if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
     
         const updatedQuery = query(
           collection(db, 'evento'),
@@ -329,8 +353,8 @@ function Calendar() {
           await updateDoc(docRef, {
             id: parseInt(selectedEventDetails.id),
             title: selectedEventDetails.title,
-            start: formattedStart,
-            end: formattedEnd,
+            start: formattedStart ? formattedStart.toISOString() : null,
+            end: formattedEnd ? formattedEnd.toISOString() : null,
             description: selectedEventDetails.description,
             tipo: selectedEventDetails.tipo,
           });
@@ -338,8 +362,6 @@ function Calendar() {
           // Actualiza el estado local con los eventos actualizados
           const updatedEvents = await fetchEvents();
           setEvents(updatedEvents);
-    
-          //alert("Datos actualizados correctamente");
         }
       } catch (error) {
         console.error("Error al actualizar datos:", error);
