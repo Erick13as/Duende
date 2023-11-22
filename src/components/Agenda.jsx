@@ -342,9 +342,15 @@ function Calendar() {
       try {
         const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start) : null;
         const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end) : null;
+        console.log(editedEventType)
     
-        if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
-        if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
+        if (editedEventType !== "" && editedEventType !== "orden") {
+          if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
+          if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
+        }else{
+          if (formattedStart) formattedStart.setDate(formattedStart.getDate());
+          if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate());
+        }
     
         const updatedQuery = query(
           collection(db, 'evento'),
@@ -362,7 +368,7 @@ function Calendar() {
             start: formattedStart ? formattedStart.toISOString() : null,
             end: formattedEnd ? formattedEnd.toISOString() : null,
             description: selectedEventDetails.description,
-            tipo: editedEventType, // Utiliza el tipo seleccionado en el combobox de edición
+            tipo: editedEventType !== "" ? editedEventType : "orden", // Utiliza el tipo seleccionado en el combobox de edición, o "orden" si es vacío
           });
     
           const updatedEvents = await fetchEvents();
@@ -373,6 +379,7 @@ function Calendar() {
       }
       setShowEditForm(false);
     };
+    
     
 
     const handleViewOrder = () => {
