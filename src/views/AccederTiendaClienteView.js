@@ -16,6 +16,7 @@ function AccederTiendaClienteView(props) {
       <form className="formBarra">
         <button onClick={()=>navigate('/galeriaCliente', { state: { correo: email } })} className='botonOA'>Galería</button>
         <div className="botonBarra-container">
+            <button onClick={() => navigate(`/Notificaciones/${"C"+userId}`, { state: { correo: email } })} className='botonOA2'>Notificaciones</button>
             <button onClick={() => navigate(`/ComprasRealizadas/${"C"+userId}`, { state: { correo: email } })} className='botonOA2'>Ordenes</button>
             <button onClick={navigateToCarrito} className='botonOA2'>Mi Carrito</button>
             <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>

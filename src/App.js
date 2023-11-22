@@ -7,7 +7,7 @@ import { GaleriaSinLogin, GaleriaAdmin, InfoImagenAdmin, GaleriaCliente, SubirIm
 import { SignIn, SignUp } from './controllers/UserController';
 import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
 import { CerrarCompra, OrdenesPendientes, ListaOrdenes, DetallesOrden,IngresarDireccion,Carrito,FinalizarCompra,DetallesOrdenAdmin} from './controllers/CompraController';
-
+import { Notificaciones } from './controllers/NotificacionController';
 import Calendar from './components/Agenda';
 
 import "./components/Design.css"
@@ -47,6 +47,7 @@ const App = () => {
         <Route path='/finalizarCompra' element={<FinalizarCompra />} />
         <Route path='/Orden/:numeroOrden'element={<DetallesOrden />}  />
         <Route path='/OrdenAdmin/:numeroOrden'element={<DetallesOrdenAdmin />} />
+        <Route path='/Notificaciones/:id'element={<Notificaciones />} />
       </Routes>
     </div>
     </BrowserRouter>
