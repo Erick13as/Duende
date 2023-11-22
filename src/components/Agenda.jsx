@@ -15,6 +15,8 @@ function Calendar() {
     const [confirmedEvents, setConfirmedEvents] = useState([]);
     const [searchingConfirmedEvents, setSearchingConfirmedEvents] = useState(false);
     const navigate = useNavigate();
+    const [eventType, setEventType] = useState("maquillaje");
+    const [editedEventType, setEditedEventType] = useState("");
     const [showEventForm, setShowEventForm] = useState(false);
     const [eventDetails, setEventDetails] = useState({
       title: "",
@@ -203,6 +205,7 @@ function Calendar() {
       setShowDetailsForm(true);
       setSelectedEventId(clickInfo.event.id);
       console.log("ajua", selectedEventDetails)
+      setEditedEventType(selectedEventDetails.tipo);
 
     };
     
@@ -235,11 +238,11 @@ function Calendar() {
     const handleSaveEvent = async () => {
       const newStartDate = new Date(eventDetails.start);
       const newEndDate = new Date(eventDetails.end);
-  
-      // Elimina un dia de la fecha inicio y fin
+    
+      // Elimina un día de la fecha inicio y fin
       newStartDate.setDate(newStartDate.getDate() - 1);
       newEndDate.setDate(newEndDate.getDate() - 1);
-
+    
       if (eventDetails.id) {
         // Si el evento ya tiene un ID, actualiza el evento existente
         const eventRef = doc(db, 'evento', eventDetails.id);
@@ -248,7 +251,7 @@ function Calendar() {
           start: newStartDate.toISOString(),
           end: newEndDate.toISOString(),
           description: eventDetails.description,
-          tipo: "maquillaje"
+          tipo: eventType, // Utiliza el tipo seleccionado en el combobox
         });
       } else {
         // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
@@ -260,7 +263,7 @@ function Calendar() {
           start: newStartDate.toISOString(),
           end: newEndDate.toISOString(),
           description: eventDetails.description,
-          tipo: "maquillaje"
+          tipo: eventType, // Utiliza el tipo seleccionado en el combobox
         });
       }
     
@@ -270,6 +273,7 @@ function Calendar() {
     
       setShowEventForm(false);
     };
+    
     
     const handleDeleteEvent = async () => {
       if (selectedEventId){
@@ -336,11 +340,9 @@ function Calendar() {
     
     const handleUpdateEvent = async () => {
       try {
-        // Actualiza los datos en Firestore
         const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start) : null;
         const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end) : null;
     
-        // Resta un día a la fecha de inicio y fin
         if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
         if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
     
@@ -354,17 +356,15 @@ function Calendar() {
         if (!querySnapshot.empty) {
           const docRef = querySnapshot.docs[0].ref;
     
-          // Actualiza el documento
           await updateDoc(docRef, {
             id: parseInt(selectedEventDetails.id),
             title: selectedEventDetails.title,
             start: formattedStart ? formattedStart.toISOString() : null,
             end: formattedEnd ? formattedEnd.toISOString() : null,
             description: selectedEventDetails.description,
-            tipo: selectedEventDetails.tipo,
+            tipo: editedEventType, // Utiliza el tipo seleccionado en el combobox de edición
           });
     
-          // Actualiza el estado local con los eventos actualizados
           const updatedEvents = await fetchEvents();
           setEvents(updatedEvents);
         }
@@ -373,6 +373,7 @@ function Calendar() {
       }
       setShowEditForm(false);
     };
+    
 
     const handleViewOrder = () => {
       const dirOrden = selectedEventDetails.numeroOrden
@@ -386,6 +387,16 @@ function Calendar() {
           <div className="event-form-overlay">
             <div className="event-form-container">
               <h1>Creación de Evento</h1>
+              <label htmlFor="eventType">Tipo de Evento:</label>
+              <select
+                id="eventType"
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+              >
+                <option value="maquillaje">Maquillaje</option>
+                <option value="reunion">Reunión</option>
+              </select>
+
               <label htmlFor="eventTitle">Agregar Título:</label>
               <input
                 type="text"
@@ -434,6 +445,7 @@ function Calendar() {
             </div>
           </div>
         )}
+
 
         {/*Esta parte es el form para ver detalles del evento*/}
         {showDetailsForm && (
@@ -496,6 +508,21 @@ function Calendar() {
           <div className="event-form-overlay">
             <div className="event-form-container">
             <h1>Editar Evento</h1>
+              {/* Mostrar el campo de edición del tipo de evento solo si el tipo no es "orden" */}
+              {selectedEventDetails.tipo !== "orden" && (
+                <div>
+                <label htmlFor="editedEventType">Tipo de Evento:</label>
+                <select
+                  id="editedEventType"
+                  value={editedEventType}
+                  onChange={(e) => setEditedEventType(e.target.value)}
+                >
+                  <option value="maquillaje">Maquillaje</option>
+                  <option value="reunion">Reunión</option>
+                </select>
+                </div>
+              )}
+
               <label htmlFor="eventTitle">Título del Evento:</label>
               <input
                 type="text"
