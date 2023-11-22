@@ -12,90 +12,155 @@ import IngresarDireccionView from '../views/AddAdressView';
 import CarritoView from '../views/CarritoView';
 import FinalizarCompraView from '../views/FinishPurchaseView';
 import DetallesOrdenAdminView from '../views/AdminOrderView';
+import { getMessaging, getToken } from 'firebase/messaging';
+import { addDays, setDay, isBefore } from 'date-fns';
 
 Modal.setAppElement('#root');
 
+
 function CerrarCompra() {
-    const { id } = useParams();
-    const [order, setOrder] = useState(null);
-    const navigate = useNavigate();
-    const handleNavigate = (route) => {
-        navigate(route);
-    };
-    const rechazarOrden = async () => {
-      try {
-        const orderDoc = doc(db, 'orden', id);
-        await updateDoc(orderDoc, {
-          estado: 'rechazada',
-        });
-        console.log('Orden rechazada con éxito');
-        // Redirige a la página OrdenesPendientes
-        window.location.href = '/OrdenesPendientes';
-      } catch (error) {
-        console.error('Error al rechazar la orden:', error);
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
+  const [fechaDeEntrega, setFechaDeEntrega] = useState(null);
+  const navigate = useNavigate();
+
+  const handleNavigate = (route) => {
+    navigate(route);
+  };
+
+  const rechazarOrden = async () => {
+    try {
+      const orderDoc = doc(db, 'orden', id);
+      await updateDoc(orderDoc, {
+        estado: 'rechazada',
+      });
+
+      await addDoc(collection(db, 'notificacion'), {
+        userId: order.idCliente,
+        mensaje: 'Su orden fue rechazada por inconsistencias en el pago. La administradora estará pronto en contacto con usted.',
+        fecha: new Date(),
+        ordenId: order.numeroOrden,
+      });
+      console.log('Orden rechazada con éxito');
+      // Redirige a la página OrdenesPendientes
+      window.location.href = '/OrdenesPendientes';
+    } catch (error) {
+      console.error('Error al rechazar la orden:', error);
+    }
+  };
+
+  const calculateNextDeliveryDate = (approvalDate) => {
+    // Obten el día de la semana en que se aprobó el pedido
+    const approvalDay = new Date(approvalDate).getDay();
+    let nextDeliveryDate = new Date(approvalDate);
+  
+    if (approvalDay === 2) {
+      while (![4, 6].includes(nextDeliveryDate.getDay())) {
+        nextDeliveryDate = addDays(nextDeliveryDate, 1);
       }
-    };
-  
-    const confirmarOrden = async () => {
-      try {
-        const orderDoc = doc(db, 'orden', id);
-        await updateDoc(orderDoc, {
-          estado: 'confirmada',
-        });
-        console.log('Orden confirmada con éxito');
-        // Redirige a la página OrdenesPendientes
-        window.location.href = '/OrdenesPendientes';
-      } catch (error) {
-        console.error('Error al confirmar la orden:', error);
+    } else if (approvalDay === 4) {
+      while (![2, 6].includes(nextDeliveryDate.getDay())) {
+        nextDeliveryDate = addDays(nextDeliveryDate, 1);
       }
-    };
-  
-    useEffect(() => {
-      // Obtener la orden seleccionada desde la base de datos
-      const getOrderDetails = async () => {
-        try {
-          const orderDoc = doc(db, 'orden', id);
-          const orderSnapshot = await getDoc(orderDoc);
-          if (orderSnapshot.exists()) {
-            const orderData = orderSnapshot.data();
-            setOrder(orderData);
-          } else {
-            console.log('La orden no se encontró en la base de datos.');
-          }
-        } catch (error) {
-          console.error('Error al obtener detalles de la orden:', error);
-        }
-      };
-  
-      getOrderDetails();
-    }, [id]);
-  
-    if (!order) {
-      return <div>No se encontró la orden o ocurrió un error.</div>;
+    } else if (approvalDay === 6) {
+      while (![2, 4].includes(nextDeliveryDate.getDay())) {
+        nextDeliveryDate = addDays(nextDeliveryDate, 1);
+      }
+    } else {
+      while (![2, 4, 6].includes(nextDeliveryDate.getDay())) {
+        nextDeliveryDate = addDays(nextDeliveryDate, 1);
+      }
     }
   
-    const calcularTotalCompra = () => {
-      if (order && order.ListaProductos && typeof order.ListaProductos === 'object') {
-        const productList = Object.values(order.ListaProductos);
-        return productList.reduce((total, producto) => {
-          return total + producto.cantidad * producto.precio;
-        }, 0);
-      } else {
-        return 0;
+    // Si es el mismo día, avanza a la próxima semana
+    if (approvalDay === nextDeliveryDate.getDay() && isBefore(nextDeliveryDate, new Date(approvalDate))) {
+      nextDeliveryDate = addDays(nextDeliveryDate, 7);
+    }
+  
+    return nextDeliveryDate;
+  };
+  
+  
+  
+  
+
+  const confirmarOrden = async () => {
+    try {
+      const orderDoc = doc(db, 'orden', id);
+
+      // Obtener la fecha actual
+      const currentDate = new Date();
+
+      // Calcula la fecha del próximo martes, jueves o sábado
+      const nextDeliveryDate = calculateNextDeliveryDate(currentDate);
+
+      await updateDoc(orderDoc, {
+        estado: 'confirmada',
+        fechaEntrega: nextDeliveryDate,
+      });
+
+      await addDoc(collection(db, 'notificacion'), {
+        userId: order.idCliente,
+        mensaje: `Su orden fue confirmada. Fecha de entrega: ${nextDeliveryDate}`,
+        fecha: new Date(),
+        ordenId: order.numeroOrden,
+      });
+
+      console.log('Orden confirmada con éxito');
+      // Redirige a la página OrdenesPendientes
+      window.location.href = '/OrdenesPendientes';
+    } catch (error) {
+      console.error('Error al confirmar la orden:', error);
+    }
+  };
+
+  useEffect(() => {
+    const getOrderDetails = async () => {
+      try {
+        const orderDoc = doc(db, 'orden', id);
+        const orderSnapshot = await getDoc(orderDoc);
+        if (orderSnapshot.exists()) {
+          const orderData = orderSnapshot.data();
+          setOrder(orderData);
+        } else {
+          console.log('La orden no se encontró en la base de datos.');
+        }
+      } catch (error) {
+        console.error('Error al obtener detalles de la orden:', error);
       }
     };
 
+    getOrderDetails();
+  }, [id]);
+
+  if (!order) {
+    return <div>No se encontró la orden o ocurrió un error.</div>;
+  }
+
+  const calcularTotalCompra = () => {
+    if (order && order.ListaProductos && typeof order.ListaProductos === 'object') {
+      const productList = Object.values(order.ListaProductos);
+      return productList.reduce((total, producto) => {
+        return total + producto.cantidad * producto.precio;
+      }, 0);
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <CerrarCompraView
-        id={id}
-        order={order}
-        rechazarOrden={rechazarOrden}
-        confirmarOrden={confirmarOrden}
-        calcularTotalCompra={calcularTotalCompra}
-        handleNavigate={handleNavigate}
+      id={id}
+      order={order}
+      rechazarOrden={rechazarOrden}
+      confirmarOrden={confirmarOrden}
+      calcularTotalCompra={calcularTotalCompra}
+      handleNavigate={handleNavigate}
     />
   );
 }
+
+
 
 function OrdenesPendientes() {
     const [ordenes, setOrdenes] = useState([]);
