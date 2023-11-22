@@ -101,7 +101,7 @@ function CerrarCompra() {
 
       await addDoc(collection(db, 'notificacion'), {
         userId: order.idCliente,
-        mensaje: `Su orden fue confirmada. Fecha de entrega: ${nextDeliveryDate}`,
+        mensaje: `Su orden fue confirmada. Fecha de entrega del pedido: ${nextDeliveryDate}`,
         fecha: new Date(),
         ordenId: order.numeroOrden,
       });
