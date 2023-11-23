@@ -1,28 +1,37 @@
 import React from 'react';
-import { Carousel } from 'react-responsive-carousel';
 
 function NotificacionesView(props) {
-    const { notificaciones } = props;
-  
-    return (
-      <div className="notificaciones-container">
-        <form className="formBarra">
-          {/* Agrega los botones necesarios en la barra de navegación */}
-        </form>
-        <h1>Centro de Notificaciones</h1>
-        <ul>
-          {notificaciones.map((notificacion) => (
-            <li key={notificacion.id}>
-              <p>Mensaje: {notificacion.mensaje}</p>
-              <p>Fecha de notificación: {notificacion.fecha}</p>
-              <p>Orden ID: {notificacion.ordenId}</p>
-              {/* Puedes agregar más detalles de la notificación según tus necesidades */}
-            </li>
-          ))}
-        </ul>
+  const { notificaciones, navigateToLogin, navigateToTienda } = props;
+
+  return (
+    <div>
+      <form className="formBarra">
+        <button onClick={navigateToTienda} className='botonOA'>Tienda</button>
+        <div className="botonBarra-container">
+          <button onClick={navigateToLogin} className='botonOA2'>Cerrar sesión</button>
+        </div>
+      </form>
+      <div className="centered-container">
+        <div className="notificaciones-container">
+          <div className="notificaciones-header">
+            <h1>Centro de Notificaciones</h1>
+          </div>
+          <ul className="notificaciones-list">
+            {notificaciones.map((notificacion) => (
+              <li key={notificacion.id} className="notificacion-item">
+                <div className="notificacion-details">
+                  <p className="notificacion-mensaje"><strong>Mensaje:</strong> {notificacion.mensaje}</p>
+                  <p className="notificacion-fecha"><strong>Fecha de notificación:</strong> {notificacion.fecha}</p>
+                  <p className="notificacion-orden-id"><strong>Orden ID:</strong> {notificacion.ordenId}</p>
+                  {/* Puedes agregar más detalles de la notificación según tus necesidades */}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    );
-  }
-  
-  export default NotificacionesView;
-  
+    </div>
+  );
+}
+
+export default NotificacionesView;

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 
@@ -15,7 +16,7 @@ function GaleriaClientView(props) {
       handleSubcategoryChange,
       handleIndex,
     } = props;
-    
+
 return (
     <div className="galeria-container">
       <form className="formBarra">

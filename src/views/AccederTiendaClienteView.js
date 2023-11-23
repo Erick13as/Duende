@@ -1,5 +1,6 @@
-import React from 'react';
-import { Carousel } from 'react-responsive-carousel';
+import React, { useEffect, useState } from 'react';
+import { db } from '../firebase/firebaseConfig';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
 function AccederTiendaClienteView(props) {
   const {
@@ -11,18 +12,50 @@ function AccederTiendaClienteView(props) {
     userId,
   } = props;
 
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+
+  useEffect(() => {
+    if (userId) {
+      // Consulta para obtener las notificaciones basadas en userId y estado 'unread'
+      const notificationsCollection = collection(db, 'notificacion');
+      const notificationsQuery = query(
+        notificationsCollection,
+        where('userId', '==', userId),
+        where('estado', '==', 'unread')
+      );
+
+      // Listener para las notificaciones
+      const unsubscribe = onSnapshot(notificationsQuery, (snapshot) => {
+        const hasUnread = snapshot.docs.length > 0;
+        console.log('Has Unread Notifications:', hasUnread);
+        console.log(userId);
+        // Actualizar el estado según si hay notificaciones no leídas
+        setHasUnreadNotifications(hasUnread);
+      });
+
+      return () => unsubscribe(); // Limpiar el listener al desmontar el componente
+    }
+  }, [userId, setHasUnreadNotifications]);
+
   return (
     <div className="main_page-container">
       <form className="formBarra">
-        <button onClick={()=>navigate('/galeriaCliente', { state: { correo: email } })} className='botonOA'>Galería</button>
+        <button onClick={() => navigate('/galeriaCliente', { state: { correo: email } })} className='botonOA'>Galería</button>
         <div className="botonBarra-container">
-            <button onClick={() => navigate(`/Notificaciones/${"C"+userId}`, { state: { correo: email } })} className='botonOA2'>Notificaciones</button>
-            <button onClick={() => navigate(`/ComprasRealizadas/${"C"+userId}`, { state: { correo: email } })} className='botonOA2'>Ordenes</button>
-            <button onClick={navigateToCarrito} className='botonOA2'>Mi Carrito</button>
-            <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
+          <button
+            onClick={() => navigate(`/Notificaciones/${"C"+userId}`, { state: { correo: email } })}
+            className={`botonOA2 ${hasUnreadNotifications ? 'unread-notifications' : ''}`}
+          >
+            {hasUnreadNotifications ? (
+              <span className="notification-flag"></span>
+            ) : null}
+            Notificaciones
+          </button>
+          <button onClick={() => navigate(`/ComprasRealizadas/${"C"+userId}`, { state: { correo: email } })} className='botonOA2'>Ordenes</button>
+          <button onClick={navigateToCarrito} className='botonOA2'>Mi Carrito</button>
+          <button onClick={() => navigate('/login')} className='botonOA2'>Cerrar sesión</button>
         </div>
       </form>
-      
 
       <div>
         <div className="productos-container">

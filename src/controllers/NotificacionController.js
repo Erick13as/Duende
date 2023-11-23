@@ -38,6 +38,17 @@ import { getMessaging, getToken } from 'firebase/messaging';
         });
     }, []);
     
-      return <NotificacionesView notificaciones={notificaciones} />;
+    const navigateToLogin = () => {
+      navigate('/login');
+    };
+  
+    const navigateToTienda = () => {
+      navigate('/AccederTiendaCliente', { state: { correo: email } });
+    };
+      return <NotificacionesView 
+      notificaciones={notificaciones}
+      navigateToLogin={navigateToLogin}
+      navigateToTienda={navigateToTienda}
+       />;
     }
     export {Notificaciones};
