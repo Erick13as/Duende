@@ -40,6 +40,7 @@ function CerrarCompra() {
         mensaje: 'Su orden fue rechazada por inconsistencias en el pago. La administradora estará pronto en contacto con usted.',
         fecha: new Date(),
         ordenId: order.numeroOrden,
+        estado: "unread",
       });
       console.log('Orden rechazada con éxito');
       // Redirige a la página OrdenesPendientes
@@ -101,9 +102,10 @@ function CerrarCompra() {
 
       await addDoc(collection(db, 'notificacion'), {
         userId: order.idCliente,
-        mensaje: `Su orden fue confirmada. Fecha de entrega del pedido: ${nextDeliveryDate}`,
+        mensaje: `Su orden fue confirmada. Fecha de entrega del pedido: ${nextDeliveryDate.toLocaleDateString('es-ES')}`,
         fecha: new Date(),
         ordenId: order.numeroOrden,
+        estado:"unread",
       });
 
       console.log('Orden confirmada con éxito');

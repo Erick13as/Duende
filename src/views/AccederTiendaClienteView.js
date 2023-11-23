@@ -20,7 +20,7 @@ function AccederTiendaClienteView(props) {
       const notificationsCollection = collection(db, 'notificacion');
       const notificationsQuery = query(
         notificationsCollection,
-        where('userId', '==', userId),
+        where('userId', '==', "C"+userId),
         where('estado', '==', 'unread')
       );
 

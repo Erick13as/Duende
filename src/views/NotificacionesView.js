@@ -25,7 +25,7 @@ function NotificacionesView(props) {
               >
                 <div className="notificacion-details">
                   <p className="notificacion-mensaje"><strong>Mensaje:</strong> {notificacion.mensaje}</p>
-                  <p className="notificacion-fecha"><strong>Fecha de la orden:</strong> {notificacion.fecha}</p>
+                  <p className="notificacion-fecha"><strong>Fecha de la notificación:</strong> {notificacion.fecha}</p>
                   <p className="notificacion-orden-id"><strong>Orden ID:</strong> {notificacion.ordenId}</p>
                 </div>
               </li>
