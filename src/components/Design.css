@@ -23,12 +23,14 @@ src\components\Design.css
   padding: 20px;
   font-family: Arial, sans-serif;
 }
-/* Estilos del contenedor principal centrado en pantalla */
 .centered-container {
-  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* Utiliza la altura completa de la ventana */
+  max-width: 735px; /* Cambia el valor según tus preferencias */
+  margin: 0 auto; /* Para centrar horizontalmente */
+  padding: 20px; /* Agrega relleno si es necesario */
+  box-sizing: border-box; /* Asegura que el relleno y el borde no afecten las dimensiones finales */
 }
 
 .notificaciones-container {
@@ -40,6 +42,11 @@ src\components\Design.css
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.unread-notification {
+  background-color: #fff; /* Fondo blanco para notificaciones no leídas */
+  border: 1px solid #8a0c0c; /* Bordes adicionales o cambio de color según sea necesario */
+  border-radius: 8px;
+}
 .notificacion-item {
   margin-top: 20px;
 }
@@ -62,6 +69,19 @@ src\components\Design.css
   background-color: red;
   border-radius: 50%;
   display: inline-block;
+}
+.notificaciones-header {
+  text-align: center;
+}
+.notificaciones-container-wrapper {
+  max-width: 800px; /* Ajusta el valor según sea necesario */
+  margin: 0 auto; /* Centra el contenedor en la pantalla */
+  overflow-y: auto; /* Agrega desplazamiento vertical si el contenido es demasiado grande */
+}
+
+.notificaciones-list {
+  list-style-type: none;
+  padding: 0;
 }
 h1Orden {
   font-size: 24px;
