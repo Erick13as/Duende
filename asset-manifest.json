@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/duende/static/css/main.4904a512.css",
-    "main.js": "/duende/static/js/main.1ad99524.js",
+    "main.css": "/duende/static/css/main.1fd346e8.css",
+    "main.js": "/duende/static/js/main.0946d4b1.js",
     "static/media/slick.svg": "/duende/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/duende/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/duende/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/duende/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/duende/index.html",
-    "main.4904a512.css.map": "/duende/static/css/main.4904a512.css.map",
-    "main.1ad99524.js.map": "/duende/static/js/main.1ad99524.js.map"
+    "main.1fd346e8.css.map": "/duende/static/css/main.1fd346e8.css.map",
+    "main.0946d4b1.js.map": "/duende/static/js/main.0946d4b1.js.map"
   },
   "entrypoints": [
-    "static/css/main.4904a512.css",
-    "static/js/main.1ad99524.js"
+    "static/css/main.1fd346e8.css",
+    "static/js/main.0946d4b1.js"
   ]
 }
