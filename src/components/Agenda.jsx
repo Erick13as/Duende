@@ -136,17 +136,12 @@ function Calendar() {
     
           if (!eventExists) {
             const nextEventId = generateUniqueEventId();
-            const startDate = order.fechaEntrega.toDate();
-            const endDate = new Date(startDate.getTime());
-            endDate.setHours(23, 59, 59);
-            //const endDate = startDate;
     
             const newEvent = {
               id: nextEventId,
-              allDay: true,
               title: `Orden ${order.numeroOrden}`,
-              start: startDate.toISOString().slice(0,10),//order.fechaEntrega.toDate().toISOString(),
-              end: endDate.toISOString().slice(0,10), //new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000),
+              start: order.fechaEntrega.toDate(),
+              end: new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000),
               description: `Entrega de la Orden ${order.numeroOrden} con destino ${order.direccionEntrega}`,
               tipo: "orden",
               numeroOrden: order.numeroOrden,
@@ -446,13 +441,22 @@ function Calendar() {
         let tipoEvento = "";
 
         console.log("edited type:" + editedEventType)
+        
+        
     
-        if (editedEventType !== "" || editedEventType !== "orden") {
+        if (editedEventType !== "" && editedEventType !== "orden") {
           if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
-          console.log("Start:" + formattedStart )
           if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
-          console.log("Start:" + formattedEnd )
+          console.log("Hola" )
         }
+        console.log("Start:" + formattedStart )
+        console.log("End:" + formattedEnd )
+        let comparacionStart = new Date(formattedStart);  // Clona la fecha original
+        let comparacionEnd = new Date(formattedEnd);  // Clona la fecha original
+        comparacionStart.setDate(comparacionStart.getDate() + 1);
+        comparacionEnd.setDate(comparacionEnd.getDate() + 1);
+        console.log("Original S:" + formattedStart)
+        console.log("Original E:" + formattedEnd)
     
         const hasConflict = events.some(existingEvent => {
 
@@ -470,10 +474,13 @@ function Calendar() {
         
           // Verificar si hay solapamiento de horarios
           tipoEvento = existingEvent.tipo;
-          console.log("Start: " + existingStartDate + "Fin: " + existingEndDate + "formated S:" + formattedStart + "Formated F:" + formattedEnd)
+
+          
+          console.log("Inicio: " + existingStartDate)
+          console.log("Fin: " + existingEndDate + "\n")
           return (
-            (formattedStart.setDate(formattedStart.getDate() + 1) < existingEndDate && formattedEnd.setDate(formattedEnd.getDate() + 1) > existingStartDate) ||
-            (formattedEnd.setDate(formattedEnd.getDate() + 1) > existingStartDate && formattedStart.setDate(formattedStart.getDate() + 1) < existingEndDate)
+            (comparacionStart < existingEndDate && comparacionEnd > existingStartDate) ||
+            (comparacionEnd > existingStartDate && comparacionStart < existingEndDate)
           );
         });
 
@@ -510,7 +517,7 @@ function Calendar() {
                 id: parseInt(selectedEventDetails.id),
                 title: selectedEventDetails.title,
                 start: formattedStart ? formattedStart.toISOString() : null,
-                end: formattedEnd ? formattedEnd.toISOString() : null,
+                end: formattedEnd ? formattedEnd.toISOString() : "",
                 description: selectedEventDetails.description,
               });
         
@@ -532,7 +539,7 @@ function Calendar() {
                   id: parseInt(selectedEventDetails.id),
                   title: selectedEventDetails.title,
                   start: formattedStart ? formattedStart.toISOString() : null,
-                  end: formattedEnd ? formattedEnd.toISOString() : null,
+                  end: formattedEnd ? formattedEnd.toISOString() : "",
                   description: selectedEventDetails.description,
                 });
           
@@ -653,13 +660,17 @@ function Calendar() {
                 value={selectedEventDetails.start ? formatDatetimeLocal(selectedEventDetails.start) : ""}
                 readOnly={true}
               />
-              <label htmlFor="eventEnd">Fecha de fin:</label>
-              <input
-                type="datetime-local"
-                id="eventEnd"
-                value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
-                readOnly={true}
-              />
+              {selectedEventDetails.tipo !== "orden" && (
+                <div className="event-form-container">
+                <label htmlFor="eventEnd">Fecha de fin:</label>
+                <input
+                  type="datetime-local"
+                  id="eventEnd"
+                  value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
+                  readOnly={true}
+                />
+                </div>
+              )}
               <label htmlFor="eventDescription">Descripción:</label>
               <textarea
                 id="eventDescription"
