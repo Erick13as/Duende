@@ -140,14 +140,15 @@ function CerrarCompra() {
   }
 
   const calcularTotalCompra = () => {
-    if (order && order.ListaProductos && typeof order.ListaProductos === 'object') {
+    return order.totalCompra
+    /*if (order && order.ListaProductos && typeof order.ListaProductos === 'object') {
       const productList = Object.values(order.ListaProductos);
       return productList.reduce((total, producto) => {
         return total + producto.cantidad * producto.precio;
       }, 0);
     } else {
       return 0;
-    }
+    }*/
   };
 
   return (
@@ -307,7 +308,7 @@ function DetallesOrden() {
             })
           );
 
-          setTotal(totalOrden);
+          setTotal(ordenData.totalCompra);
           setProductos(productosConDetalles);
         } else {
           console.error('La orden no existe o hay duplicados con el mismo número de orden');
@@ -386,7 +387,7 @@ function DetallesOrdenAdmin() {
             })
           );
 
-          setTotal(totalOrden);
+          setTotal(ordenData.totalCompra);
           setProductos(productosConDetalles);
         } else {
           console.error('La orden no existe o hay duplicados con el mismo número de orden');
