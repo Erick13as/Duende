@@ -21,7 +21,7 @@ function CerrarCompraView(props) {
             <p>Número de Orden: {order.numeroOrden}</p>
             <p>Comprobante de Pago:</p>
             <img src={order.comprobante} alt="Comprobante de Pago" />
-            <p>Total de la Compra: ${calcularTotalCompra()}</p>
+            <p>Total de la Compra + envío:: ${calcularTotalCompra()}</p>
             <button onClick={confirmarOrden}className='botonOA'>Confirmar</button>
             <button onClick={rechazarOrden}className='botonOA'>Rechazar</button>
         </div>

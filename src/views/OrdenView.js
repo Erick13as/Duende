@@ -43,7 +43,7 @@ return (
           
           <h2>Dirección de entrega: {orden.direccionEntrega}</h2>
           <h2>Estado: {orden.estado}</h2>
-          <h2>Total: {total}</h2>
+          <h2>Total + envío: {total}</h2>
           
         </div>
       )}
