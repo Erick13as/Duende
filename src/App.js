@@ -8,7 +8,7 @@ import { SignIn, SignUp } from './controllers/UserController';
 import { AgregarProducto,EditarProductoAdmin,VerMasCliente,AccederTiendaCliente,AccederTiendaAdmin} from './controllers/ProductoController';
 import { CerrarCompra, OrdenesPendientes, ListaOrdenes, DetallesOrden,IngresarDireccion,Carrito,FinalizarCompra,DetallesOrdenAdmin} from './controllers/CompraController';
 import { Notificaciones } from './controllers/NotificacionController';
-import Calendar from './components/Agenda';
+import Calendar from './controllers/AgendaController';
 
 import "./components/Design.css"
 
