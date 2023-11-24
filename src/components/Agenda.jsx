@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc,onSnapshot } from "firebase/firestore";
 import { db } from '../firebase/firebaseConfig';
 import {query, where} from 'firebase/firestore';
+import { tr } from "date-fns/locale";
 
 function Calendar() {
     const [events, setEvents] = useState([]);
@@ -65,6 +66,10 @@ function Calendar() {
             data.end = data.end ? new Date(data.end) : null;
             if (data.start) data.start.setDate(data.start.getDate() + 1);
             if (data.end) data.end.setDate(data.end.getDate() + 1);
+          }else{
+            data.allDay = true;
+            if (data.start) data.start = new Date(data.start);
+            if (data.end) data.end = new Date(data.end);
           }
           return data;
         });
@@ -131,12 +136,17 @@ function Calendar() {
     
           if (!eventExists) {
             const nextEventId = generateUniqueEventId();
+            const startDate = order.fechaEntrega.toDate();
+            const endDate = new Date(startDate.getTime());
+            endDate.setHours(23, 59, 59);
+            //const endDate = startDate;
     
             const newEvent = {
               id: nextEventId,
+              allDay: true,
               title: `Orden ${order.numeroOrden}`,
-              start: order.fechaEntrega.toDate(),
-              end: new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000),
+              start: startDate.toISOString().slice(0,10),//order.fechaEntrega.toDate().toISOString(),
+              end: endDate.toISOString().slice(0,10), //new Date(order.fechaEntrega.toDate().getTime() + 10 * 60000),
               description: `Entrega de la Orden ${order.numeroOrden} con destino ${order.direccionEntrega}`,
               tipo: "orden",
               numeroOrden: order.numeroOrden,
@@ -236,42 +246,127 @@ function Calendar() {
     };
 
     const handleSaveEvent = async () => {
-      const newStartDate = new Date(eventDetails.start);
-      const newEndDate = new Date(eventDetails.end);
-    
-      // Elimina un día de la fecha inicio y fin
-      newStartDate.setDate(newStartDate.getDate() - 1);
-      newEndDate.setDate(newEndDate.getDate() - 1);
-    
-      if (eventDetails.id) {
-        // Si el evento ya tiene un ID, actualiza el evento existente
-        const eventRef = doc(db, 'evento', eventDetails.id);
-        await updateDoc(eventRef, {
-          title: eventDetails.title,
-          start: newStartDate.toISOString(),
-          end: newEndDate.toISOString(),
-          description: eventDetails.description,
-          tipo: eventType, // Utiliza el tipo seleccionado en el combobox
+      try {
+        const newStartDate = new Date(eventDetails.start);
+        const newEndDate = new Date(eventDetails.end);
+
+        let tipoEvento = "";
+
+        // Verificar si hay algún evento que choque con el nuevo evento
+        const hasConflict = events.some(existingEvent => {
+
+          // Ignorar eventos de tipo "orden" con la propiedad "allDay" configurada como true
+          if (existingEvent.tipo === "orden" && existingEvent.allDay) {
+            return false;
+          }
+
+          // Convertir las fechas de inicio y fin de los eventos existentes a objetos Date
+          const existingStartDate = new Date(existingEvent.start);
+          const existingEndDate = new Date(existingEvent.end);
+        
+          // Verificar si hay solapamiento de horarios
+          tipoEvento = existingEvent.tipo;
+          return (
+            (newStartDate < existingEndDate && newEndDate > existingStartDate) ||
+            (newEndDate > existingStartDate && newStartDate < existingEndDate)
+          );
         });
-      } else {
-        // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
-        const nextEventId = getNextEventId(events);
-    
-        const newEventRef = await addDoc(collection(db, 'evento'), {
-          id: nextEventId,
-          title: eventDetails.title,
-          start: newStartDate.toISOString(),
-          end: newEndDate.toISOString(),
-          description: eventDetails.description,
-          tipo: eventType, // Utiliza el tipo seleccionado en el combobox
-        });
+
+        if (hasConflict) {
+          // Mostrar un mensaje al usuario y manejar la lógica según sea necesario
+          let userResponse = false;//window.confirm("¡Advertencia! Hay un evento existente en este horario. ¿Desea agregar el evento de todos modos?");
+          let userAns = false;
+
+          // Si el tipo de evento es "maquillaje", verificar si ya hay un evento de "maquillaje" en este horario
+          if (tipoEvento === "maquillaje" && hasConflict) {
+            userAns = window.confirm("¡Advertencia! Hay un evento existente en este horario. No se puede agendar un evento de maquillaje en horario conflictivo.");
+            //return;
+          } else if (hasConflict) {
+            // Mostrar un mensaje al usuario indicando que no se puede agendar un evento de maquillaje en este horario
+            userResponse = window.confirm("Ya hay un evento en este horario. ¿Deseas agregar el evento en horario conflictivo?");
+            //return;
+          } 
+          
+          if (userAns) {
+            return;
+
+          }else if (userResponse) {
+            // El usuario canceló la operación
+
+            newStartDate.setDate(newStartDate.getDate() - 1);
+            newEndDate.setDate(newEndDate.getDate() - 1);
+
+            if (eventDetails.id) {
+              // Si el evento ya tiene un ID, actualiza el evento existente
+              const eventRef = doc(db, 'evento', eventDetails.id);
+              await updateDoc(eventRef, {
+                title: eventDetails.title,
+                start: newStartDate.toISOString(),
+                end: newEndDate.toISOString(),
+                description: eventDetails.description,
+                tipo: eventType, // Utiliza el tipo seleccionado en el combobox
+              });
+            } else {
+              // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
+              const nextEventId = getNextEventId(events);
+              
+              const newEventRef = await addDoc(collection(db, 'evento'), {
+                id: nextEventId,
+                title: eventDetails.title,
+                start: newStartDate.toISOString(),
+                end: newEndDate.toISOString(),
+                description: eventDetails.description,
+                tipo: eventType, // Utiliza el tipo seleccionado en el combobox
+              });
+            }
+
+            // Recarga los eventos desde la base de datos
+            const updatedEvents = await fetchEvents();
+            setEvents(updatedEvents);
+            
+            setShowEventForm(false);
+
+            //return;
+          }
+        }else{
+          // Elimina un día de la fecha inicio y fin
+          newStartDate.setDate(newStartDate.getDate() - 1);
+          newEndDate.setDate(newEndDate.getDate() - 1);
+
+          if (eventDetails.id) {
+            // Si el evento ya tiene un ID, actualiza el evento existente
+            const eventRef = doc(db, 'evento', eventDetails.id);
+            await updateDoc(eventRef, {
+              title: eventDetails.title,
+              start: newStartDate.toISOString(),
+              end: newEndDate.toISOString(),
+              description: eventDetails.description,
+              tipo: eventType, // Utiliza el tipo seleccionado en el combobox
+            });
+          } else {
+            // Si el evento no tiene un ID, crea un nuevo evento con un ID incremental
+            const nextEventId = getNextEventId(events);
+            
+            const newEventRef = await addDoc(collection(db, 'evento'), {
+              id: nextEventId,
+              title: eventDetails.title,
+              start: newStartDate.toISOString(),
+              end: newEndDate.toISOString(),
+              description: eventDetails.description,
+              tipo: eventType, // Utiliza el tipo seleccionado en el combobox
+            });
+          }
+
+          // Recarga los eventos desde la base de datos
+          const updatedEvents = await fetchEvents();
+          setEvents(updatedEvents);
+          
+          setShowEventForm(false);
+        }
+
+      } catch (error) {
+        console.error("Error al guardar el evento:", error)
       }
-    
-      // Recarga los eventos desde la base de datos
-      const updatedEvents = await fetchEvents();
-      setEvents(updatedEvents);
-    
-      setShowEventForm(false);
     };
     
     
@@ -317,6 +412,10 @@ function Calendar() {
           data.end = data.end ? new Date(data.end) : null;
           if (data.start) data.start.setDate(data.start.getDate() + 1);
           if (data.end) data.end.setDate(data.end.getDate() + 1);
+        } else{
+          data.allDay = true;
+          if (data.start) data.start = new Date(data.start);
+          if (data.end) data.end = new Date(data.end);
         }
         return data;
       });
@@ -343,37 +442,104 @@ function Calendar() {
         const formattedStart = selectedEventDetails.start ? new Date(selectedEventDetails.start) : null;
         const formattedEnd = selectedEventDetails.end ? new Date(selectedEventDetails.end) : null;
         console.log(editedEventType)
+        
+        let tipoEvento = "";
+
+        console.log("edited type:" + editedEventType)
     
-        if (editedEventType !== "" && editedEventType !== "orden") {
+        if (editedEventType !== "" || editedEventType !== "orden") {
           if (formattedStart) formattedStart.setDate(formattedStart.getDate() - 1);
+          console.log("Start:" + formattedStart )
           if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate() - 1);
-        }else{
-          if (formattedStart) formattedStart.setDate(formattedStart.getDate());
-          if (formattedEnd) formattedEnd.setDate(formattedEnd.getDate());
+          console.log("Start:" + formattedEnd )
         }
     
-        const updatedQuery = query(
-          collection(db, 'evento'),
-          where('id', '==', parseInt(selectedEventDetails.id))
-        );
-    
-        const querySnapshot = await getDocs(updatedQuery);
-    
-        if (!querySnapshot.empty) {
-          const docRef = querySnapshot.docs[0].ref;
-    
-          await updateDoc(docRef, {
-            id: parseInt(selectedEventDetails.id),
-            title: selectedEventDetails.title,
-            start: formattedStart ? formattedStart.toISOString() : null,
-            end: formattedEnd ? formattedEnd.toISOString() : null,
-            description: selectedEventDetails.description,
-            tipo: editedEventType !== "" ? editedEventType : "orden", // Utiliza el tipo seleccionado en el combobox de edición, o "orden" si es vacío
-          });
-    
-          const updatedEvents = await fetchEvents();
-          setEvents(updatedEvents);
-        }
+        const hasConflict = events.some(existingEvent => {
+
+          // Ignorar eventos de tipo "orden" con la propiedad "allDay" configurada como true
+          if (existingEvent.tipo === "orden" && existingEvent.allDay) {
+            return false;
+          }
+          if (existingEvent.title === selectedEventDetails.title) {
+            return false;
+          }
+
+          // Convertir las fechas de inicio y fin de los eventos existentes a objetos Date
+          const existingStartDate = new Date(existingEvent.start);
+          const existingEndDate = new Date(existingEvent.end);
+        
+          // Verificar si hay solapamiento de horarios
+          tipoEvento = existingEvent.tipo;
+          console.log("Start: " + existingStartDate + "Fin: " + existingEndDate + "formated S:" + formattedStart + "Formated F:" + formattedEnd)
+          return (
+            (formattedStart.setDate(formattedStart.getDate() + 1) < existingEndDate && formattedEnd.setDate(formattedEnd.getDate() + 1) > existingStartDate) ||
+            (formattedEnd.setDate(formattedEnd.getDate() + 1) > existingStartDate && formattedStart.setDate(formattedStart.getDate() + 1) < existingEndDate)
+          );
+        });
+
+        if (hasConflict) {
+          // Mostrar un mensaje al usuario y manejar la lógica según sea necesario
+          let userResponse = false;//window.confirm("¡Advertencia! Hay un evento existente en este horario. ¿Desea agregar el evento de todos modos?");
+          let userAns = false;
+
+          // Si el tipo de evento es "maquillaje", verificar si ya hay un evento de "maquillaje" en este horario
+          if (tipoEvento === "maquillaje" && hasConflict) {
+            userAns = window.confirm("¡Advertencia! Hay un evento existente en este horario. No se puede agendar un evento de maquillaje en horario conflictivo.");
+            //return;
+          } else if (hasConflict) {
+            // Mostrar un mensaje al usuario indicando que no se puede agendar un evento de maquillaje en este horario
+            userResponse = window.confirm("Ya hay un evento en este horario. ¿Deseas agregar el evento en horario conflictivo?");
+            //return;
+          } 
+          
+          if (userAns) {
+            return;
+
+          }else if (userResponse) {
+            const updatedQuery = query(
+              collection(db, 'evento'),
+              where('id', '==', parseInt(selectedEventDetails.id))
+            );
+        
+            const querySnapshot = await getDocs(updatedQuery);
+        
+            if (!querySnapshot.empty) {
+              const docRef = querySnapshot.docs[0].ref;
+        
+              await updateDoc(docRef, {
+                id: parseInt(selectedEventDetails.id),
+                title: selectedEventDetails.title,
+                start: formattedStart ? formattedStart.toISOString() : null,
+                end: formattedEnd ? formattedEnd.toISOString() : null,
+                description: selectedEventDetails.description,
+              });
+        
+              const updatedEvents = await fetchEvents();
+              setEvents(updatedEvents);
+            }
+          }} else{
+              const updatedQuery = query(
+                collection(db, 'evento'),
+                where('id', '==', parseInt(selectedEventDetails.id))
+              );
+          
+              const querySnapshot = await getDocs(updatedQuery);
+          
+              if (!querySnapshot.empty) {
+                const docRef = querySnapshot.docs[0].ref;
+          
+                await updateDoc(docRef, {
+                  id: parseInt(selectedEventDetails.id),
+                  title: selectedEventDetails.title,
+                  start: formattedStart ? formattedStart.toISOString() : null,
+                  end: formattedEnd ? formattedEnd.toISOString() : null,
+                  description: selectedEventDetails.description,
+                });
+          
+                const updatedEvents = await fetchEvents();
+                setEvents(updatedEvents);
+              }
+            }
       } catch (error) {
         console.error("Error al actualizar datos:", error);
       }
@@ -516,20 +682,6 @@ function Calendar() {
             <div className="event-form-container">
             <h1>Editar Evento</h1>
               {/* Mostrar el campo de edición del tipo de evento solo si el tipo no es "orden" */}
-              {selectedEventDetails.tipo !== "orden" && (
-                <div>
-                <label htmlFor="editedEventType">Tipo de Evento:</label>
-                <select
-                  id="editedEventType"
-                  value={editedEventType}
-                  onChange={(e) => setEditedEventType(e.target.value)}
-                >
-                  <option value="maquillaje">Maquillaje</option>
-                  <option value="reunion">Reunión</option>
-                </select>
-                </div>
-              )}
-
               <label htmlFor="eventTitle">Título del Evento:</label>
               <input
                 type="text"
@@ -552,18 +704,22 @@ function Calendar() {
                   })
                 }
               />
-              <label htmlFor="eventEnd">Fecha de fin:</label>
-              <input
-                type="datetime-local"
-                id="eventEnd"
-                value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
-                onChange={(e) =>
-                  setSelectedEventDetails({
-                    ...selectedEventDetails,
-                    end: new Date(e.target.value),
-                  })
-                }
-              />
+              {selectedEventDetails.tipo !== "orden" && (
+                <div className="event-form-container">
+                  <label htmlFor="eventEnd">Fecha de fin:</label>
+                  <input
+                    type="datetime-local"
+                    id="eventEnd"
+                    value={selectedEventDetails.end ? formatDatetimeLocal(selectedEventDetails.end) : ""}
+                    onChange={(e) =>
+                      setSelectedEventDetails({
+                        ...selectedEventDetails,
+                        end: new Date(e.target.value),
+                      })
+                    }
+                  />
+                  </div>)}
+                
               <label htmlFor="eventDescription">Descripción:</label>
               <textarea
                 id="eventDescription"
@@ -624,6 +780,7 @@ function Calendar() {
           nowIndicator={true} //esto le dice en dónde está cuando utiliza la vista del día
           locales={[esLocale]}  // Configura el locale español
           locale="es"  // Establece el idioma español
+          defaultAllDayEventDuration={{ days: 1 }}
         />
       </div>
     );
