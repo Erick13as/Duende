@@ -131,6 +131,8 @@ function Calendar() {
     //con esta función voy a intentar crear eventos a partir de las ordenes confirmadas alamacenadas en confirmedOrdersData.
     const handleOrderEvent = async () => {
       try {
+        const newConfirmedEvents = [];
+    
         for (const order of confirmedEvents) {
           const eventExists = await doesEventExistWithNumeroOrden(order.numeroOrden);
     
@@ -148,12 +150,27 @@ function Calendar() {
             };
     
             await addEventToDatabase(newEvent);
+    
+            // Add the new event to the list of confirmed events
+            newConfirmedEvents.push(newEvent);
           }
         }
+    
+        // Update the state only with events that don't already exist in confirmedEvents
+        setConfirmedEvents((prevConfirmedEvents) => [
+          ...prevConfirmedEvents,
+          ...newConfirmedEvents.filter((newEvent) =>
+            !prevConfirmedEvents.some(
+              (prevEvent) => prevEvent.numeroOrden === newEvent.numeroOrden
+            )
+          ),
+        ]);
       } catch (error) {
         console.error('Error al manejar eventos de órdenes:', error);
       }
     };
+    
+    
     
     const doesEventExistWithNumeroOrden = async (numeroOrden) => {
       const eventQuery = query(collection(db, 'evento'), where('numeroOrden', '==', numeroOrden));
